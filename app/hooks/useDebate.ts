@@ -31,22 +31,44 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
   }, []);
 
   const startNextRound = useCallback(async (getModelProvider: (model: ModelType) => any) => {
+
+    if (isLoading) {
+      console.log("Already loading, skipping startNextRound call.");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
-    try {
-      const model = currentDebater === 'debater1' ? debater1 : debater2;
-      const position = currentDebater === 'debater1' ? 'PRO' : 'CON';
-      const previousArguments = rounds
-        .map((round, index) => {
-          const otherPosition = index % 2 === 0 ? 'CON' : 'PRO';
-          return `${otherPosition}: ${round[currentDebater === 'debater1' ? 'debater2' : 'debater1']}`;
-        })
-        .join('\n');
+    console.log(`[useDebate Step 1] Starting round. Debater: ${currentDebater}, Round: ${currentRound}`);
 
-      const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(topic, position, previousArguments);
+    const modelId = currentDebater === 'debater1' ? debater1 : debater2;
+    const position = currentDebater === 'debater1' ? 'PRO' : 'CON';
+
+    let previousArguments = '';
+    for (let i = 0; i < currentRound; i++) {
+      if (rounds[i]?.debater1 && rounds[i]?.debater2) {
+        previousArguments += `PRO: ${rounds[i].debater1}\n`;
+        previousArguments += `CON: ${rounds[i].debater2}\n`;
+      }
+    }
+
+    if (currentDebater === 'debater2' && rounds.length > currentRound && rounds[currentRound]?.debater1) {
+      previousArguments += `PRO: ${rounds[currentRound].debater1}\n`;
+    }
+
+    const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(topic, position, previousArguments.trim());
+
+    try {
+      const modelProviderInstance = getModelProvider(modelId);
+      if (!modelProviderInstance) {
+        throw new Error(`Failed to get model provider instance for ${modelId}`);
+      }
+
+      console.log(`[useDebate Step 1] Calling streamText for ${currentDebater}...`);
+
       const { text } = await generateText({
-        model: getModelProvider(model),
+        model: modelProviderInstance,
         prompt: systemPrompt,
       });
 
