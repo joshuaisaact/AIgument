@@ -48,7 +48,6 @@ export function DebateControls({
               label="For"
               value={proModel}
               onChange={setProModel}
-              otherSelected={conModel}
             />
           </div>
           <div className="transform hover:scale-105 transition-transform duration-200">
@@ -56,7 +55,6 @@ export function DebateControls({
               label="Against"
               value={conModel}
               onChange={setConModel}
-              otherSelected={proModel}
             />
           </div>
         </div>
