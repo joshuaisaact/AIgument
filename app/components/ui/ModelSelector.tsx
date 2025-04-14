@@ -33,7 +33,7 @@ export default function ModelSelector({
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-4 py-2 text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 flex items-center justify-between"
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
           <ModelLogo modelId={value} />
           {MODEL_CONFIGS[value].name}
         </div>
@@ -58,7 +58,7 @@ export default function ModelSelector({
               }}
               className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 flex items-center gap-2
                 ${id === value ? 'bg-blue-50 dark:bg-blue-900' : ''}
-                ${id === value ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'}`}
+                ${id === value ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-100'}`}
             >
               <ModelLogo modelId={id as ModelType} />
               {config.name}
