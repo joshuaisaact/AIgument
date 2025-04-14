@@ -3,6 +3,8 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { Header } from "./components/layout/Header";
+import { Analytics } from "@vercel/analytics/react"
+
 
 const geist = Geist({
   subsets: ["latin"],
@@ -33,6 +35,7 @@ export default function RootLayout({
       <body className={`${geist.variable} antialiased`}>
         <Header />
         {children}
+        <Analytics/>
       </body>
     </html>
   );
