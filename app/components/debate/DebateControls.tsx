@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from 'react';
-import ModelSelector from './ModelSelector';
-import TopicInput from './TopicInput';
+import ModelSelector from '../ui/ModelSelector';
+import TopicInput from '../ui/TopicInput';
 import DebateArena from './DebateArena';
-import { ModelType } from '../hooks/useModelProvider';
+import { ModelType } from '../../hooks/useModelProvider';
 
 export function DebateControls() {
   const [topic, setTopic] = useState('');

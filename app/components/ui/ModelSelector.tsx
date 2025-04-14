@@ -1,8 +1,9 @@
 "use client";
 
+import { MODEL_CONFIGS } from '@/app/constants/debate';
+import { ModelType } from '@/app/hooks/useModelProvider';
 import { useState } from 'react';
-import { ModelType } from '../hooks/useModelProvider';
-import { MODEL_CONFIGS } from '../constants/debate';
+
 
 interface ModelSelectorProps {
   label: string;

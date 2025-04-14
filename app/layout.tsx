@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { Header } from "./components/layout/Header";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -29,7 +30,10 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${geist.variable} antialiased`}>{children}</body>
+      <body className={`${geist.variable} antialiased`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

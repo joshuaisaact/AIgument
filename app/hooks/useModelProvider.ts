@@ -1,6 +1,8 @@
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { getApiKey } from '../lib/storage/apiKeyStorage';
+
 
 // Debug environment variables
 const debugEnv = () => {
@@ -18,16 +20,16 @@ const debugEnv = () => {
 
 // Configure providers
 const openai = createOpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
+  apiKey: getApiKey('openai') || process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
   compatibility: 'strict',
 });
 
 const google = createGoogleGenerativeAI({
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY || '',
+  apiKey: getApiKey('google') || process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY || '',
 });
 
 const anthropic = createAnthropic({
-  apiKey: process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || '',
+  apiKey: getApiKey('anthropic') || process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || '',
 });
 
 export type ModelType = 'gpt4' | 'gpt35' | 'claude-sonnet' | 'claude-haiku' | 'gemini-flash' | 'gemini-pro';
@@ -36,9 +38,9 @@ export const useModelProvider = () => {
   const getModelProvider = (model: ModelType) => {
     switch (model) {
       case "claude-sonnet":
-        return anthropic("claude-3-sonnet-20240229");
+        return anthropic("claude-3-7-sonnet-20250219");
       case "claude-haiku":
-        return anthropic("claude-3-haiku-20240307");
+        return anthropic("claude-3-5-haiku-latest");
       case "gpt4":
         return openai("gpt-4-turbo");
       case "gpt35":
