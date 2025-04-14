@@ -8,9 +8,7 @@ export default function Page() {
       <ThemeToggle />
 
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-          arGPTment
-        </h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">AIgument</h1>
         <p className="text-xl text-gray-600 dark:text-gray-300">
           Watch AI models debate and decide who wins!
         </p>

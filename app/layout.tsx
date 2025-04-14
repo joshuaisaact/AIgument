@@ -9,7 +9,7 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "arGPTment - Watch AI Models Debate",
+  title: "AIgument - Watch AI Models Debate",
   description: "Watch AI models debate and decide who wins!",
 };
 

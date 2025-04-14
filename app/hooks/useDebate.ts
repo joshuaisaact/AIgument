@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
-import { generateText } from 'ai';
+import { streamText } from 'ai';
 import { ModelType } from './useModelProvider';
 import { DEBATE_PROMPTS } from '../constants/debate';
+
+const yieldToEventLoop = () => new Promise(resolve => setTimeout(resolve, 0));
 
 interface Round {
   debater1: string;
@@ -21,86 +23,97 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [streamingText, setStreamingText] = useState<string | null>(null);
 
   const resetDebate = useCallback(() => {
-    setRounds([]);
-    setCurrentRound(0);
-    setCurrentDebater('debater1');
-    setIsInitialized(false);
-    setError(null);
+    setRounds([]); setCurrentRound(0); setCurrentDebater('debater1');
+    setIsInitialized(false); setError(null); setIsLoading(false); setStreamingText(null);
   }, []);
 
   const startNextRound = useCallback(async (getModelProvider: (model: ModelType) => any) => {
-
     if (isLoading) {
-      console.log("Already loading, skipping startNextRound call.");
       return;
     }
 
+    const callTimeDebater = currentDebater;
+    const callTimeRound = currentRound;
+    const currentRoundsState = rounds;
+
     setIsLoading(true);
     setError(null);
-
-    console.log(`[useDebate Step 1] Starting round. Debater: ${currentDebater}, Round: ${currentRound}`);
-
-    const modelId = currentDebater === 'debater1' ? debater1 : debater2;
-    const position = currentDebater === 'debater1' ? 'PRO' : 'CON';
+    setStreamingText('');
+    const modelId = callTimeDebater === 'debater1' ? debater1 : debater2;
+    const position = callTimeDebater === 'debater1' ? 'PRO' : 'CON';
 
     let previousArguments = '';
-    for (let i = 0; i < currentRound; i++) {
-      if (rounds[i]?.debater1 && rounds[i]?.debater2) {
-        previousArguments += `PRO: ${rounds[i].debater1}\n`;
-        previousArguments += `CON: ${rounds[i].debater2}\n`;
+    for (let i = 0; i < callTimeRound; i++) {
+      if (currentRoundsState[i]?.debater1 && currentRoundsState[i]?.debater2) {
+        previousArguments += `PRO: ${currentRoundsState[i].debater1}\n`;
+        previousArguments += `CON: ${currentRoundsState[i].debater2}\n`;
       }
     }
-
-    if (currentDebater === 'debater2' && rounds.length > currentRound && rounds[currentRound]?.debater1) {
-      previousArguments += `PRO: ${rounds[currentRound].debater1}\n`;
+    if (callTimeDebater === 'debater2' && currentRoundsState.length > callTimeRound && currentRoundsState[callTimeRound]?.debater1) {
+      previousArguments += `PRO: ${currentRoundsState[callTimeRound].debater1}\n`;
     }
 
     const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(topic, position, previousArguments.trim());
 
+    if (callTimeDebater === 'debater1' && currentRoundsState.length === callTimeRound) {
+      setRounds(prevRounds => {
+        if (prevRounds.length === callTimeRound) return [...prevRounds, { debater1: '', debater2: '' }];
+        return prevRounds;
+      });
+    }
+
+    let accumulatedText = '';
+
     try {
       const modelProviderInstance = getModelProvider(modelId);
-      if (!modelProviderInstance) {
-        throw new Error(`Failed to get model provider instance for ${modelId}`);
-      }
+      if (!modelProviderInstance) throw new Error(`Failed to get model provider instance for ${modelId}`);
 
-      console.log(`[useDebate Step 1] Calling streamText for ${currentDebater}...`);
-
-      const { text } = await generateText({
-        model: modelProviderInstance,
-        prompt: systemPrompt,
+      const result = streamText({
+        model: modelProviderInstance, prompt: systemPrompt,
+        onError: (event) => {
+          console.error(`[useDebate] streamText error:`, event.error);
+          setError(event.error instanceof Error ? event.error.message : 'Stream error');
+        },
       });
 
-      if (currentDebater === 'debater1') {
-        setRounds([...rounds, { debater1: text, debater2: '' }]);
-      } else {
-        const updatedRounds = [...rounds];
-        updatedRounds[currentRound] = {
-          ...updatedRounds[currentRound],
-          debater2: text,
-        };
-        setRounds(updatedRounds);
-        setCurrentRound(currentRound + 1);
+      for await (const textPart of result.textStream) {
+        accumulatedText += textPart;
+        setStreamingText(accumulatedText);
+        await yieldToEventLoop();
       }
 
-      setCurrentDebater(currentDebater === 'debater1' ? 'debater2' : 'debater1');
+      const finishReason = await result.finishReason;
+
+      setRounds(prevRounds => {
+        const updatedRounds = [...prevRounds];
+        const roundIndex = callTimeDebater === 'debater1' ? updatedRounds.length - 1 : callTimeRound;
+        if (roundIndex >= 0 && updatedRounds[roundIndex]) {
+          updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], [callTimeDebater]: accumulatedText };
+        } else {
+          setError(`Internal error: Could not update round ${roundIndex} on finish.`);
+          return prevRounds;
+        }
+        return updatedRounds;
+      });
+
+      if (callTimeDebater === 'debater1') {
+        setCurrentDebater('debater2');
+      } else {
+        setCurrentDebater('debater1');
+        setCurrentRound(prev => prev + 1);
+      }
+
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred during the debate');
-      console.error('Error generating text:', error);
+      console.error(`[useDebate] Error:`, error);
+      setError(error instanceof Error ? error.message : String(error));
     } finally {
+      setStreamingText(null);
       setIsLoading(false);
     }
-  }, [currentDebater, currentRound, debater1, debater2, rounds, topic]);
+  }, [currentDebater, currentRound, debater1, debater2, topic]);
 
-  return {
-    rounds,
-    currentDebater,
-    isLoading,
-    error,
-    isInitialized,
-    setIsInitialized,
-    startNextRound,
-    resetDebate,
-  };
+  return { rounds, currentRound, currentDebater, isLoading, error, isInitialized, setIsInitialized, startNextRound, resetDebate, streamingText };
 }

@@ -1,6 +1,6 @@
-# arGPTment
+# AIgument
 
-A fun way to watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out and decide who wins.
+Watch AI models debate and decide who wins! Instead of dry benchmarks, watch two LLMs argue it out and decide who wins.
 
 ## Features
 
