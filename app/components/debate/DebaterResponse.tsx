@@ -1,3 +1,5 @@
+"use client";
+
 import { ModelType } from '../../hooks/useModelProvider';
 import { ReactNode } from 'react';
 import { MODEL_CONFIGS } from '../../constants/debate';
@@ -19,7 +21,16 @@ export default function DebaterResponse({ position, model, children }: DebaterRe
             {position}
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <img src={modelConfig.logo} alt={modelConfig.alt} className="h-4 w-4" />
+            <img
+              src={modelConfig.logo}
+              alt={modelConfig.alt}
+              className="h-4 w-4 dark:hidden"
+            />
+            <img
+              src={modelConfig.logo.replace('.svg', '-light.svg')}
+              alt={modelConfig.alt}
+              className="h-4 w-4 hidden dark:block"
+            />
             <span>{modelConfig.name}</span>
           </div>
         </div>

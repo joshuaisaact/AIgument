@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 import { ApiKeySettings } from '../settings/ApiKeySettings';
 import { ThemeToggle } from './ThemeToggle';
+import { useState } from 'react';
 
 export function Header() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -11,7 +12,9 @@ export function Header() {
     <>
       <header className="w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">AIgument</h1>
+          <Link href="/" className="flex items-center text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <span className="text-blue-600 dark:text-blue-400">AI</span>gument
+          </Link>
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <button
