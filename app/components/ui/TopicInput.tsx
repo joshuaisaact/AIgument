@@ -20,7 +20,7 @@ export default function TopicInput({ value, onChange }: TopicInputProps) {
         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
       />
       <p className="text-sm text-gray-500 pt-2">
-        Tip: Make it specific and debatable, e.g., "Should social media companies be responsible for misinformation?"
+        Tip: Make it specific and debatable, e.g., &quot;Should social media companies be responsible for misinformation?&quot;
       </p>
     </div>
   );

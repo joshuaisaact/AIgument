@@ -27,12 +27,12 @@ export function HomePageContent() {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-8">
           <span className="text-blue-600 dark:text-blue-400">AI</span>
-          <span className="text-gray-900 dark:text-white">gument</span>
+          <span className="text-gray-800 dark:text-white">gument</span>
         </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-300 mb-4 pt-4">
-          Tired of dry AI benchmarks? Let's settle this the old-fashioned way.
+        <p className="text-xl text-gray-800 dark:text-gray-300 mb-4 pt-4">
+          Tired of dry AI benchmarks? Let&apos;s settle this the old-fashioned way.
         </p>
-        <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-800 dark:text-gray-400 max-w-2xl mx-auto">
           Watch AI models go head-to-head in heated debates. No technical jargon, no confusing metrics - just pure, unadulterated argumentative prowess. Who will win? You decide!
         </p>
       </div>

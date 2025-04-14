@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { streamText } from 'ai';
+import { streamText, LanguageModelV1 } from 'ai';
 import { ModelType } from './useModelProvider';
 import { DEBATE_PROMPTS } from '../constants/debate';
 
@@ -30,7 +30,7 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
     setIsInitialized(false); setError(null); setIsLoading(false); setStreamingText(null);
   }, []);
 
-  const startNextRound = useCallback(async (getModelProvider: (model: ModelType) => any) => {
+  const startNextRound = useCallback(async (getModelProvider: (model: ModelType) => LanguageModelV1) => {
     if (isLoading) {
       return;
     }
@@ -85,8 +85,6 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
         await yieldToEventLoop();
       }
 
-      const finishReason = await result.finishReason;
-
       setRounds(prevRounds => {
         const updatedRounds = [...prevRounds];
         const roundIndex = callTimeDebater === 'debater1' ? updatedRounds.length - 1 : callTimeRound;
@@ -113,7 +111,7 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
       setStreamingText(null);
       setIsLoading(false);
     }
-  }, [isLoading, currentDebater, currentRound, rounds, debater1, debater2]);
+  }, [isLoading, currentDebater, currentRound, rounds, debater1, debater2, topic]);
 
   return { rounds, currentRound, currentDebater, isLoading, error, isInitialized, setIsInitialized, startNextRound, resetDebate, streamingText };
 }
