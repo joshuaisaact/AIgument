@@ -30,19 +30,23 @@ const anthropic = createAnthropic({
   apiKey: process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || '',
 });
 
-export type ModelType = 'gpt4' | 'gpt35' | 'claude' | 'gemini';
+export type ModelType = 'gpt4' | 'gpt35' | 'claude-sonnet' | 'claude-haiku' | 'gemini-flash' | 'gemini-pro';
 
 export const useModelProvider = () => {
   const getModelProvider = (model: ModelType) => {
     switch (model) {
-      case "claude":
-        return anthropic("claude-3-sonnet");
+      case "claude-sonnet":
+        return anthropic("claude-3-sonnet-20240229");
+      case "claude-haiku":
+        return anthropic("claude-3-haiku-20240307");
       case "gpt4":
         return openai("gpt-4-turbo");
       case "gpt35":
         return openai("gpt-3.5-turbo");
-      case "gemini":
-        return google("gemini-1.5-flash");
+      case "gemini-flash":
+        return google("gemini-2.0-flash-001");
+      case "gemini-pro":
+        return google('gemini-2.5-pro-exp-03-25');
       default:
         throw new Error(`Unknown model: ${model}`);
     }

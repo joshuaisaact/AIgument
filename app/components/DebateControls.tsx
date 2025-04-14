@@ -4,13 +4,12 @@ import { useState } from 'react';
 import ModelSelector from './ModelSelector';
 import TopicInput from './TopicInput';
 import DebateArena from './DebateArena';
-
-type Model = "claude" | "gpt4" | "gpt35" | "gemini";
+import { ModelType } from '../hooks/useModelProvider';
 
 export function DebateControls() {
   const [topic, setTopic] = useState('');
-  const [debater1, setDebater1] = useState<Model>('gpt4');
-  const [debater2, setDebater2] = useState<Model>('claude');
+  const [debater1, setDebater1] = useState<ModelType>('gpt4');
+  const [debater2, setDebater2] = useState<ModelType>('claude-sonnet');
   const [isDebateStarted, setIsDebateStarted] = useState(false);
 
   const startDebate = () => {
