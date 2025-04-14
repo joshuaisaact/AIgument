@@ -48,15 +48,15 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
     let previousArguments = '';
     for (let i = 0; i < callTimeRound; i++) {
       if (currentRoundsState[i]?.debater1 && currentRoundsState[i]?.debater2) {
-        previousArguments += `PRO: ${currentRoundsState[i].debater1}\n`;
-        previousArguments += `CON: ${currentRoundsState[i].debater2}\n`;
+        previousArguments += `${currentRoundsState[i].debater1}\n\n`;
+        previousArguments += `${currentRoundsState[i].debater2}\n\n`;
       }
     }
     if (callTimeDebater === 'debater2' && currentRoundsState.length > callTimeRound && currentRoundsState[callTimeRound]?.debater1) {
-      previousArguments += `PRO: ${currentRoundsState[callTimeRound].debater1}\n`;
+      previousArguments += `${currentRoundsState[callTimeRound].debater1}\n\n`;
     }
 
-    const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(topic, position, previousArguments.trim());
+    const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(topic, position, previousArguments.trim(), callTimeRound + 1);
 
     if (callTimeDebater === 'debater1' && currentRoundsState.length === callTimeRound) {
       setRounds(prevRounds => {
@@ -113,7 +113,7 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
       setStreamingText(null);
       setIsLoading(false);
     }
-  }, [currentDebater, currentRound, debater1, debater2, topic]);
+  }, [isLoading, currentDebater, currentRound, rounds, debater1, debater2]);
 
   return { rounds, currentRound, currentDebater, isLoading, error, isInitialized, setIsInitialized, startNextRound, resetDebate, streamingText };
 }

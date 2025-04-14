@@ -3,6 +3,12 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { getApiKey } from '../lib/storage/apiKeyStorage';
 
+export class MissingApiKeyError extends Error {
+  constructor(provider: string) {
+    super(`No API key found for ${provider}. Please add your API key in the settings.`);
+    this.name = 'MissingApiKeyError';
+  }
+}
 
 // Debug environment variables
 const debugEnv = () => {
@@ -18,39 +24,47 @@ const debugEnv = () => {
   return env;
 };
 
-// Configure providers
-const openai = createOpenAI({
-  apiKey: getApiKey('openai') || process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
-  compatibility: 'strict',
-});
+const getProviderApiKey = (provider: 'openai' | 'google' | 'anthropic') => {
+  const userKey = getApiKey(provider);
+  const envKey = process.env[`NEXT_PUBLIC_${provider.toUpperCase()}_API_KEY`];
 
-const google = createGoogleGenerativeAI({
-  apiKey: getApiKey('google') || process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY || '',
-});
+  if (!userKey && !envKey) {
+    throw new MissingApiKeyError(provider);
+  }
 
-const anthropic = createAnthropic({
-  apiKey: getApiKey('anthropic') || process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || '',
-});
+  return userKey || envKey || '';
+};
 
 export type ModelType = 'gpt4' | 'gpt35' | 'claude-sonnet' | 'claude-haiku' | 'gemini-flash' | 'gemini-pro';
 
 export const useModelProvider = () => {
   const getModelProvider = (model: ModelType) => {
-    switch (model) {
-      case "claude-sonnet":
-        return anthropic("claude-3-7-sonnet-20250219");
-      case "claude-haiku":
-        return anthropic("claude-3-5-haiku-latest");
-      case "gpt4":
-        return openai("gpt-4-turbo");
-      case "gpt35":
-        return openai("gpt-3.5-turbo");
-      case "gemini-flash":
-        return google("gemini-2.0-flash-001");
-      case "gemini-pro":
-        return google('gemini-2.5-pro-exp-03-25');
-      default:
-        throw new Error(`Unknown model: ${model}`);
+    try {
+      switch (model) {
+        case "claude-sonnet":
+        case "claude-haiku":
+          return createAnthropic({
+            apiKey: getProviderApiKey('anthropic'),
+          })(model === "claude-sonnet" ? "claude-3-7-sonnet-20250219" : "claude-3-5-haiku-latest");
+        case "gpt4":
+        case "gpt35":
+          return createOpenAI({
+            apiKey: getProviderApiKey('openai'),
+            compatibility: 'strict',
+          })(model === "gpt4" ? "gpt-4-turbo" : "gpt-3.5-turbo");
+        case "gemini-flash":
+        case "gemini-pro":
+          return createGoogleGenerativeAI({
+            apiKey: getProviderApiKey('google'),
+          })(model === "gemini-flash" ? "gemini-2.0-flash-001" : "gemini-2.5-pro-exp-03-25");
+        default:
+          throw new Error(`Unknown model: ${model}`);
+      }
+    } catch (error: unknown) {
+      if (error instanceof MissingApiKeyError) {
+        throw error;
+      }
+      throw new Error(`Failed to initialize model provider: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 

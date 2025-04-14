@@ -32,14 +32,16 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
 
   const handleReset = () => {
     didInitialize.current = false;
-    resetDebate(); onReset();
+    resetDebate();
+    onReset();
   };
 
-  const handleNextResponseClick = () => { startNextRound(getModelProvider); }
+  const handleNextResponseClick = () => {
+    startNextRound(getModelProvider);
+  };
 
   const streamingRoundIndex = isLoading ? (currentDebater === 'debater1' ? rounds.length - 1 : currentRound) : -1;
 
-  // Determine the button label based on the current state
   const getButtonLabel = () => {
     if (isLoading) return 'Generating...';
     if (currentDebater === 'debater1') return 'Start Next Exchange';
@@ -53,7 +55,12 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Debate: {topic}</h2>
         <Button variant="secondary" onClick={handleReset}> Reset Debate </Button>
       </div>
-      {error && ( <div className="p-4 my-2 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-lg border border-red-200 dark:border-red-700"> <p className="font-semibold">Error:</p> <p>{error}</p> </div> )}
+      {error && (
+        <div className="p-4 my-2 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-lg border border-red-200 dark:border-red-700">
+          <p className="font-semibold">Error:</p>
+          <p>{error}</p>
+        </div>
+      )}
 
       <div className="space-y-8">
         {rounds.map((round, index) => (
