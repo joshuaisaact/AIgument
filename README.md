@@ -5,8 +5,11 @@ Watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out a
 ## Features
 
 - Watch different AI models debate each other
-- Choose from various models (GPT-4, GPT-3.5, Claude, Gemini)
+- Choose from various models (e.g., GPT-4o, Claude 3 Sonnet, Gemini 1.5 Flash)
+- Assign unique personalities to each debater (e.g., Pirate, Butler, Sassy Drag Queen)
+- Control the "spiciness" or intensity of the debate
 - Vote on which argument you think is better
+- Browse and view previously saved debates
 - Simple, clean interface focused on the debate
 
 ## Getting Started
@@ -30,10 +33,13 @@ Watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out a
 ## How to Use
 
 1. Enter a debate topic
-2. Select which models you want to debate
-3. Click "Start Debate" and watch the AI models argue
-4. Use the "Next Round" button to continue the debate
-5. Vote on which argument you think is better
+2. Select the models for each debater
+3. Assign a personality to each debater
+4. Choose the desired "spiciness" level
+5. Click "Start AIgument" and watch the debate unfold
+6. Use the "Next Round" button to continue
+7. Vote on which argument you think is better
+8. (Optional) Save the debate to view later
 
 ## Technologies Used
 
