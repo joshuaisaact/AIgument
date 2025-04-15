@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getApiKey, clearApiKey, setApiKey } from '../../lib/storage/apiKeyStorage';
+import { getApiKey, clearApiKey } from '../../lib/storage/apiKeyStorage';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { saveApiKeys } from '@/app/lib/actions/settings';
@@ -43,21 +43,6 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
     }
   }, [isOpen]);
 
-  // Handle saving validated keys to localStorage
-  useEffect(() => {
-    if (state.validatedKeys) {
-      if (state.validatedKeys.openaiKey) {
-        setApiKey(state.validatedKeys.openaiKey, 'openai');
-      }
-      if (state.validatedKeys.anthropicKey) {
-        setApiKey(state.validatedKeys.anthropicKey, 'anthropic');
-      }
-      if (state.validatedKeys.googleKey) {
-        setApiKey(state.validatedKeys.googleKey, 'google');
-      }
-    }
-  }, [state.validatedKeys]);
-
   const handleClearKeys = () => {
     clearApiKey('openai');
     clearApiKey('anthropic');
@@ -70,7 +55,12 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="apiKeySettingsHeading"
+    >
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full relative">
         <button
           onClick={onClose}
@@ -79,17 +69,26 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
         >
           <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
         </button>
-        <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">API Key Settings</h2>
+        <h2
+          id="apiKeySettingsHeading"
+          className="text-xl font-bold mb-4 text-gray-900 dark:text-white"
+        >
+          API Key Settings
+        </h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
           Your API keys are stored locally in your browser and never sent to our servers.
         </p>
         <form action={formAction}>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="openaiKeyInput"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 OpenAI API Key
               </label>
               <input
+                id="openaiKeyInput"
                 type="text"
                 name="openaiKey"
                 value={openaiKey}
@@ -99,10 +98,14 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="anthropicKeyInput"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Anthropic API Key
               </label>
               <input
+                id="anthropicKeyInput"
                 type="text"
                 name="anthropicKey"
                 value={anthropicKey}
@@ -112,10 +115,14 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="googleKeyInput"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Google API Key
               </label>
               <input
+                id="googleKeyInput"
                 type="text"
                 name="googleKey"
                 value={googleKey}

@@ -204,6 +204,7 @@ export default function DebateArena({
                 toast.success('Link copied to clipboard!');
               }}
               className="ml-2 px-2 py-1 text-sm"
+              aria-label="Copy debate link"
             >
               <Copy className="w-4 h-4 mr-1" />
               Copy Link

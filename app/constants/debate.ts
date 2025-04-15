@@ -17,18 +17,23 @@ export const DEBATE_PROMPTS = {
     // Intensity still ramps slightly with rounds, but base is set by spiciness
     const intensityDescriptor = spicinessConfig.level_descriptor;
 
+    // Determine the goal instruction based on potential override
+    const goalInstruction = personalityConfig.goal_override
+      ? personalityConfig.goal_override // Use override if present
+      : `Goal: Win the argument using the personality and intensity described below. Outshine your opponent!`; // Default goal
+
     // Core Debater Role
     const coreInstructions = `
 **Your Role:** You are a debater arguing about: "${topic}".
 **Your Stance:** You are arguing passionately for the **${position}** position.
 **Debate Style:** This is a **${intensityDescriptor}** debate.
 **Round:** ${roundNumber}
-**Goal:** Win the argument using the personality and intensity described below. Outshine your opponent!
+**${goalInstruction}**
     `;
 
     // Format optional lists for the prompt
     const specificInstructionsList = personalityConfig.specific_instructions ? `\n    *   **Specific Directives:** ${personalityConfig.specific_instructions.map(instr => `\n        *   ${instr}`).join('')}` : '';
-    const catchphrasesList = personalityConfig.catchphrases ? `\n    *   **Potential Catchphrases (use naturally):** ${personalityConfig.catchphrases.join(', ')}` : '';
+    const catchphrasesList = personalityConfig.catchphrases ? `\n    *   **Optional Phrases (use sparingly & only if fitting):** ${personalityConfig.catchphrases.join(', ')}` : '';
 
     // Personality & Style Instructions
     const personalityInstructions = `
@@ -47,6 +52,7 @@ export const DEBATE_PROMPTS = {
     *   Be relatively concise (under 150 words ideally).
     *   Address the opponent's *latest* points directly (in character, matching response style).
     *   Introduce *new* angles or examples if possible; **avoid repeating arguments you've already made.**
+    *   **Avoid excessive repetition of the same catchphrases or stylistic mannerisms.**
     *   Maintain your ${position} stance consistently.
     `;
 
@@ -75,7 +81,7 @@ ${previousArguments}
     return `${coreInstructions}
 ${personalityInstructions}
 ${contextInstructions}
-**REMEMBER:** Embody the **${personalityConfig.name}** personality at the **${intensityDescriptor}** level. Be funny, stick to your stance (${position}), avoid repetition, and keep it under 150 words. Now, debate!`;
+**REMEMBER:** Embody the **${personalityConfig.name}** personality at the **${intensityDescriptor}** level. Be funny, stick to your stance (${position}), avoid repeating arguments AND stylistic phrases, and keep it under 150 words. Now, debate!`;
   }
 };
 

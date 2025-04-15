@@ -15,6 +15,9 @@ export default function PersonalitySelector({
   onChange,
 }: PersonalitySelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const buttonId = `personality-selector-button-${label.replace(/\s+/g, '-').toLowerCase()}`;
+  const labelId = `personality-selector-label-${label.replace(/\s+/g, '-').toLowerCase()}`;
+  const listboxId = `personality-selector-listbox-${label.replace(/\s+/g, '-').toLowerCase()}`;
 
   const getLabelColor = (label: string) => {
     if (label === 'For') return 'text-blue-800 dark:text-blue-300';
@@ -26,14 +29,21 @@ export default function PersonalitySelector({
 
   return (
     <div className="relative">
-      <label className={`block text-sm font-medium mb-2 ${getLabelColor(label)}`}>
+      <label
+        id={labelId}
+        className={`block text-sm font-medium mb-2 ${getLabelColor(label)}`}
+      >
         {label} Personality
       </label>
       <button
+        id={buttonId}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-4 py-2 text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 flex items-center justify-between"
         title={selectedPersonality.description}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-labelledby={`${labelId} ${buttonId}`}
       >
         <span className="text-gray-700 dark:text-gray-300">
           {selectedPersonality.name}
@@ -49,10 +59,17 @@ export default function PersonalitySelector({
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div
+          id={listboxId}
+          role="listbox"
+          aria-labelledby={labelId}
+          className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+        >
           {Object.entries(PERSONALITY_CONFIGS).map(([id, config]) => (
             <button
               key={id}
+              role="option"
+              aria-selected={id === value}
               type="button"
               onClick={() => {
                 onChange(id as PersonalityId);

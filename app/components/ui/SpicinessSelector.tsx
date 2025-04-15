@@ -37,15 +37,26 @@ const SPICINESS_LEVELS: { value: SpicinessLevel; label: string; description: str
 ];
 
 export function SpicinessSelector({ value, onChange, className = "" }: SpicinessSelectorProps) {
+  const labelId = "spiciness-label";
+
   return (
     <div className={`space-y-2 ${className}`}>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+      <label
+        id={labelId}
+        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
         Debate Intensity
       </label>
-      <div className="grid grid-cols-5 gap-2">
+      <div
+        className="grid grid-cols-5 gap-2"
+        role="radiogroup"
+        aria-labelledby={labelId}
+      >
         {SPICINESS_LEVELS.map((level) => (
           <button
             key={level.value}
+            role="radio"
+            aria-checked={value === level.value}
             onClick={() => onChange(level.value)}
             className={`p-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
               value === level.value
