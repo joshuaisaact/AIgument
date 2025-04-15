@@ -39,6 +39,7 @@ export default function DebateArena({
   const {
     rounds,
     currentDebater,
+    currentRound,
     error: stateError,
     resetDebate,
     handleResponseComplete
@@ -56,7 +57,7 @@ export default function DebateArena({
     debater2Model,
     debater2Personality,
     spiciness,
-    currentRound: rounds.length > 0 ? rounds.length - 1 : 0,
+    currentRound,
     currentDebater,
     rounds,
     onResponseComplete: handleResponseComplete
