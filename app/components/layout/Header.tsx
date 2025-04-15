@@ -19,7 +19,7 @@ export function Header() {
             <ThemeToggle />
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
+              className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer"
               aria-label="Settings"
             >
               <svg
