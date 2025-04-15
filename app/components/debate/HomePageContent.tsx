@@ -1,6 +1,6 @@
 "use client";
 
-import { DebateControls } from './DebateControls';
+import DebateControls from './DebateControls';
 import { useState, Suspense } from 'react';
 import { ModelType } from '../../hooks/useModelProvider';
 import { useRouter } from 'next/navigation';

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
 import { Header } from "./components/layout/Header";
-import { Analytics } from "@vercel/analytics/react"
-
+import { Analytics } from "@vercel/analytics/react";
+import Script from "next/script";
+import { ThemeProvider } from "next-themes";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -33,9 +33,11 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={`${geist.variable} antialiased`}>
-        <Header />
-        {children}
-        <Analytics/>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Header />
+          {children}
+          <Analytics/>
+        </ThemeProvider>
       </body>
     </html>
   );
