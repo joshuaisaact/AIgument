@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { streamText, LanguageModelV1 } from 'ai';
+import { streamText, LanguageModelV1, smoothStream } from 'ai';
 import { ModelType } from './useModelProvider';
 import { DEBATE_PROMPTS } from '../constants/debate';
 import { DebateError } from './useDebateState';
@@ -80,6 +80,7 @@ export function useDebateStreaming({
       const result = streamText({
         model: modelProviderInstance,
         prompt: systemPrompt,
+        experimental_transform: smoothStream(),
         onError: (event) => {
           console.error(`[useDebateStreaming] streamText error:`, event.error);
           setError(new DebateError(
@@ -92,7 +93,6 @@ export function useDebateStreaming({
       for await (const textPart of result.textStream) {
         accumulatedText += textPart;
         setStreamingText(accumulatedText);
-        await yieldToEventLoop();
       }
 
       onResponseComplete(accumulatedText);

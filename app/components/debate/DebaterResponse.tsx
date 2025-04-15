@@ -1,5 +1,3 @@
-"use client";
-
 import { ModelType } from '../../hooks/useModelProvider';
 import { ReactNode } from 'react';
 import { MODEL_CONFIGS } from '../../constants/debate';
@@ -13,11 +11,13 @@ interface DebaterResponseProps {
 
 export default function DebaterResponse({ position, model, children }: DebaterResponseProps) {
   const modelConfig = MODEL_CONFIGS[model];
-  const headerId = `response-header-${position}-${model}-${Math.random().toString(36).substring(7)}`;
-  const contentId = `response-content-${position}-${model}-${Math.random().toString(36).substring(7)}`;
+  const headerId = `response-header-${position}-${model}`;
 
   return (
-    <article className={`flex ${position === 'For' ? 'justify-start' : 'justify-end'}`} aria-labelledby={headerId}>
+    <article
+      className={`flex min-w-[200px] ${position === 'For' ? 'justify-start' : 'justify-end'}`}
+      aria-labelledby={headerId}
+    >
       <div className={`max-w-[80%] ${position === 'For' ? 'bg-blue-50 dark:bg-blue-900/20' : 'bg-red-50 dark:bg-red-900/20'} p-4 rounded-lg shadow-sm`}>
         <div id={headerId} className="flex items-center justify-between mb-3">
           <div className={`font-semibold ${position === 'For' ? 'text-blue-800 dark:text-blue-300' : 'text-red-800 dark:text-red-300'}`}>
@@ -41,7 +41,7 @@ export default function DebaterResponse({ position, model, children }: DebaterRe
             <span>{modelConfig.name}</span>
           </div>
         </div>
-        <div id={contentId} className="text-gray-800 dark:text-gray-200 leading-relaxed">
+        <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
           {children}
         </div>
       </div>

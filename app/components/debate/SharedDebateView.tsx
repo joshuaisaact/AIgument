@@ -1,5 +1,3 @@
-"use client";
-
 import DebaterResponse from './DebaterResponse';
 import ModelLogo from '../ui/ModelLogo';
 import { ModelType } from '../../hooks/useModelProvider';
