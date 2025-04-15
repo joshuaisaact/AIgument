@@ -3,17 +3,17 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import DebaterResponse from './DebaterResponse';
 import { useModelProvider, ModelType } from '../../hooks/useModelProvider';
-import { SpicinessLevel } from '../ui/SpicinessSelector';
+import { SpicinessLevel } from '../../constants/spiciness';
 import { useDebateState } from '../../hooks/useDebateState';
 import { useDebateStreaming } from '../../hooks/useDebateStreaming';
 import { Button } from '../ui/Button';
 import { saveDebate } from '../../lib/actions/debate';
 import { MODEL_CONFIGS } from '../../constants/debate';
-import Image from 'next/image';
 import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { PERSONALITY_CONFIGS, PersonalityId, SPICINESS_CONFIGS } from "@/app/constants";
 import { ConfirmSaveModal } from './ConfirmSaveModal';
+import ModelLogo from '../ui/ModelLogo';
 
 interface DebateArenaProps {
   topic: string;
@@ -141,34 +141,35 @@ export default function DebateArena({
   const currentModel = currentDebater === 'debater1' ? debater1Model : debater2Model;
   const displayError = streamingError || stateError;
   const isLoading = isStreamingLoading || isSaving;
+  const spicinessConfig = SPICINESS_CONFIGS[spiciness];
 
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center">{topic}</h1>
-        <div className="mt-2 flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
-          <div className="flex items-center gap-2">
-            <Image
-              src={MODEL_CONFIGS[debater1Model].logo}
-              alt={MODEL_CONFIGS[debater1Model].alt}
-              width={20}
-              height={20}
-              className="w-5 h-5 dark:invert dark:opacity-80"
-            />
-            <span>For: {MODEL_CONFIGS[debater1Model].name} ({PERSONALITY_CONFIGS[debater1Personality].name})</span>
+        <div className="mt-3 flex justify-between items-start text-sm">
+          <div className="text-left">
+            <span className="font-semibold text-blue-700 dark:text-blue-400 block">For</span>
+            <div className="flex items-center gap-1.5 mt-1">
+              <ModelLogo modelId={debater1Model} className="w-4 h-4" />
+              <span className="text-gray-800 dark:text-gray-200">{MODEL_CONFIGS[debater1Model].name}</span>
+            </div>
+            <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">{PERSONALITY_CONFIGS[debater1Personality].name}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Image
-              src={MODEL_CONFIGS[debater2Model].logo}
-              alt={MODEL_CONFIGS[debater2Model].alt}
-              width={20}
-              height={20}
-              className="w-5 h-5 dark:invert dark:opacity-80"
-            />
-            <span>Against: {MODEL_CONFIGS[debater2Model].name} ({PERSONALITY_CONFIGS[debater2Personality].name})</span>
+
+          <div className="text-right">
+            <span className="font-semibold text-red-700 dark:text-red-400 block">Against</span>
+            <div className="flex items-center justify-end gap-1.5 mt-1">
+              <span className="text-gray-800 dark:text-gray-200">{MODEL_CONFIGS[debater2Model].name}</span>
+              <ModelLogo modelId={debater2Model} className="w-4 h-4" />
+            </div>
+            <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">{PERSONALITY_CONFIGS[debater2Personality].name}</span>
           </div>
         </div>
-        <p className="text-center text-xs text-gray-500 mt-1">Intensity: {SPICINESS_CONFIGS[spiciness].level_descriptor}</p>
+        <div className="flex justify-center items-center gap-1.5 text-xs text-gray-500 mt-2">
+          <spicinessConfig.Icon className="w-3.5 h-3.5" />
+          <span>{spicinessConfig.name}</span>
+        </div>
       </div>
 
       <div className="space-y-6">

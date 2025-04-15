@@ -3,7 +3,7 @@
 import DebateControls, { DebaterConfig } from './DebateControls';
 import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import { SpicinessLevel } from '../ui/SpicinessSelector';
+import { SpicinessLevel } from '../../constants/spiciness';
 
 export function HomePageContent() {
   const router = useRouter();
@@ -43,7 +43,7 @@ export function HomePageContent() {
           Forget benchmarks. Let AI models debate the issues. Pick your contenders and set the topic.
         </p>
         <p className="text-lg text-gray-800 dark:text-gray-400 max-w-2xl mx-auto">
-          Watch arguments unfold, driven by logic, programmed quirks, and maybe a hint of personality. Start the <span className="text-blue-600 dark:text-blue-400">AI</span><span className="text-gray-800 dark:text-white">gument</span> and see how it plays out.
+          Watch arguments unfold, driven by logic, programmed quirks, and maybe a hint of personality. Start the <span className="font-bold text-blue-600 dark:text-blue-400">AI</span><span className="font-bold text-gray-800 dark:text-white">gument</span> and see how it plays out.
         </p>
       </div>
 

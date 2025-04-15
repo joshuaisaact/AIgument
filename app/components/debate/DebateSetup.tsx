@@ -3,7 +3,7 @@
 import DebateControls, { DebaterConfig } from './DebateControls';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { SpicinessLevel } from '../ui/SpicinessSelector';
+import { SpicinessLevel } from '../../constants/spiciness';
 
 export function DebateSetup() {
   const router = useRouter();

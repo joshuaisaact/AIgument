@@ -5,7 +5,8 @@ import PersonalitySelector from '../ui/PersonalitySelector';
 import TopicInput from '../ui/TopicInput';
 import { ModelType } from '../../hooks/useModelProvider';
 import { Button } from '../ui/Button';
-import { SpicinessSelector, SpicinessLevel } from '../ui/SpicinessSelector';
+import { SpicinessSelector } from '../ui/SpicinessSelector';
+import { SpicinessLevel } from '../../constants/spiciness';
 import { PersonalityId } from '@/app/constants';
 
 export interface DebaterConfig {

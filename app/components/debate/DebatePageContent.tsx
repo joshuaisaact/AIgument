@@ -3,7 +3,7 @@
 import DebateArena from './DebateArena';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ModelType } from '../../hooks/useModelProvider';
-import { SpicinessLevel } from '../ui/SpicinessSelector';
+import { SpicinessLevel } from '../../constants/spiciness';
 import { PersonalityId } from '@/app/constants';
 
 export function DebatePageContent() {

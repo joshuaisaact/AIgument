@@ -3,7 +3,7 @@ import { streamText, LanguageModelV1, smoothStream } from 'ai';
 import { ModelType } from './useModelProvider';
 import { DEBATE_PROMPTS } from '../constants/debate';
 import { DebateError } from './useDebateState';
-import { SpicinessLevel } from '../components/ui/SpicinessSelector';
+import { SpicinessLevel } from '../constants/spiciness';
 import { PersonalityId } from '../constants';
 
 interface UseDebateStreamingProps {
