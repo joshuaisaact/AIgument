@@ -34,13 +34,12 @@ export default function DebateArena({
   onReset,
 }: DebateArenaProps) {
   const { getModelProvider } = useModelProvider();
-  const [isInitialized, setIsInitialized] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const {
     rounds,
     currentDebater,
-    error,
+    error: stateError,
     resetDebate,
     handleResponseComplete
   } = useDebateState();
@@ -48,6 +47,7 @@ export default function DebateArena({
   const {
     isLoading,
     streamingText,
+    error: streamingError,
     startStreaming
   } = useDebateStreaming({
     topic,
@@ -63,6 +63,7 @@ export default function DebateArena({
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const didMountRef = useRef(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -73,11 +74,12 @@ export default function DebateArena({
   }, [rounds, streamingText]);
 
   useEffect(() => {
-    if (!isInitialized) {
-      setIsInitialized(true);
+    if (!didMountRef.current) {
+      didMountRef.current = true;
       startStreaming(getModelProvider);
     }
-  }, [isInitialized, startStreaming, getModelProvider]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleNextRound = () => {
     startStreaming(getModelProvider);
@@ -85,7 +87,7 @@ export default function DebateArena({
 
   const handleReset = () => {
     resetDebate();
-    setIsInitialized(false);
+    didMountRef.current = false;
     onReset();
   };
 
@@ -117,6 +119,7 @@ export default function DebateArena({
   };
 
   const currentModel = currentDebater === 'debater1' ? debater1Model : debater2Model;
+  const displayError = streamingError || stateError;
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -175,9 +178,9 @@ export default function DebateArena({
         <div ref={messagesEndRef} />
       </div>
 
-      {error && (
+      {displayError && (
         <div className="mt-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg">
-          {error.message}
+          {displayError.message}
         </div>
       )}
 

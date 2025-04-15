@@ -11,11 +11,9 @@ export function useDebateState() {
   const [rounds, setRounds] = useState<Array<{ debater1: string; debater2: string }>>([]);
   const [currentRound, setCurrentRound] = useState(0);
   const [currentDebater, setCurrentDebater] = useState<'debater1' | 'debater2'>('debater1');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<DebateError | null>(null);
 
   const handleResponseComplete = useCallback((content: string) => {
-    setIsLoading(true);
     try {
       setRounds(prevRounds => {
         const newRounds = [...prevRounds];
@@ -37,8 +35,6 @@ export function useDebateState() {
         err instanceof Error ? err.message : 'Failed to process response',
         'UNKNOWN_ERROR'
       ));
-    } finally {
-      setIsLoading(false);
     }
   }, [currentRound, currentDebater]);
 
@@ -47,14 +43,12 @@ export function useDebateState() {
     setCurrentRound(0);
     setCurrentDebater('debater1');
     setError(null);
-    setIsLoading(false);
   }, []);
 
   return {
     rounds,
     currentRound,
     currentDebater,
-    isLoading,
     error,
     handleResponseComplete,
     resetDebate
