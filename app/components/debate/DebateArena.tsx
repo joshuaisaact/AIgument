@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import DebaterResponse from './DebaterResponse';
 import { useModelProvider, ModelType } from '../../hooks/useModelProvider';
 import { useDebateState } from '../../hooks/useDebateState';
@@ -17,16 +17,14 @@ interface DebateArenaProps {
 
 export default function DebateArena({ topic, debater1, debater2, onReset }: DebateArenaProps) {
   const { getModelProvider } = useModelProvider();
+  const [isInitialized, setIsInitialized] = useState(false);
   const {
     rounds,
     currentDebater,
-    isInitialized,
-    setIsInitialized,
     error,
     resetDebate,
-    addResponse,
-    startNewRound
-  } = useDebateState({ topic, debater1, debater2 });
+    handleResponseComplete
+  } = useDebateState({ topic, debater1, debater2, spiciness: 'medium' });
 
   const {
     isLoading,
@@ -39,9 +37,8 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
     currentRound: rounds.length - 1,
     currentDebater,
     rounds,
-    onResponseComplete: (content) => {
-      addResponse(currentDebater, content);
-    }
+    spiciness: 'medium',
+    onResponseComplete: handleResponseComplete
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -57,18 +54,17 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
   useEffect(() => {
     if (!isInitialized) {
       setIsInitialized(true);
-      startNewRound();
       startStreaming(getModelProvider);
     }
-  }, [isInitialized, setIsInitialized, startNewRound, startStreaming, getModelProvider]);
+  }, [isInitialized, startStreaming, getModelProvider]);
 
   const handleNextRound = () => {
-    startNewRound();
     startStreaming(getModelProvider);
   };
 
   const handleReset = () => {
     resetDebate();
+    setIsInitialized(false);
     onReset();
   };
 

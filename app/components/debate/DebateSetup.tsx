@@ -4,12 +4,14 @@ import DebateControls from './DebateControls';
 import { useState } from 'react';
 import { ModelType } from '../../hooks/useModelProvider';
 import { useRouter } from 'next/navigation';
+import { SpicinessLevel } from '../ui/SpicinessSelector';
 
 export function DebateSetup() {
   const router = useRouter();
   const [topic, setTopic] = useState('');
   const [proModel, setProModel] = useState<ModelType>('gpt4');
   const [conModel, setConModel] = useState<ModelType>('gpt4');
+  const [spiciness, setSpiciness] = useState<SpicinessLevel>('medium');
   const [isPending, setIsPending] = useState(false);
 
   const handleStartDebate = () => {
@@ -19,6 +21,7 @@ export function DebateSetup() {
         topic,
         proModel,
         conModel,
+        spiciness,
       });
       router.push(`/debate?${params.toString()}`);
     }
@@ -32,6 +35,8 @@ export function DebateSetup() {
       setProModel={setProModel}
       conModel={conModel}
       setConModel={setConModel}
+      spiciness={spiciness}
+      setSpiciness={setSpiciness}
       onStartDebate={handleStartDebate}
       isPending={isPending}
     />

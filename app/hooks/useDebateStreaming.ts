@@ -3,6 +3,7 @@ import { streamText, LanguageModelV1 } from 'ai';
 import { ModelType } from './useModelProvider';
 import { DEBATE_PROMPTS } from '../constants/debate';
 import { DebateError } from './useDebateState';
+import { SpicinessLevel } from '../components/ui/SpicinessSelector';
 
 const yieldToEventLoop = () => new Promise(resolve => setTimeout(resolve, 0));
 
@@ -13,6 +14,7 @@ interface UseDebateStreamingProps {
   currentRound: number;
   currentDebater: 'debater1' | 'debater2';
   rounds: Array<{ debater1: string; debater2: string }>;
+  spiciness: SpicinessLevel;
   onResponseComplete: (content: string) => void;
 }
 
@@ -23,6 +25,7 @@ export function useDebateStreaming({
   currentRound,
   currentDebater,
   rounds,
+  spiciness,
   onResponseComplete
 }: UseDebateStreamingProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +55,7 @@ export function useDebateStreaming({
       previousArguments += `${rounds[currentRound].debater1}\n\n`;
     }
 
-    const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(topic, position, previousArguments.trim(), currentRound + 1);
+    const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(topic, position, previousArguments.trim(), spiciness, currentRound + 1);
     let accumulatedText = '';
 
     try {
@@ -94,7 +97,7 @@ export function useDebateStreaming({
       setStreamingText(null);
       setIsLoading(false);
     }
-  }, [isLoading, currentDebater, currentRound, rounds, debater1, debater2, topic, onResponseComplete]);
+  }, [isLoading, currentDebater, currentRound, rounds, debater1, debater2, topic, spiciness, onResponseComplete]);
 
   return {
     isLoading,

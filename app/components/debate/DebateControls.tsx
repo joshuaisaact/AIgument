@@ -4,6 +4,7 @@ import ModelSelector from '../ui/ModelSelector';
 import TopicInput from '../ui/TopicInput';
 import { ModelType } from '../../hooks/useModelProvider';
 import { Button } from '../ui/Button';
+import { SpicinessSelector, SpicinessLevel } from '../ui/SpicinessSelector';
 
 interface DebateControlsProps {
   topic: string;
@@ -12,6 +13,8 @@ interface DebateControlsProps {
   setProModel: (model: ModelType) => void;
   conModel: ModelType;
   setConModel: (model: ModelType) => void;
+  spiciness: SpicinessLevel;
+  setSpiciness: (value: SpicinessLevel) => void;
   onStartDebate: () => void;
   isPending?: boolean;
 }
@@ -23,12 +26,15 @@ export default function DebateControls({
   setProModel,
   conModel,
   setConModel,
+  spiciness,
+  setSpiciness,
   onStartDebate,
   isPending = false,
 }: DebateControlsProps) {
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
       <TopicInput value={topic} onChange={setTopic} />
+      <SpicinessSelector value={spiciness} onChange={setSpiciness} />
       <Button
         onClick={onStartDebate}
         disabled={!topic.trim() || isPending}

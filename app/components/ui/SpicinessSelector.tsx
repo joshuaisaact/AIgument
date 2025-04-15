@@ -1,6 +1,6 @@
 "use client";
 
-type SpicinessLevel = "lemon" | "mild" | "medium" | "hot" | "extra-hot";
+export type SpicinessLevel = "lemon" | "mild" | "medium" | "hot" | "extra-hot";
 
 interface SpicinessSelectorProps {
   value: SpicinessLevel;
