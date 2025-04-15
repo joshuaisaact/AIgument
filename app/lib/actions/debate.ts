@@ -1,6 +1,6 @@
 'use server';
 
-import { sql } from '../db/client';
+import { db } from '../db/client';
 import { v4 as uuidv4 } from 'uuid';
 
 interface SaveDebateParams {
@@ -14,18 +14,18 @@ interface SaveDebateParams {
 }
 
 export async function saveDebate({ topic, proModel, conModel, messages }: SaveDebateParams) {
-  try {
-    const debateId = uuidv4();
+  const debateId = uuidv4();
 
+  try {
     // Insert debate
-    await sql`
+    await db`
       INSERT INTO debates (id, topic, pro_model, con_model)
       VALUES (${debateId}, ${topic}, ${proModel}, ${conModel})
     `;
 
     // Insert messages
     for (const message of messages) {
-      await sql`
+      await db`
         INSERT INTO debate_messages (debate_id, role, content)
         VALUES (${debateId}, ${message.role}, ${message.content})
       `;
@@ -33,22 +33,22 @@ export async function saveDebate({ topic, proModel, conModel, messages }: SaveDe
 
     return debateId;
   } catch (error) {
-    console.error('Failed to save debate:', error);
-    throw new Error('Failed to save debate');
+    console.error('Error saving debate:', error);
+    throw error;
   }
 }
 
 export async function getDebate(id: string) {
   try {
-    const debate = await sql`
+    const debate = await db`
       SELECT * FROM debates WHERE id = ${id}
     `;
 
-    if (!debate.length) {
+    if (!debate || debate.length === 0) {
       return null;
     }
 
-    const messages = await sql`
+    const messages = await db`
       SELECT * FROM debate_messages
       WHERE debate_id = ${id}
       ORDER BY created_at ASC
@@ -59,7 +59,7 @@ export async function getDebate(id: string) {
       messages
     };
   } catch (error) {
-    console.error('Failed to fetch debate:', error);
-    throw new Error('Failed to fetch debate');
+    console.error('Error fetching debate:', error);
+    throw error;
   }
 }

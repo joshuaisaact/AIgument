@@ -5,7 +5,7 @@ import DebaterResponse from './DebaterResponse';
 import { useModelProvider, ModelType } from '../../hooks/useModelProvider';
 import { useDebate } from '../../hooks/useDebate';
 import { Button } from '../ui/Button';
-import { saveDebate } from '../../lib/db/debateService';
+import { saveDebate } from '../../lib/actions/debate';
 
 interface DebateArenaProps {
   topic: string;
@@ -17,148 +17,133 @@ interface DebateArenaProps {
 export default function DebateArena({ topic, debater1, debater2, onReset }: DebateArenaProps) {
   const { getModelProvider } = useModelProvider();
   const {
-    rounds, isLoading, error, isInitialized, setIsInitialized, startNextRound,
-    resetDebate, streamingText, currentDebater, currentRound,
+    rounds,
+    currentRound,
+    currentDebater,
+    isLoading,
+    error,
+    isInitialized,
+    setIsInitialized,
+    startNextRound,
+    resetDebate,
+    streamingText
   } = useDebate({ topic, debater1, debater2 });
 
-  const didInitialize = useRef(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    if (!isInitialized && getModelProvider && !didInitialize.current) {
-      didInitialize.current = true;
-      startNextRound(getModelProvider);
+    scrollToBottom();
+  }, [rounds, streamingText]);
+
+  useEffect(() => {
+    if (!isInitialized) {
       setIsInitialized(true);
+      startNextRound(getModelProvider);
     }
-  }, [isInitialized, startNextRound, getModelProvider, setIsInitialized]);
+  }, [isInitialized, setIsInitialized, startNextRound, getModelProvider]);
+
+  const handleNextRound = () => {
+    startNextRound(getModelProvider);
+  };
 
   const handleReset = () => {
-    didInitialize.current = false;
     resetDebate();
     onReset();
   };
 
-  const handleNextResponseClick = () => {
-    startNextRound(getModelProvider);
-  };
-
-  const streamingRoundIndex = isLoading ? (currentDebater === 'debater1' ? rounds.length - 1 : currentRound) : -1;
-
-  const getButtonLabel = () => {
-    if (isLoading) return 'Generating...';
-    if (currentDebater === 'debater1') return 'Start Next Exchange';
-    if (currentDebater === 'debater2') return 'Get Counter-Argument';
-    return 'Get Opening Argument';
-  };
-
-  const handleSaveDebate = async () => {
-    if (!topic || !debater1 || !debater2 || rounds.length === 0) return;
-
-    setIsSaving(true);
+  const handleSave = async () => {
     try {
       const messages = rounds.flatMap(round => [
-        { role: 'pro' as const, content: round.debater1 || '' },
-        { role: 'con' as const, content: round.debater2 || '' }
-      ]);
+        { role: 'pro' as const, content: round.debater1 },
+        { role: 'con' as const, content: round.debater2 }
+      ]).filter(msg => msg.content);
 
-      const response = await fetch('/api/debate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          topic,
-          proModel: debater1,
-          conModel: debater2,
-          messages
-        }),
+      await saveDebate({
+        topic,
+        proModel: debater1,
+        conModel: debater2,
+        messages
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to save debate');
-      }
-
-      const { id } = await response.json();
-      const url = `${window.location.origin}/debate/${id}`;
-      setShareUrl(url);
-
-      // Copy to clipboard
-      await navigator.clipboard.writeText(url);
     } catch (error) {
       console.error('Failed to save debate:', error);
-    } finally {
-      setIsSaving(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Debate: {topic}</h2>
-        <Button variant="secondary" onClick={handleReset}> Reset Debate </Button>
-      </div>
-      {error && (
-        <div className="p-4 my-2 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-lg border border-red-200 dark:border-red-700">
-          <p className="font-semibold">Error:</p>
-          <p>{error}</p>
+    <div className="max-w-4xl mx-auto p-4">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{topic}</h1>
+        <div className="mt-2 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2">
+            <span>For: {debater1}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span>Against: {debater2}</span>
+          </div>
         </div>
-      )}
+      </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         {rounds.map((round, index) => (
-          <div key={index} className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{index + 1}</span>
-              </div>
-              <div className="h-px flex-1 bg-gray-200 dark:bg-gray-700"></div>
-            </div>
-
-            <div className="space-y-4">
+          <div key={index} className="space-y-4">
+            {round.debater1 && (
               <DebaterResponse position="For" model={debater1}>
-                {(isLoading && currentDebater === 'debater1' && index === streamingRoundIndex && streamingText !== null)
-                  ? streamingText
-                  : round.debater1
-                }
+                {round.debater1}
               </DebaterResponse>
-
-              {(round.debater1 || (isLoading && currentDebater === 'debater1' && index === streamingRoundIndex)) && (
-                <DebaterResponse position="Against" model={debater2}>
-                  {(isLoading && currentDebater === 'debater2' && index === streamingRoundIndex && streamingText !== null)
-                    ? streamingText
-                    : round.debater2
-                  }
-                </DebaterResponse>
-              )}
-            </div>
+            )}
+            {round.debater2 && (
+              <DebaterResponse position="Against" model={debater2}>
+                {round.debater2}
+              </DebaterResponse>
+            )}
           </div>
         ))}
+
+        {streamingText && (
+          <DebaterResponse
+            position={currentDebater === 'debater1' ? 'For' : 'Against'}
+            model={currentDebater === 'debater1' ? debater1 : debater2}
+          >
+            {streamingText}
+          </DebaterResponse>
+        )}
+
+        <div ref={messagesEndRef} />
       </div>
 
-      <Button
-        onClick={handleNextResponseClick}
-        isLoading={isLoading}
-        disabled={isLoading}
-      >
-        {getButtonLabel()}
-      </Button>
-
-      <Button
-        onClick={handleSaveDebate}
-        disabled={isSaving || rounds.length === 0}
-        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isSaving ? 'Saving...' : 'Save & Share'}
-      </Button>
-
-      {shareUrl && (
-        <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-          <p className="text-green-800 dark:text-green-200">
-            Debate saved! URL copied to clipboard: {shareUrl}
-          </p>
+      {error && (
+        <div className="mt-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg">
+          {error.message}
         </div>
       )}
+
+      <div className="mt-8 flex justify-center gap-4">
+        <Button
+          onClick={handleNextRound}
+          disabled={isLoading || currentDebater === 'debater1'}
+          isLoading={isLoading}
+        >
+          {isLoading ? 'Debating...' : 'Next Round'}
+        </Button>
+        <Button
+          onClick={handleReset}
+          variant="secondary"
+          disabled={isLoading}
+        >
+          Reset
+        </Button>
+        <Button
+          onClick={handleSave}
+          variant="secondary"
+          disabled={isLoading || rounds.length === 0}
+        >
+          Save Debate
+        </Button>
+      </div>
     </div>
   );
 }
