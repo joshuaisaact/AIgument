@@ -2,6 +2,7 @@
 
 import { MODEL_CONFIGS } from '../../constants/debate';
 import { ModelType } from '../../hooks/useModelProvider';
+import Image from 'next/image';
 
 interface ModelLogoProps {
   modelId: ModelType;
@@ -18,14 +19,18 @@ export default function ModelLogo({ modelId, className = "h-4 w-4" }: ModelLogoP
 
   return (
     <>
-      <img
+      <Image
         src={modelConfig.logo}
         alt={modelConfig.alt}
+        width={16}
+        height={16}
         className={`${className} dark:hidden`}
       />
-      <img
+      <Image
         src={modelConfig.logo.replace('.svg', '-light.svg')}
         alt={modelConfig.alt}
+        width={16}
+        height={16}
         className={`${className} hidden dark:block`}
       />
     </>
