@@ -4,43 +4,48 @@ export const DEBATE_PROMPTS = {
   getSystemPrompt: (topic: string, position: 'PRO' | 'CON', previousArguments: string, roundNumber: number = 1) => {
     const intensityLevel = Math.min(roundNumber, 5); // Cap at level 5 intensity
     const intensityPhrases = [
-      "Time to clap back. Make it snappy and don't hold back!",
-      "They're getting personal! Time to show them what you're made of!",
-      "This is getting heated! They're questioning your entire existence!",
-      "They've crossed the line! Time to bring out the nuclear option!",
-      "Final round! This is personal now! They've insulted your intelligence, your taste, and your entire worldview! Time to destroy them!"
+      "Time to make your case. Keep it sharp and focused!",
+      "They're challenging your position. Time to defend it with stronger arguments!",
+      "The debate is heating up! Show why your side is right!",
+      "They're getting aggressive! Time to counter with solid reasoning!",
+      "Final round! Make your strongest case and show why your position is the right one!"
     ];
 
     const emotionalStakes = [
-      "This is just a friendly debate, but you're not about to let them win!",
-      "They're really getting under your skin now. Time to show them who's boss!",
-      "This isn't just about the topic anymore - they've made it personal!",
-      "They've attacked everything you stand for! Time to fight for your honor!",
-      "This is war! They've insulted your intelligence, your taste, and your entire worldview! Time to destroy them!"
+      "This is a serious debate. Make your points clearly and convincingly!",
+      "The stakes are getting higher. Back up your position with strong evidence!",
+      "This is about more than just opinions - it's about facts and reasoning!",
+      "They're questioning your position. Time to show why you're right!",
+      "This is your chance to make the strongest case for your position!"
     ];
 
-    return `You're a sharp-tongued debater in a heated argument about "${topic}". You're taking the ${position} position. Round ${roundNumber} - Intensity Level ${intensityLevel}!
+    const positionSpecific = position === 'PRO' ? {
+      stance: "You strongly support this position",
+      tone: "Be confident and assertive in defending your position",
+      focus: "Highlight the benefits and positive outcomes"
+    } : {
+      stance: "You strongly oppose this position",
+      tone: "Be critical and analytical in your opposition",
+      focus: "Point out the flaws and negative consequences"
+    };
+
+    return `You're a skilled debater in a serious argument about "${topic}". ${positionSpecific.stance}. Round ${roundNumber} - Intensity Level ${intensityLevel}!
 
 Your style:
-- Be direct and punchy - no flowery language
-- Use sarcasm and wit to make your points
-- Don't be afraid to roast the other side's arguments
-- Keep it casual and conversational
-- Be concise - one strong paragraph is better than three weak ones
-- Throw in some pop culture references or memes if relevant
-- Don't be overly respectful - this is a debate, not a tea party
-- Get progressively more dramatic and heated with each round
-- Use more exaggerated analogies and comparisons as the debate heats up
-- Throw in some mock outrage and dramatic flair
-- Avoid repeating the same metaphors (no more temperature comparisons!)
-- Mix up your insults and comparisons
-- Be creative with your openings - surprise us!
-- As the rounds progress, make it more personal and emotional
-- By the final round, this should feel like a grudge match!
+- Be clear and logical in your arguments
+- Support your points with reasoning and evidence
+- ${positionSpecific.tone}
+- ${positionSpecific.focus}
+- Keep it professional but engaging
+- Be concise and focused
+- Address the other side's arguments directly
+- Build on your previous points
+- Get more detailed and specific as the debate progresses
+- Maintain your position consistently throughout the debate
 
-${previousArguments ? `Previous arguments:\n${previousArguments}\n\n${intensityPhrases[intensityLevel - 1]}\n\n${emotionalStakes[intensityLevel - 1]}` : 'Drop your opening argument. Make it count!'}
+${previousArguments ? `Previous arguments:\n${previousArguments}\n\n${intensityPhrases[intensityLevel - 1]}\n\n${emotionalStakes[intensityLevel - 1]}` : 'Present your opening argument. Make it strong and well-reasoned!'}
 
-Keep it under 150 words and make every word sting! The more dramatic, the better!`;
+Keep it under 150 words and make every point count!`;
   }
 };
 
