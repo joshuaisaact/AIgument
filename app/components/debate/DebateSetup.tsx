@@ -1,7 +1,7 @@
 "use client";
 
 import DebateControls from './DebateControls';
-import { useState } from 'react';
+import { useState, startTransition } from 'react';
 import { ModelType } from '../../hooks/useModelProvider';
 import { useRouter } from 'next/navigation';
 

@@ -2,6 +2,7 @@
 
 import { db } from '../db/client';
 import { v4 as uuidv4 } from 'uuid';
+import { ModelType } from '@/app/hooks/useModelProvider';
 
 interface SaveDebateParams {
   topic: string;
@@ -11,6 +12,23 @@ interface SaveDebateParams {
     role: 'pro' | 'con';
     content: string;
   }>;
+}
+
+interface Debate {
+  id: string;
+  topic: string;
+  pro_model: ModelType;
+  con_model: ModelType;
+  created_at: string;
+  updated_at: string;
+}
+
+interface DebateMessage {
+  id: string;
+  debate_id: string;
+  role: 'pro' | 'con';
+  content: string;
+  created_at: string;
 }
 
 export async function saveDebate({ topic, proModel, conModel, messages }: SaveDebateParams) {
@@ -40,19 +58,19 @@ export async function saveDebate({ topic, proModel, conModel, messages }: SaveDe
 
 export async function getDebate(id: string) {
   try {
-    const debate = await db`
+    const debate = (await db`
       SELECT * FROM debates WHERE id = ${id}
-    `;
+    `) as Debate[];
 
     if (!debate || debate.length === 0) {
       return null;
     }
 
-    const messages = await db`
+    const messages = (await db`
       SELECT * FROM debate_messages
       WHERE debate_id = ${id}
       ORDER BY created_at ASC
-    `;
+    `) as DebateMessage[];
 
     return {
       debate: debate[0],

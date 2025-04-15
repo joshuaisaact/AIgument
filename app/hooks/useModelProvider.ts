@@ -10,20 +10,6 @@ export class MissingApiKeyError extends Error {
   }
 }
 
-// Debug environment variables
-const debugEnv = () => {
-  const env = {
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-    NEXT_PUBLIC_OPENAI_API_KEY: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-    NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
-    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
-    NEXT_PUBLIC_ANTHROPIC_API_KEY: process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY
-  };
-  console.log('Environment variables:', env);
-  return env;
-};
-
 const getProviderApiKey = (provider: 'openai' | 'google' | 'anthropic') => {
   const userKey = getApiKey(provider);
   const envKey = process.env[`NEXT_PUBLIC_${provider.toUpperCase()}_API_KEY`];
@@ -69,7 +55,6 @@ export const useModelProvider = () => {
   };
 
   return {
-    getModelProvider,
-    debugEnv
+    getModelProvider
   };
 };
