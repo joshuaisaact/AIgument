@@ -5,15 +5,22 @@ import { DEBATE_PROMPTS } from '../constants/debate';
 
 const yieldToEventLoop = () => new Promise(resolve => setTimeout(resolve, 0));
 
+interface UseDebateProps {
+  topic: string;
+  debater1: ModelType;
+  debater2: ModelType;
+}
+
 interface Round {
   debater1: string;
   debater2: string;
 }
 
-interface UseDebateProps {
-  topic: string;
-  debater1: ModelType;
-  debater2: ModelType;
+export class DebateError extends Error {
+  constructor(message: string, public readonly code: string) {
+    super(message);
+    this.name = 'DebateError';
+  }
 }
 
 export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
@@ -22,12 +29,17 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
   const [currentDebater, setCurrentDebater] = useState<'debater1' | 'debater2'>('debater1');
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<DebateError | null>(null);
   const [streamingText, setStreamingText] = useState<string | null>(null);
 
   const resetDebate = useCallback(() => {
-    setRounds([]); setCurrentRound(0); setCurrentDebater('debater1');
-    setIsInitialized(false); setError(null); setIsLoading(false); setStreamingText(null);
+    setRounds([]);
+    setCurrentRound(0);
+    setCurrentDebater('debater1');
+    setIsInitialized(false);
+    setError(null);
+    setIsLoading(false);
+    setStreamingText(null);
   }, []);
 
   const startNextRound = useCallback(async (getModelProvider: (model: ModelType) => LanguageModelV1) => {
@@ -69,13 +81,19 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
 
     try {
       const modelProviderInstance = getModelProvider(modelId);
-      if (!modelProviderInstance) throw new Error(`Failed to get model provider instance for ${modelId}`);
+      if (!modelProviderInstance) {
+        throw new DebateError(`Failed to get model provider instance for ${modelId}`, 'MODEL_PROVIDER_ERROR');
+      }
 
       const result = streamText({
-        model: modelProviderInstance, prompt: systemPrompt,
+        model: modelProviderInstance,
+        prompt: systemPrompt,
         onError: (event) => {
           console.error(`[useDebate] streamText error:`, event.error);
-          setError(event.error instanceof Error ? event.error.message : 'Stream error');
+          setError(new DebateError(
+            event.error instanceof Error ? event.error.message : 'Stream error',
+            'STREAM_ERROR'
+          ));
         },
       });
 
@@ -91,7 +109,10 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
         if (roundIndex >= 0 && updatedRounds[roundIndex]) {
           updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], [callTimeDebater]: accumulatedText };
         } else {
-          setError(`Internal error: Could not update round ${roundIndex} on finish.`);
+          setError(new DebateError(
+            `Internal error: Could not update round ${roundIndex} on finish.`,
+            'INTERNAL_ERROR'
+          ));
           return prevRounds;
         }
         return updatedRounds;
@@ -106,12 +127,30 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
 
     } catch (error) {
       console.error(`[useDebate] Error:`, error);
-      setError(error instanceof Error ? error.message : String(error));
+      if (error instanceof DebateError) {
+        setError(error);
+      } else {
+        setError(new DebateError(
+          error instanceof Error ? error.message : String(error),
+          'UNKNOWN_ERROR'
+        ));
+      }
     } finally {
       setStreamingText(null);
       setIsLoading(false);
     }
   }, [isLoading, currentDebater, currentRound, rounds, debater1, debater2, topic]);
 
-  return { rounds, currentRound, currentDebater, isLoading, error, isInitialized, setIsInitialized, startNextRound, resetDebate, streamingText };
+  return {
+    rounds,
+    currentRound,
+    currentDebater,
+    isLoading,
+    error,
+    isInitialized,
+    setIsInitialized,
+    startNextRound,
+    resetDebate,
+    streamingText
+  };
 }

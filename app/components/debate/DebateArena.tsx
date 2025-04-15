@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import DebaterResponse from './DebaterResponse';
 import { useModelProvider, ModelType } from '../../hooks/useModelProvider';
 import { useDebate } from '../../hooks/useDebate';
 import { Button } from '../ui/Button';
+import { saveDebate } from '../../lib/db/debateService';
 
 interface DebateArenaProps {
   topic: string;
@@ -21,6 +22,8 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
   } = useDebate({ topic, debater1, debater2 });
 
   const didInitialize = useRef(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isInitialized && getModelProvider && !didInitialize.current) {
@@ -47,6 +50,46 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
     if (currentDebater === 'debater1') return 'Start Next Exchange';
     if (currentDebater === 'debater2') return 'Get Counter-Argument';
     return 'Get Opening Argument';
+  };
+
+  const handleSaveDebate = async () => {
+    if (!topic || !debater1 || !debater2 || rounds.length === 0) return;
+
+    setIsSaving(true);
+    try {
+      const messages = rounds.flatMap(round => [
+        { role: 'pro' as const, content: round.debater1 || '' },
+        { role: 'con' as const, content: round.debater2 || '' }
+      ]);
+
+      const response = await fetch('/api/debate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          topic,
+          proModel: debater1,
+          conModel: debater2,
+          messages
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save debate');
+      }
+
+      const { id } = await response.json();
+      const url = `${window.location.origin}/debate/${id}`;
+      setShareUrl(url);
+
+      // Copy to clipboard
+      await navigator.clipboard.writeText(url);
+    } catch (error) {
+      console.error('Failed to save debate:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -100,6 +143,22 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
       >
         {getButtonLabel()}
       </Button>
+
+      <Button
+        onClick={handleSaveDebate}
+        disabled={isSaving || rounds.length === 0}
+        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isSaving ? 'Saving...' : 'Save & Share'}
+      </Button>
+
+      {shareUrl && (
+        <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <p className="text-green-800 dark:text-green-200">
+            Debate saved! URL copied to clipboard: {shareUrl}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
