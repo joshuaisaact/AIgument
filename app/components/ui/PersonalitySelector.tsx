@@ -1,6 +1,6 @@
 "use client";
 
-import { PERSONALITY_CONFIGS, PersonalityId } from '../../constants/debate';
+import { PERSONALITY_CONFIGS, PersonalityId } from '@/app/constants';
 import { useState } from 'react';
 
 interface PersonalitySelectorProps {

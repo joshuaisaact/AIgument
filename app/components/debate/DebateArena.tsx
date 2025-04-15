@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import DebaterResponse from './DebaterResponse';
 import { useModelProvider, ModelType } from '../../hooks/useModelProvider';
 import {
-  PersonalityId,
-  PERSONALITY_CONFIGS,
   SPICINESS_CONFIGS
 } from '../../constants/debate';
 import { SpicinessLevel } from '../ui/SpicinessSelector';
@@ -17,6 +15,7 @@ import { MODEL_CONFIGS } from '../../constants/debate';
 import Image from 'next/image';
 import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
+import { PERSONALITY_CONFIGS, PersonalityId } from "@/app/constants";
 
 interface DebateArenaProps {
   topic: string;

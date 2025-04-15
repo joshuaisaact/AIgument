@@ -1,9 +1,10 @@
 import { useState, useCallback } from 'react';
 import { streamText, LanguageModelV1 } from 'ai';
 import { ModelType } from './useModelProvider';
-import { DEBATE_PROMPTS, PersonalityId } from '../constants/debate';
+import { DEBATE_PROMPTS } from '../constants/debate';
 import { DebateError } from './useDebateState';
 import { SpicinessLevel } from '../components/ui/SpicinessSelector';
+import { PersonalityId } from '../constants';
 
 const yieldToEventLoop = () => new Promise(resolve => setTimeout(resolve, 0));
 
