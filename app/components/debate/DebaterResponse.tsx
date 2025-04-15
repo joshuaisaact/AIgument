@@ -41,7 +41,7 @@ export default function DebaterResponse({ position, model, children }: DebaterRe
             <span>{modelConfig.name}</span>
           </div>
         </div>
-        <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+        <div className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
           {children}
         </div>
       </div>

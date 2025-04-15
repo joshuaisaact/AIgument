@@ -20,7 +20,7 @@ export function useDebateState() {
         if (!newRounds[currentRound]) {
           newRounds[currentRound] = { debater1: '', debater2: '' };
         }
-        newRounds[currentRound][currentDebater] = content;
+        newRounds[currentRound][currentDebater] = content.trim();
         return newRounds;
       });
 
