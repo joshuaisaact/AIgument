@@ -1,7 +1,7 @@
 "use client";
 
 import DebateControls from './DebateControls';
-import { useState, startTransition } from 'react';
+import { useState } from 'react';
 import { ModelType } from '../../hooks/useModelProvider';
 import { useRouter } from 'next/navigation';
 
@@ -10,11 +10,11 @@ export function DebateSetup() {
   const [topic, setTopic] = useState('');
   const [proModel, setProModel] = useState<ModelType>('gpt4');
   const [conModel, setConModel] = useState<ModelType>('gpt4');
-  const [isPending, startTransition] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const handleStartDebate = () => {
     if (topic.trim()) {
-      startTransition(true);
+      setIsPending(true);
       const params = new URLSearchParams({
         topic,
         proModel,

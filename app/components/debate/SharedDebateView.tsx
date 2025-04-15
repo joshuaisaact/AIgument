@@ -41,15 +41,23 @@ export default function SharedDebateView({ debate }: SharedDebateViewProps) {
         </div>
       </div>
 
-      <div className="space-y-6">
-        {debate.messages.map((message, index) => (
-          <DebaterResponse
+      <div className="space-y-4">
+        {debate.messages.map((message) => (
+          <div
             key={message.id}
-            position={message.role === 'pro' ? 'For' : 'Against'}
-            model={message.role === 'pro' ? debate.debate.pro_model : debate.debate.con_model}
+            className={`p-4 rounded-lg ${
+              message.role === 'pro'
+                ? 'bg-blue-50 dark:bg-blue-900/20'
+                : 'bg-red-50 dark:bg-red-900/20'
+            }`}
           >
-            {message.content}
-          </DebaterResponse>
+            <DebaterResponse
+              position={message.role === 'pro' ? 'For' : 'Against'}
+              model={message.role === 'pro' ? debate.debate.pro_model : debate.debate.con_model}
+            >
+              {message.content}
+            </DebaterResponse>
+          </div>
         ))}
       </div>
     </div>

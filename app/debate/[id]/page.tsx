@@ -2,13 +2,13 @@ import { Suspense } from 'react';
 import SharedDebateView from '@/app/components/debate/SharedDebateView';
 import { getDebate } from '@/app/lib/actions/debate';
 
-interface DebatePageProps {
-  params: {
+interface PageProps {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default async function DebatePage({ params }: DebatePageProps) {
+export default async function DebatePage({ params }: PageProps) {
   const { id } = await params;
   const debate = await getDebate(id);
 
@@ -18,7 +18,7 @@ export default async function DebatePage({ params }: DebatePageProps) {
         <div className="max-w-4xl mx-auto p-4">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Debate not found</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            The debate you're looking for doesn't exist or has been deleted.
+            The debate you&apos;re looking for doesn&apos;t exist or has been deleted.
           </p>
         </div>
       </main>

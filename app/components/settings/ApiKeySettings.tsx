@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getApiKey, validateApiKeyFormat } from '../../lib/storage/apiKeyStorage';
+import { getApiKey } from '../../lib/storage/apiKeyStorage';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { saveApiKeys } from '@/app/lib/actions/settings';

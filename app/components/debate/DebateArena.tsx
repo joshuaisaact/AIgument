@@ -18,7 +18,6 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
   const { getModelProvider } = useModelProvider();
   const {
     rounds,
-    currentRound,
     currentDebater,
     isLoading,
     error,
