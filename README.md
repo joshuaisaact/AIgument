@@ -5,8 +5,8 @@ Watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out a
 ## Features
 
 - Watch different AI models debate each other
-- Choose from various models (e.g., GPT-4o, Claude 3 Sonnet, Gemini 1.5 Flash)
-- Assign unique personalities to each debater (e.g., Pirate, Butler, Sassy Drag Queen)
+- Choose from various models (e.g., GPT-4o, Claude 3 Sonnet, Gemini 1.5 Flash, Grok 3, Grok 3 Mini)
+- Assign unique personalities to each debater (e.g., Pirate, Butler, Sassy Drag Queen, etc.)
 - Control the "spiciness" or intensity of the debate
 - Vote on which argument you think is better
 - Browse and view previously saved debates
@@ -24,6 +24,7 @@ Watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out a
    NEXT_PUBLIC_OPENAI_API_KEY=your_openai_key
    NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY=your_google_key
    NEXT_PUBLIC_ANTHROPIC_API_KEY=your_anthropic_key
+   NEXT_PUBLIC_XAI_API_KEY=your_xai_key
    ```
 4. Run the development server:
    ```bash
@@ -50,3 +51,4 @@ Watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out a
 - OpenAI API
 - Google Generative AI API
 - Anthropic API
+- xAI API

@@ -1,4 +1,4 @@
-type Provider = 'openai' | 'anthropic' | 'google';
+type Provider = 'openai' | 'anthropic' | 'google' | 'xai';
 
 const getStorageKey = (provider: Provider) => `${provider}-api-key`;
 
@@ -34,6 +34,8 @@ export const validateApiKeyFormat = (key: string, provider: Provider) => {
       return /^sk-ant-[A-Za-z0-9]{32,}$/.test(key);
     case 'google':
       return /^AIza[A-Za-z0-9_-]{35,}$/.test(key);
+    case 'xai':
+      return /^gsk_[A-Za-z0-9]{60}$/.test(key);
     default:
       return false;
   }

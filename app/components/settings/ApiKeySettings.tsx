@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getApiKey, clearApiKey } from '../../lib/storage/apiKeyStorage';
+import { getApiKey, clearApiKey, setApiKey } from '../../lib/storage/apiKeyStorage';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { saveApiKeys } from '@/app/lib/actions/settings';
@@ -29,6 +29,7 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
   const [openaiKey, setOpenaiKey] = useState('');
   const [anthropicKey, setAnthropicKey] = useState('');
   const [googleKey, setGoogleKey] = useState('');
+  const [xaiKey, setXaiKey] = useState('');
   const [state, formAction] = useActionState(saveApiKeys, { success: null, error: null });
 
   useEffect(() => {
@@ -36,20 +37,42 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
       const storedOpenaiKey = getApiKey('openai');
       const storedAnthropicKey = getApiKey('anthropic');
       const storedGoogleKey = getApiKey('google');
+      const storedXaiKey = getApiKey('xai');
 
-      if (storedOpenaiKey) setOpenaiKey(storedOpenaiKey);
-      if (storedAnthropicKey) setAnthropicKey(storedAnthropicKey);
-      if (storedGoogleKey) setGoogleKey(storedGoogleKey);
+      setOpenaiKey(storedOpenaiKey || '');
+      setAnthropicKey(storedAnthropicKey || '');
+      setGoogleKey(storedGoogleKey || '');
+      setXaiKey(storedXaiKey || '');
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (state.validatedKeys) {
+      console.log("Validated keys received, saving:", state.validatedKeys);
+      if (state.validatedKeys.openaiKey) {
+        setApiKey(state.validatedKeys.openaiKey, 'openai');
+      }
+      if (state.validatedKeys.anthropicKey) {
+        setApiKey(state.validatedKeys.anthropicKey, 'anthropic');
+      }
+      if (state.validatedKeys.googleKey) {
+        setApiKey(state.validatedKeys.googleKey, 'google');
+      }
+      if (state.validatedKeys.xaiKey) {
+        setApiKey(state.validatedKeys.xaiKey, 'xai');
+      }
+    }
+  }, [state.validatedKeys]);
 
   const handleClearKeys = () => {
     clearApiKey('openai');
     clearApiKey('anthropic');
     clearApiKey('google');
+    clearApiKey('xai');
     setOpenaiKey('');
     setAnthropicKey('');
     setGoogleKey('');
+    setXaiKey('');
   };
 
   if (!isOpen) return null;
@@ -85,6 +108,7 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="openaiKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
+                <img src="/openai.svg" alt="OpenAI Logo" className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
                 OpenAI API Key
               </label>
               <input
@@ -102,6 +126,7 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="anthropicKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
+                <img src="/anthropic.svg" alt="Anthropic Logo" className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
                 Anthropic API Key
               </label>
               <input
@@ -119,6 +144,7 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="googleKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
+                <img src="/google.svg" alt="Google Logo" className="w-5 h-5 mr-2 inline-block align-middle" />
                 Google API Key
               </label>
               <input
@@ -128,6 +154,24 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 value={googleKey}
                 onChange={(e) => setGoogleKey(e.target.value)}
                 placeholder="AIza... (starts with AIza)"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="xaiKeyInput"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                <img src="/xai.svg" alt="xAI Logo" className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
+                xAI API Key
+              </label>
+              <input
+                id="xaiKeyInput"
+                type="text"
+                name="xaiKey"
+                value={xaiKey}
+                onChange={(e) => setXaiKey(e.target.value)}
+                placeholder="gsk-... (starts with gsk_)"
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>

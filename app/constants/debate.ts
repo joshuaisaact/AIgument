@@ -127,5 +127,17 @@ export const MODEL_CONFIGS: Record<ModelType, { name: string; logo: string; alt:
     logo: '/google.svg',
     alt: 'Gemini 1.5 Pro',
     description: 'Google\'s latest capable model.'
+  },
+  'grok-3': {
+    name: 'Grok 3',
+    logo: '/xai.svg', // Assuming you have or will add an xai.svg logo
+    alt: 'Grok 3',
+    description: 'xAI\'s large conversational model.'
+  },
+  'grok-3-mini': {
+    name: 'Grok 3 Mini',
+    logo: '/xai.svg', // Assuming you have or will add an xai.svg logo
+    alt: 'Grok 3 Mini',
+    description: 'xAI\'s smaller, faster model.'
   }
 };

@@ -9,6 +9,7 @@ interface SaveApiKeysState {
     openaiKey?: string;
     anthropicKey?: string;
     googleKey?: string;
+    xaiKey?: string;
   };
 }
 
@@ -20,6 +21,7 @@ export async function saveApiKeys(
     const openaiKey = formData.get('openaiKey') as string;
     const anthropicKey = formData.get('anthropicKey') as string;
     const googleKey = formData.get('googleKey') as string;
+    const xaiKey = formData.get('xaiKey') as string;
 
     const validatedKeys: SaveApiKeysState['validatedKeys'] = {};
 
@@ -45,6 +47,14 @@ export async function saveApiKeys(
         throw new Error('Invalid Google API key format');
       }
       validatedKeys.googleKey = googleKey;
+    }
+
+    // Validate xAI key
+    if (xaiKey) {
+      if (!validateApiKeyFormat(xaiKey, 'xai')) {
+        throw new Error('Invalid xAI API key format');
+      }
+      validatedKeys.xaiKey = xaiKey;
     }
 
     return {

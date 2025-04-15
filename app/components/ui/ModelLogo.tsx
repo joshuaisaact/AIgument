@@ -10,29 +10,41 @@ interface ModelLogoProps {
 }
 
 export default function ModelLogo({ modelId, className = "h-4 w-4" }: ModelLogoProps) {
-  // Ensure modelId exists in MODEL_CONFIGS
   if (!modelId || !MODEL_CONFIGS[modelId]) {
-    return null; // or some fallback UI
+    return null;
   }
 
   const modelConfig = MODEL_CONFIGS[modelId];
+  const isGrokModel = modelId === 'grok-3' || modelId === 'grok-3-mini';
 
-  return (
-    <>
+  if (isGrokModel) {
+    return (
       <Image
         src={modelConfig.logo}
         alt={modelConfig.alt}
         width={16}
         height={16}
-        className={`${className} dark:hidden`}
+        className={`${className} dark:invert`}
       />
-      <Image
-        src={modelConfig.logo.replace('.svg', '-light.svg')}
-        alt={modelConfig.alt}
-        width={16}
-        height={16}
-        className={`${className} hidden dark:block`}
-      />
-    </>
-  );
+    );
+  } else {
+    return (
+      <>
+        <Image
+          src={modelConfig.logo}
+          alt={modelConfig.alt}
+          width={16}
+          height={16}
+          className={`${className} dark:hidden`}
+        />
+        <Image
+          src={modelConfig.logo.replace('.svg', '-light.svg')}
+          alt={modelConfig.alt}
+          width={16}
+          height={16}
+          className={`${className} hidden dark:block`}
+        />
+      </>
+    );
+  }
 }
