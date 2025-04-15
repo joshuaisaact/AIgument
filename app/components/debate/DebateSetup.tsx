@@ -1,16 +1,21 @@
 "use client";
 
-import DebateControls from './DebateControls';
+import DebateControls, { DebaterConfig } from './DebateControls';
 import { useState } from 'react';
-import { ModelType } from '../../hooks/useModelProvider';
 import { useRouter } from 'next/navigation';
 import { SpicinessLevel } from '../ui/SpicinessSelector';
 
 export function DebateSetup() {
   const router = useRouter();
   const [topic, setTopic] = useState('');
-  const [proModel, setProModel] = useState<ModelType>('gpt4');
-  const [conModel, setConModel] = useState<ModelType>('gpt4');
+  const [debater1Config, setDebater1Config] = useState<DebaterConfig>({
+    model: 'gpt4',
+    personality: 'standard',
+  });
+  const [debater2Config, setDebater2Config] = useState<DebaterConfig>({
+    model: 'claude-sonnet',
+    personality: 'standard',
+  });
   const [spiciness, setSpiciness] = useState<SpicinessLevel>('medium');
   const [isPending, setIsPending] = useState(false);
 
@@ -19,8 +24,10 @@ export function DebateSetup() {
       setIsPending(true);
       const params = new URLSearchParams({
         topic,
-        proModel,
-        conModel,
+        model1: debater1Config.model,
+        personality1: debater1Config.personality,
+        model2: debater2Config.model,
+        personality2: debater2Config.personality,
         spiciness,
       });
       router.push(`/debate?${params.toString()}`);
@@ -31,10 +38,10 @@ export function DebateSetup() {
     <DebateControls
       topic={topic}
       setTopic={setTopic}
-      proModel={proModel}
-      setProModel={setProModel}
-      conModel={conModel}
-      setConModel={setConModel}
+      debater1Config={debater1Config}
+      setDebater1Config={setDebater1Config}
+      debater2Config={debater2Config}
+      setDebater2Config={setDebater2Config}
       spiciness={spiciness}
       setSpiciness={setSpiciness}
       onStartDebate={handleStartDebate}

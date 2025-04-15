@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getApiKey, clearApiKey } from '../../lib/storage/apiKeyStorage';
+import { getApiKey, clearApiKey, setApiKey } from '../../lib/storage/apiKeyStorage';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { saveApiKeys } from '@/app/lib/actions/settings';
@@ -42,6 +42,21 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
       if (storedGoogleKey) setGoogleKey(storedGoogleKey);
     }
   }, [isOpen]);
+
+  // Handle saving validated keys to localStorage
+  useEffect(() => {
+    if (state.validatedKeys) {
+      if (state.validatedKeys.openaiKey) {
+        setApiKey(state.validatedKeys.openaiKey, 'openai');
+      }
+      if (state.validatedKeys.anthropicKey) {
+        setApiKey(state.validatedKeys.anthropicKey, 'anthropic');
+      }
+      if (state.validatedKeys.googleKey) {
+        setApiKey(state.validatedKeys.googleKey, 'google');
+      }
+    }
+  }, [state.validatedKeys]);
 
   const handleClearKeys = () => {
     clearApiKey('openai');

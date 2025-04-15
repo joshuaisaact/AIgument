@@ -3,6 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import DebaterResponse from './DebaterResponse';
 import { useModelProvider, ModelType } from '../../hooks/useModelProvider';
+import {
+  PersonalityId,
+  PERSONALITY_CONFIGS,
+  SPICINESS_CONFIGS
+} from '../../constants/debate';
+import { SpicinessLevel } from '../ui/SpicinessSelector';
 import { useDebateState } from '../../hooks/useDebateState';
 import { useDebateStreaming } from '../../hooks/useDebateStreaming';
 import { Button } from '../ui/Button';
@@ -14,13 +20,23 @@ import { toast } from 'sonner';
 
 interface DebateArenaProps {
   topic: string;
-  debater1: ModelType;
-  debater2: ModelType;
+  debater1Model: ModelType;
+  debater1Personality: PersonalityId;
+  debater2Model: ModelType;
+  debater2Personality: PersonalityId;
+  spiciness: SpicinessLevel;
   onReset: () => void;
-  spiciness?: string;
 }
 
-export default function DebateArena({ topic, debater1, debater2, onReset, spiciness = 'medium' }: DebateArenaProps) {
+export default function DebateArena({
+  topic,
+  debater1Model,
+  debater1Personality,
+  debater2Model,
+  debater2Personality,
+  spiciness,
+  onReset,
+}: DebateArenaProps) {
   const { getModelProvider } = useModelProvider();
   const [isInitialized, setIsInitialized] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -39,12 +55,14 @@ export default function DebateArena({ topic, debater1, debater2, onReset, spicin
     startStreaming
   } = useDebateStreaming({
     topic,
-    debater1,
-    debater2,
-    currentRound: rounds.length - 1,
+    debater1Model,
+    debater1Personality,
+    debater2Model,
+    debater2Personality,
+    spiciness,
+    currentRound: rounds.length > 0 ? rounds.length - 1 : 0,
     currentDebater,
     rounds,
-    spiciness: 'medium',
     onResponseComplete: handleResponseComplete
   });
 
@@ -86,8 +104,8 @@ export default function DebateArena({ topic, debater1, debater2, onReset, spicin
 
       const debateId = await saveDebate({
         topic,
-        proModel: debater1,
-        conModel: debater2,
+        proModel: debater1Model,
+        conModel: debater2Model,
         messages,
         spiciness
       });
@@ -102,6 +120,8 @@ export default function DebateArena({ topic, debater1, debater2, onReset, spicin
     }
   };
 
+  const currentModel = currentDebater === 'debater1' ? debater1Model : debater2Model;
+
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="mb-8">
@@ -109,37 +129,38 @@ export default function DebateArena({ topic, debater1, debater2, onReset, spicin
         <div className="mt-2 flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
           <div className="flex items-center gap-2">
             <Image
-              src={MODEL_CONFIGS[debater1].logo}
-              alt={MODEL_CONFIGS[debater1].alt}
+              src={MODEL_CONFIGS[debater1Model].logo}
+              alt={MODEL_CONFIGS[debater1Model].alt}
               width={20}
               height={20}
               className="w-5 h-5 dark:invert dark:opacity-80"
             />
-            <span>For: {MODEL_CONFIGS[debater1].name}</span>
+            <span>For: {MODEL_CONFIGS[debater1Model].name} ({PERSONALITY_CONFIGS[debater1Personality].name})</span>
           </div>
           <div className="flex items-center gap-2">
             <Image
-              src={MODEL_CONFIGS[debater2].logo}
-              alt={MODEL_CONFIGS[debater2].alt}
+              src={MODEL_CONFIGS[debater2Model].logo}
+              alt={MODEL_CONFIGS[debater2Model].alt}
               width={20}
               height={20}
               className="w-5 h-5 dark:invert dark:opacity-80"
             />
-            <span>Against: {MODEL_CONFIGS[debater2].name}</span>
+            <span>Against: {MODEL_CONFIGS[debater2Model].name} ({PERSONALITY_CONFIGS[debater2Personality].name})</span>
           </div>
         </div>
+        <p className="text-center text-xs text-gray-500 mt-1">Intensity: {SPICINESS_CONFIGS[spiciness].level_descriptor}</p>
       </div>
 
       <div className="space-y-6">
         {rounds.map((round, index) => (
           <div key={index} className="space-y-4">
             {round.debater1 && (
-              <DebaterResponse position="For" model={debater1}>
+              <DebaterResponse position="For" model={debater1Model}>
                 {round.debater1}
               </DebaterResponse>
             )}
             {round.debater2 && (
-              <DebaterResponse position="Against" model={debater2}>
+              <DebaterResponse position="Against" model={debater2Model}>
                 {round.debater2}
               </DebaterResponse>
             )}
@@ -149,7 +170,7 @@ export default function DebateArena({ topic, debater1, debater2, onReset, spicin
         {streamingText && (
           <DebaterResponse
             position={currentDebater === 'debater1' ? 'For' : 'Against'}
-            model={currentDebater === 'debater1' ? debater1 : debater2}
+            model={currentModel}
           >
             {streamingText}
           </DebaterResponse>

@@ -12,7 +12,7 @@ export class MissingApiKeyError extends Error {
 
 const getProviderApiKey = (provider: 'openai' | 'google' | 'anthropic') => {
   const userKey = getApiKey(provider);
-  const envKey = process.env[`NEXT_PUBLIC_${provider.toUpperCase()}_API_KEY`];
+  const envKey = process.env[provider === 'google' ? 'NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY' : `NEXT_PUBLIC_${provider.toUpperCase()}_API_KEY`];
 
   if (!userKey && !envKey) {
     throw new MissingApiKeyError(provider);
@@ -21,30 +21,46 @@ const getProviderApiKey = (provider: 'openai' | 'google' | 'anthropic') => {
   return userKey || envKey || '';
 };
 
-export type ModelType = 'gpt4' | 'gpt35' | 'claude-sonnet' | 'claude-haiku' | 'gemini-flash' | 'gemini-pro';
+export type ModelType = 'gpt4o' | 'gpt4' | 'gpt35' | 'claude-sonnet' | 'claude-haiku' | 'gemini-flash' | 'gemini-pro';
 
 export const useModelProvider = () => {
   const getModelProvider = (model: ModelType) => {
     try {
       switch (model) {
         case "claude-sonnet":
+          return createAnthropic({
+            apiKey: getProviderApiKey('anthropic'),
+          })("claude-3-7-sonnet-20250219");
         case "claude-haiku":
           return createAnthropic({
             apiKey: getProviderApiKey('anthropic'),
-          })(model === "claude-sonnet" ? "claude-3-7-sonnet-20250219" : "claude-3-5-haiku-latest");
+          })("claude-3-5-haiku-latest");
+        case "gpt4o":
+          return createOpenAI({
+            apiKey: getProviderApiKey('openai'),
+            compatibility: 'strict',
+          })("gpt-4o");
         case "gpt4":
+          return createOpenAI({
+            apiKey: getProviderApiKey('openai'),
+            compatibility: 'strict',
+          })("gpt-4-turbo");
         case "gpt35":
           return createOpenAI({
             apiKey: getProviderApiKey('openai'),
             compatibility: 'strict',
-          })(model === "gpt4" ? "gpt-4-turbo" : "gpt-3.5-turbo");
+          })("gpt-3.5-turbo");
         case "gemini-flash":
+          return createGoogleGenerativeAI({
+            apiKey: getProviderApiKey('google'),
+          })("gemini-2.0-flash-001");
         case "gemini-pro":
           return createGoogleGenerativeAI({
             apiKey: getProviderApiKey('google'),
-          })(model === "gemini-flash" ? "gemini-2.0-flash-001" : "gemini-2.5-pro-exp-03-25");
+          })("gemini-2.5-pro-exp-03-25");
         default:
-          throw new Error(`Unknown model: ${model}`);
+          const _exhaustiveCheck: never = model;
+          throw new Error(`Unknown model: ${_exhaustiveCheck}`);
       }
     } catch (error: unknown) {
       if (error instanceof MissingApiKeyError) {

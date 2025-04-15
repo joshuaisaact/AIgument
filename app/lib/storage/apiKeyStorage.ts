@@ -4,13 +4,18 @@ const getStorageKey = (provider: Provider) => `${provider}-api-key`;
 
 export const setApiKey = (key: string, provider: Provider) => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem(getStorageKey(provider), key);
+    const storageKey = getStorageKey(provider);
+    console.log(`Setting ${provider} API key:`, storageKey, key);
+    localStorage.setItem(storageKey, key);
   }
 };
 
 export const getApiKey = (provider: Provider) => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem(getStorageKey(provider));
+    const storageKey = getStorageKey(provider);
+    const key = localStorage.getItem(storageKey);
+    console.log(`Getting ${provider} API key:`, storageKey, key);
+    return key;
   }
   return null;
 };

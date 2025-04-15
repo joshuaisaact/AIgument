@@ -3,14 +3,19 @@
 import DebateArena from './DebateArena';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ModelType } from '../../hooks/useModelProvider';
+import { PersonalityId } from '../../constants/debate';
+import { SpicinessLevel } from '../ui/SpicinessSelector';
 
 export function DebatePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const topic = searchParams.get('topic') || '';
-  const proModel = (searchParams.get('proModel') as ModelType) || 'gpt4';
-  const conModel = (searchParams.get('conModel') as ModelType) || 'gpt4';
-  const spiciness = searchParams.get('spiciness') || 'medium';
+  const model1 = (searchParams.get('model1') as ModelType) || 'gpt4';
+  const personality1 = (searchParams.get('personality1') as PersonalityId) || 'standard';
+  const model2 = (searchParams.get('model2') as ModelType) || 'claude-sonnet';
+  const personality2 = (searchParams.get('personality2') as PersonalityId) || 'standard';
+  const spiciness = (searchParams.get('spiciness') as SpicinessLevel) || 'medium';
 
   if (!topic) {
     return (
@@ -23,10 +28,12 @@ export function DebatePageContent() {
   return (
     <DebateArena
       topic={topic}
-      debater1={proModel}
-      debater2={conModel}
-      onReset={() => router.push('/')}
+      debater1Model={model1}
+      debater1Personality={personality1}
+      debater2Model={model2}
+      debater2Personality={personality2}
       spiciness={spiciness}
+      onReset={() => router.push('/')}
     />
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { streamText, LanguageModelV1 } from 'ai';
 import { ModelType } from './useModelProvider';
-import { DEBATE_PROMPTS } from '../constants/debate';
+import { DEBATE_PROMPTS, PersonalityId } from '../constants/debate';
 import { DebateError } from './useDebateState';
 import { SpicinessLevel } from '../components/ui/SpicinessSelector';
 
@@ -9,23 +9,27 @@ const yieldToEventLoop = () => new Promise(resolve => setTimeout(resolve, 0));
 
 interface UseDebateStreamingProps {
   topic: string;
-  debater1: ModelType;
-  debater2: ModelType;
+  debater1Model: ModelType;
+  debater1Personality: PersonalityId;
+  debater2Model: ModelType;
+  debater2Personality: PersonalityId;
+  spiciness: SpicinessLevel;
   currentRound: number;
   currentDebater: 'debater1' | 'debater2';
   rounds: Array<{ debater1: string; debater2: string }>;
-  spiciness: SpicinessLevel;
   onResponseComplete: (content: string) => void;
 }
 
 export function useDebateStreaming({
   topic,
-  debater1,
-  debater2,
+  debater1Model,
+  debater1Personality,
+  debater2Model,
+  debater2Personality,
+  spiciness,
   currentRound,
   currentDebater,
   rounds,
-  spiciness,
   onResponseComplete
 }: UseDebateStreamingProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +45,8 @@ export function useDebateStreaming({
     setError(null);
     setStreamingText(null);
 
-    const modelId = currentDebater === 'debater1' ? debater1 : debater2;
+    const modelId = currentDebater === 'debater1' ? debater1Model : debater2Model;
+    const personalityId = currentDebater === 'debater1' ? debater1Personality : debater2Personality;
     const position = currentDebater === 'debater1' ? 'PRO' : 'CON';
 
     let previousArguments = '';
@@ -55,7 +60,14 @@ export function useDebateStreaming({
       previousArguments += `${rounds[currentRound].debater1}\n\n`;
     }
 
-    const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(topic, position, previousArguments.trim(), spiciness, currentRound + 1);
+    const systemPrompt = DEBATE_PROMPTS.getSystemPrompt(
+      topic,
+      position,
+      previousArguments.trim(),
+      personalityId,
+      spiciness,
+      currentRound + 1
+    );
     let accumulatedText = '';
 
     try {
@@ -97,7 +109,7 @@ export function useDebateStreaming({
       setStreamingText(null);
       setIsLoading(false);
     }
-  }, [isLoading, currentDebater, currentRound, rounds, debater1, debater2, topic, spiciness, onResponseComplete]);
+  }, [isLoading, currentDebater, currentRound, rounds, debater1Model, debater1Personality, debater2Model, debater2Personality, topic, spiciness, onResponseComplete]);
 
   return {
     isLoading,
