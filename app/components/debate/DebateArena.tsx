@@ -7,6 +7,8 @@ import { useDebateState } from '../../hooks/useDebateState';
 import { useDebateStreaming } from '../../hooks/useDebateStreaming';
 import { Button } from '../ui/Button';
 import { saveDebate } from '../../lib/actions/debate';
+import { MODEL_CONFIGS } from '../../constants/debate';
+import Image from 'next/image';
 
 interface DebateArenaProps {
   topic: string;
@@ -89,13 +91,27 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{topic}</h1>
-        <div className="mt-2 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center">{topic}</h1>
+        <div className="mt-2 flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
           <div className="flex items-center gap-2">
-            <span>For: {debater1}</span>
+            <Image
+              src={MODEL_CONFIGS[debater1].logo}
+              alt={MODEL_CONFIGS[debater1].alt}
+              width={20}
+              height={20}
+              className="w-5 h-5 dark:invert dark:opacity-80"
+            />
+            <span>For: {MODEL_CONFIGS[debater1].name}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span>Against: {debater2}</span>
+            <Image
+              src={MODEL_CONFIGS[debater2].logo}
+              alt={MODEL_CONFIGS[debater2].alt}
+              width={20}
+              height={20}
+              className="w-5 h-5 dark:invert dark:opacity-80"
+            />
+            <span>Against: {MODEL_CONFIGS[debater2].name}</span>
           </div>
         </div>
       </div>
@@ -140,7 +156,7 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
           disabled={isLoading || streamingText !== null}
           isLoading={isLoading}
         >
-          {isLoading ? 'Debating...' : 'Next Round'}
+          {isLoading ? 'Debating...' : 'Next Response'}
         </Button>
         <Button
           onClick={handleReset}
