@@ -16,6 +16,9 @@ export function Header() {
             <span className="text-blue-600 dark:text-blue-400">AI</span>gument
           </Link>
           <div className="flex items-center gap-4">
+            <Link href="/debates" className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+              Browse Debates
+            </Link>
             <ThemeToggle />
             <button
               onClick={() => setIsSettingsOpen(true)}

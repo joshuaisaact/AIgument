@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import DebaterResponse from './DebaterResponse';
 import { useModelProvider, ModelType } from '../../hooks/useModelProvider';
 import { SpicinessLevel } from '../ui/SpicinessSelector';
@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { PERSONALITY_CONFIGS, PersonalityId, SPICINESS_CONFIGS } from "@/app/constants";
+import { ConfirmSaveModal } from './ConfirmSaveModal';
 
 interface DebateArenaProps {
   topic: string;
@@ -34,6 +35,8 @@ export default function DebateArena({
   onReset,
 }: DebateArenaProps) {
   const { getModelProvider } = useModelProvider();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const {
@@ -46,7 +49,7 @@ export default function DebateArena({
   } = useDebateState();
 
   const {
-    isLoading,
+    isLoading: isStreamingLoading,
     streamingText,
     error: streamingError,
     startStreaming
@@ -92,7 +95,8 @@ export default function DebateArena({
     onReset();
   };
 
-  const handleSave = async () => {
+  const executeSave = useCallback(async () => {
+    setIsSaving(true);
     setSaveError(null);
     setSaveSuccess(null);
     try {
@@ -116,11 +120,27 @@ export default function DebateArena({
       const errorMessage = error instanceof Error ? error.message : 'Failed to save debate';
       setSaveError(errorMessage);
       toast.error(errorMessage);
+    } finally {
+      setIsSaving(false);
     }
+  }, [rounds, topic, debater1Model, debater2Model, spiciness]);
+
+  const handleOpenSaveModal = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleCloseSaveModal = () => {
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleConfirmSave = () => {
+    handleCloseSaveModal();
+    executeSave();
   };
 
   const currentModel = currentDebater === 'debater1' ? debater1Model : debater2Model;
   const displayError = streamingError || stateError;
+  const isLoading = isStreamingLoading || isSaving;
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -217,9 +237,9 @@ export default function DebateArena({
         <Button
           onClick={handleNextRound}
           disabled={isLoading || streamingText !== null}
-          isLoading={isLoading}
+          isLoading={isStreamingLoading}
         >
-          {isLoading ? 'Debating...' : 'Next Response'}
+          {isStreamingLoading ? 'Debating...' : 'Next Response'}
         </Button>
         <Button
           onClick={handleReset}
@@ -229,13 +249,20 @@ export default function DebateArena({
           Reset
         </Button>
         <Button
-          onClick={handleSave}
+          onClick={handleOpenSaveModal}
           variant="secondary"
           disabled={isLoading || rounds.length === 0}
         >
           Save Debate
         </Button>
       </div>
+
+      <ConfirmSaveModal
+        isOpen={isConfirmModalOpen}
+        onClose={handleCloseSaveModal}
+        onConfirm={handleConfirmSave}
+        isSaving={isSaving}
+      />
     </div>
   );
 }

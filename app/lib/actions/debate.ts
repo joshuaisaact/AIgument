@@ -88,3 +88,41 @@ export async function getDebate(id: string) {
     throw error;
   }
 }
+
+// Define a type for the list item structure
+interface DebateListItem {
+  id: string;
+  topic: string;
+  pro_model: ModelType;
+  con_model: ModelType;
+  created_at: string; // Or Date
+}
+
+// Function to list recent public debates
+export async function listDebates(): Promise<DebateListItem[]> {
+  const limit = 50;
+  try {
+    // Use db directly, without generic type argument
+    const result = await db`
+      SELECT id, topic, pro_model, con_model, created_at
+      FROM debates
+      ORDER BY created_at DESC
+      LIMIT ${limit}
+    `;
+
+    // Cast the result to the expected type after receiving it.
+    // Add basic validation if necessary, though casting is common here.
+    const debates = result as unknown as DebateListItem[];
+
+    // Optional: Add runtime validation if you want to be extra safe
+    // if (!Array.isArray(debates) || debates.some(d => typeof d.id !== 'string')) {
+    //   throw new Error("Invalid data structure received from database.");
+    // }
+
+    return debates;
+
+  } catch (error) {
+    console.error("Database Error: Failed to fetch debates.", error);
+    throw new Error("Failed to fetch recent debates.");
+  }
+}

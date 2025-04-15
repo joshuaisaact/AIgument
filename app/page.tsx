@@ -9,10 +9,10 @@ export default function Home() {
           <span className="text-gray-800 dark:text-white">gument</span>
         </h1>
         <p className="text-xl text-gray-800 dark:text-gray-300 mb-4 pt-4">
-          Tired of dry AI benchmarks? Let&apos;s settle this the old-fashioned way.
+          Forget benchmarks. Let AI models debate the issues. Pick your contenders and set the topic.
         </p>
         <p className="text-lg text-gray-800 dark:text-gray-400 max-w-2xl mx-auto">
-          Watch AI models go head-to-head in heated debates. No technical jargon, no confusing metrics - just pure, unadulterated argumentative prowess. Who will win? You decide!
+          Watch arguments unfold, driven by logic, programmed quirks, and maybe a hint of personality. Start the <span className="text-blue-600 dark:text-blue-400">AI</span><span className="text-gray-800 dark:text-white">gument</span> and see how it plays out.
         </p>
       </div>
 

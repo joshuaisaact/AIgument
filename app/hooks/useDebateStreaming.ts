@@ -6,8 +6,6 @@ import { DebateError } from './useDebateState';
 import { SpicinessLevel } from '../components/ui/SpicinessSelector';
 import { PersonalityId } from '../constants';
 
-const yieldToEventLoop = () => new Promise(resolve => setTimeout(resolve, 0));
-
 interface UseDebateStreamingProps {
   topic: string;
   debater1Model: ModelType;

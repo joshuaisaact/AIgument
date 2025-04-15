@@ -1,5 +1,8 @@
 "use client";
 
+import { Citrus, Thermometer, Flame } from 'lucide-react';
+import { ReactNode } from 'react';
+
 export type SpicinessLevel = "lemon" | "mild" | "medium" | "hot" | "extra-hot";
 
 interface SpicinessSelectorProps {
@@ -8,31 +11,40 @@ interface SpicinessSelectorProps {
   className?: string;
 }
 
-const SPICINESS_LEVELS: { value: SpicinessLevel; label: string; description: string }[] = [
+const SPICINESS_LEVELS: { value: SpicinessLevel; label: string; description: string; icon: ReactNode }[] = [
   {
     value: "lemon",
     label: "Lemon & Herb",
-    description: "Gentle and diplomatic debate style"
+    description: "Gentle and diplomatic debate style",
+    icon: <Citrus size={18} />
   },
   {
     value: "mild",
     label: "Mild",
-    description: "Respectful but firm arguments"
+    description: "Respectful but firm arguments",
+    icon: <Thermometer size={18} />
   },
   {
     value: "medium",
     label: "Medium",
-    description: "Balanced mix of diplomacy and directness"
+    description: "Balanced mix of diplomacy and directness",
+    icon: <Flame size={18} />
   },
   {
     value: "hot",
     label: "Hot",
-    description: "More aggressive and confrontational"
+    description: "More aggressive and confrontational",
+    icon: <div className="flex items-center justify-center"><Flame size={18} /><Flame size={18} className="ml-0.5"/></div>
   },
   {
     value: "extra-hot",
     label: "Extra Hot",
-    description: "Maximum intensity with strong rhetoric"
+    description: "Maximum intensity with strong rhetoric",
+    icon: <div className="flex items-center justify-center">
+            <Flame size={18} />
+            <Flame size={18} className="ml-0.5"/>
+            <Flame size={18} className="ml-0.5"/>
+          </div>
   }
 ];
 
@@ -58,14 +70,15 @@ export function SpicinessSelector({ value, onChange, className = "" }: Spiciness
             role="radio"
             aria-checked={value === level.value}
             onClick={() => onChange(level.value)}
-            className={`p-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+            className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
               value === level.value
                 ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
             }`}
             title={level.description}
           >
-            {level.label}
+            <span className="h-5 flex items-center justify-center">{level.icon}</span>
+            <span>{level.label}</span>
           </button>
         ))}
       </div>

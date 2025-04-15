@@ -19,21 +19,15 @@ export default function PersonalitySelector({
   const labelId = `personality-selector-label-${label.replace(/\s+/g, '-').toLowerCase()}`;
   const listboxId = `personality-selector-listbox-${label.replace(/\s+/g, '-').toLowerCase()}`;
 
-  const getLabelColor = (label: string) => {
-    if (label === 'For') return 'text-blue-800 dark:text-blue-300';
-    if (label === 'Against') return 'text-red-800 dark:text-red-300';
-    return 'text-gray-700 dark:text-gray-300';
-  };
-
   const selectedPersonality = PERSONALITY_CONFIGS[value];
 
   return (
     <div className="relative">
       <label
         id={labelId}
-        className={`block text-sm font-medium mb-2 ${getLabelColor(label)}`}
+        className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
       >
-        {label} Personality
+        Personality
       </label>
       <button
         id={buttonId}
@@ -63,7 +57,7 @@ export default function PersonalitySelector({
           id={listboxId}
           role="listbox"
           aria-labelledby={labelId}
-          className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-90 overflow-y-auto"
         >
           {Object.entries(PERSONALITY_CONFIGS).map(([id, config]) => (
             <button
