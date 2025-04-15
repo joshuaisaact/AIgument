@@ -5,6 +5,7 @@ import { Header } from "./components/layout/Header";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Analytics/>
+          <Toaster richColors position="top-center" />
         </ThemeProvider>
       </body>
     </html>

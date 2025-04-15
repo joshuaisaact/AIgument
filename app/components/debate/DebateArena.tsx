@@ -9,17 +9,22 @@ import { Button } from '../ui/Button';
 import { saveDebate } from '../../lib/actions/debate';
 import { MODEL_CONFIGS } from '../../constants/debate';
 import Image from 'next/image';
+import { Copy } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface DebateArenaProps {
   topic: string;
   debater1: ModelType;
   debater2: ModelType;
   onReset: () => void;
+  spiciness?: string;
 }
 
-export default function DebateArena({ topic, debater1, debater2, onReset }: DebateArenaProps) {
+export default function DebateArena({ topic, debater1, debater2, onReset, spiciness = 'medium' }: DebateArenaProps) {
   const { getModelProvider } = useModelProvider();
   const [isInitialized, setIsInitialized] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const {
     rounds,
     currentDebater,
@@ -71,20 +76,29 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
   };
 
   const handleSave = async () => {
+    setSaveError(null);
+    setSaveSuccess(null);
     try {
       const messages = rounds.flatMap(round => [
         { role: 'pro' as const, content: round.debater1 },
         { role: 'con' as const, content: round.debater2 }
       ]).filter(msg => msg.content);
 
-      await saveDebate({
+      const debateId = await saveDebate({
         topic,
         proModel: debater1,
         conModel: debater2,
-        messages
+        messages,
+        spiciness
       });
+
+      setSaveSuccess(`Debate saved successfully! ID: ${debateId}`);
+      toast.success('Debate saved successfully!');
     } catch (error) {
       console.error('Failed to save debate:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save debate';
+      setSaveError(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
@@ -147,6 +161,33 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
       {error && (
         <div className="mt-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg">
           {error.message}
+        </div>
+      )}
+
+      {saveError && (
+        <div className="mt-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg">
+          {saveError}
+        </div>
+      )}
+
+      {saveSuccess && (
+        <div className="mt-4 p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg">
+          <div className="flex items-center justify-between">
+            <span>{saveSuccess}</span>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                const debateId = saveSuccess.split('ID: ')[1];
+                const url = `${window.location.origin}/debate/${debateId}`;
+                navigator.clipboard.writeText(url);
+                toast.success('Link copied to clipboard!');
+              }}
+              className="ml-2 px-2 py-1 text-sm"
+            >
+              <Copy className="w-4 h-4 mr-1" />
+              Copy Link
+            </Button>
+          </div>
         </div>
       )}
 

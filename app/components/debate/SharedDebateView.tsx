@@ -45,11 +45,7 @@ export default function SharedDebateView({ debate }: SharedDebateViewProps) {
         {debate.messages.map((message) => (
           <div
             key={message.id}
-            className={`p-4 rounded-lg ${
-              message.role === 'pro'
-                ? 'bg-blue-50 dark:bg-blue-900/20'
-                : 'bg-red-50 dark:bg-red-900/20'
-            }`}
+            className="p-4 rounded-lg"
           >
             <DebaterResponse
               position={message.role === 'pro' ? 'For' : 'Against'}

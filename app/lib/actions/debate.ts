@@ -12,6 +12,7 @@ interface SaveDebateParams {
     role: 'pro' | 'con';
     content: string;
   }>;
+  spiciness?: string;
 }
 
 interface Debate {
@@ -31,14 +32,14 @@ interface DebateMessage {
   created_at: string;
 }
 
-export async function saveDebate({ topic, proModel, conModel, messages }: SaveDebateParams) {
+export async function saveDebate({ topic, proModel, conModel, messages, spiciness = 'medium' }: SaveDebateParams) {
   const debateId = uuidv4();
 
   try {
     // Insert debate
     await db`
-      INSERT INTO debates (id, topic, pro_model, con_model)
-      VALUES (${debateId}, ${topic}, ${proModel}, ${conModel})
+      INSERT INTO debates (id, topic, pro_model, con_model, spiciness)
+      VALUES (${debateId}, ${topic}, ${proModel}, ${conModel}, ${spiciness})
     `;
 
     // Insert messages
@@ -52,7 +53,13 @@ export async function saveDebate({ topic, proModel, conModel, messages }: SaveDe
     return debateId;
   } catch (error) {
     console.error('Error saving debate:', error);
-    throw error;
+    if (error instanceof Error) {
+      // Add more context to the error
+      const enhancedError = new Error(`Failed to save debate: ${error.message}`);
+      enhancedError.stack = error.stack;
+      throw enhancedError;
+    }
+    throw new Error('Failed to save debate: Unknown error');
   }
 }
 

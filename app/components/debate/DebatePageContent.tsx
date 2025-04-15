@@ -10,6 +10,7 @@ export function DebatePageContent() {
   const topic = searchParams.get('topic') || '';
   const proModel = (searchParams.get('proModel') as ModelType) || 'gpt4';
   const conModel = (searchParams.get('conModel') as ModelType) || 'gpt4';
+  const spiciness = searchParams.get('spiciness') || 'medium';
 
   if (!topic) {
     return (
@@ -25,6 +26,7 @@ export function DebatePageContent() {
       debater1={proModel}
       debater2={conModel}
       onReset={() => router.push('/')}
+      spiciness={spiciness}
     />
   );
 }
