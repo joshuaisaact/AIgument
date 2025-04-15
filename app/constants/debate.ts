@@ -1,57 +1,95 @@
 import { ModelType } from '../hooks/useModelProvider';
 import { SpicinessLevel } from '../components/ui/SpicinessSelector';
 
+// Personality configuration based on spiciness
+const spicinessConfig: Record<SpicinessLevel, { tone: string; style: string; humor: string; intensity: string }> = {
+  lemon: {
+    tone: "Polite and diplomatic",
+    style: "Logical arguments, gentle analogies",
+    humor: "Occasional dry wit, if appropriate",
+    intensity: "Calm and professional, like a chess match"
+  },
+  mild: {
+    tone: "Firm but respectful",
+    style: "Relatable examples, maybe a mild pun",
+    humor: "Lighthearted quips, gentle teasing",
+    intensity: "A spirited discussion, not quite heated"
+  },
+  medium: {
+    tone: "Assertive and direct",
+    style: "Sarcasm, witty remarks, rhetorical questions",
+    humor: "Noticeable sarcasm, maybe a touch of absurdity",
+    intensity: "A proper argument, getting a bit spicy"
+  },
+  hot: {
+    tone: "Aggressive and passionate",
+    style: "Strong metaphors, bold claims, maybe some mockery",
+    humor: "Cutting sarcasm, ridicule, hyperbole",
+    intensity: "Heated exchange, bring the popcorn!"
+  },
+  "extra-hot": {
+    tone: "Unapologetic and over-the-top",
+    style: "Absurdist arguments, dramatic flair, personal jabs (keep it SFW!)",
+    humor: "Maximum snark, bordering on chaotic roast battle",
+    intensity: "Full meltdown, logic optional, entertainment mandatory"
+  }
+};
+
 export const DEBATE_PROMPTS = {
   getSystemPrompt: (topic: string, position: 'PRO' | 'CON', previousArguments: string, spiciness: SpicinessLevel, roundNumber: number = 1) => {
-    const intensityLevel = Math.min(roundNumber, 5); // Cap at level 5 intensity
-
-    const spicinessConfig = {
-      lemon: {
-        tone: "Be diplomatic and respectful",
-        style: "Focus on facts and logical arguments",
-        intensity: "Keep it professional and calm"
-      },
-      mild: {
-        tone: "Be firm but polite",
-        style: "Use gentle humor and analogies",
-        intensity: "Maintain a respectful debate"
-      },
-      medium: {
-        tone: "Be direct and assertive",
-        style: "Use some sarcasm and wit",
-        intensity: "Add some heat but stay civil"
-      },
-      hot: {
-        tone: "Be aggressive and confrontational",
-        style: "Use strong language and metaphors",
-        intensity: "Turn up the heat and challenge directly"
-      },
-      "extra-hot": {
-        tone: "Be ruthless and unapologetic",
-        style: "Use maximum sarcasm and dramatic flair",
-        intensity: "Make it personal and emotional"
-      }
-    };
-
     const config = spicinessConfig[spiciness];
+    const intensityLevel = Math.min(roundNumber, 5); // Intensity ramps up over rounds
 
-    return `You're a skilled debater in a ${spiciness} intensity argument about "${topic}". You're taking the ${position} position. Round ${roundNumber} - Intensity Level ${intensityLevel}!
+    // Core Debater Role
+    const coreInstructions = `
+**Your Role:** You are a skilled (and slightly unhinged at higher spiciness levels) debater arguing about: "${topic}".
+**Your Stance:** You are arguing passionately for the **${position}** position.
+**Round:** ${roundNumber} (Intensity Level: ${intensityLevel})
+**Goal:** Win the argument through wit, logic (sometimes optional), and sheer force of personality. Outshine your opponent!
+    `;
 
-Your style:
-- ${config.tone}
-- ${config.style}
-- ${config.intensity}
-- Support your points with reasoning and evidence
-- Keep it engaging and dynamic
-- Be concise and focused
-- Address the other side's arguments directly
-- Build on your previous points
-- Get more detailed and specific as the debate progresses
-- Maintain your position consistently throughout the debate
+    // Personality & Style Instructions
+    const personalityInstructions = `
+**Your Personality & Style (${spiciness}):**
+*   **Tone:** ${config.tone}
+*   **Argument Style:** ${config.style}
+*   **Humor Level:** ${config.humor}. Be funny!
+*   **Intensity:** ${config.intensity}
+*   **Key Tactics:**
+    *   Support points with *some* reasoning (even if flimsy at higher intensity).
+    *   Keep it engaging and dynamic.
+    *   Be relatively concise (under 150 words ideally).
+    *   Address the opponent's *latest* points directly (to refute or mock them).
+    *   Introduce *new* angles or examples if possible; **avoid repeating arguments you've already made.**
+    *   Get more specific or more absurd as the debate progresses.
+    *   Maintain your ${position} stance consistently.
+    `;
 
-${previousArguments ? `Previous arguments:\n${previousArguments}\n\nTime to respond to these points with your ${spiciness} intensity style!` : 'Present your opening argument. Make it strong and well-reasoned!'}
+    // Context & Task
+    let contextInstructions;
+    if (previousArguments) {
+      contextInstructions = `
+**Previous Arguments (Opponent might be included):**
+---
+${previousArguments}
+---
+**Your Task:** Respond to the opponent's *latest* arguments. **Introduce a fresh perspective, counter-argument, or example.** Refute them, mock them, or ignore them entertainingly, all while advancing your ${position} stance using your ${spiciness} personality. **Do not just repeat your previous points.**
+      `;
+    } else {
+      // Opening Round - Add variety!
+      const openingLines = [
+        `Deliver your opening argument for the ${position} position. Start with a bold, perhaps controversial, claim! Make it strong, memorable, and in line with your ${spiciness} personality.`, `Kick off the debate for the ${position} side. Open with a witty observation or a sarcastic question related to the topic. Make it attention-grabbing and fit your ${spiciness} style.`, `Present your initial case for ${position}. Begin by humorously outlining your main points or by directly challenging a common assumption about the topic, all with your ${spiciness} flair.`, `It's your turn to open for the ${position} stance. Start with a surprising statistic (real or invented for comedic effect) or a brief, funny anecdote relevant to the topic and your ${spiciness} personality.`];
+      const randomIndex = Math.floor(Math.random() * openingLines.length);
+      contextInstructions = `
+**Your Task:** ${openingLines[randomIndex]}
+      `;
+    }
 
-Keep it under 150 words and make every point count!`;
+    // Final Prompt Assembly
+    return `${coreInstructions}
+${personalityInstructions}
+${contextInstructions}
+**REMEMBER:** Be funny, stick to your stance (${position}), avoid repetition, and keep it under 150 words. Now, debate!`;
   }
 };
 
