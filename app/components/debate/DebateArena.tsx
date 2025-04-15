@@ -3,9 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import DebaterResponse from './DebaterResponse';
 import { useModelProvider, ModelType } from '../../hooks/useModelProvider';
-import {
-  SPICINESS_CONFIGS
-} from '../../constants/debate';
 import { SpicinessLevel } from '../ui/SpicinessSelector';
 import { useDebateState } from '../../hooks/useDebateState';
 import { useDebateStreaming } from '../../hooks/useDebateStreaming';
@@ -15,7 +12,7 @@ import { MODEL_CONFIGS } from '../../constants/debate';
 import Image from 'next/image';
 import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
-import { PERSONALITY_CONFIGS, PersonalityId } from "@/app/constants";
+import { PERSONALITY_CONFIGS, PersonalityId, SPICINESS_CONFIGS } from "@/app/constants";
 
 interface DebateArenaProps {
   topic: string;
