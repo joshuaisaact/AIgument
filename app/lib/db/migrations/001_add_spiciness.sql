@@ -1,0 +1,1 @@
+ALTER TABLE debates ADD COLUMN spiciness TEXT NOT NULL DEFAULT 'medium';

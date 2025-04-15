@@ -53,7 +53,7 @@ export function useDebate({ topic, debater1, debater2 }: UseDebateProps) {
 
     setIsLoading(true);
     setError(null);
-    setStreamingText('');
+    setStreamingText(null);
     const modelId = callTimeDebater === 'debater1' ? debater1 : debater2;
     const position = callTimeDebater === 'debater1' ? 'PRO' : 'CON';
 

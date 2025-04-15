@@ -123,7 +123,7 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
       <div className="mt-8 flex justify-center gap-4">
         <Button
           onClick={handleNextRound}
-          disabled={isLoading || currentDebater === 'debater1'}
+          disabled={isLoading || streamingText !== null}
           isLoading={isLoading}
         >
           {isLoading ? 'Debating...' : 'Next Round'}
