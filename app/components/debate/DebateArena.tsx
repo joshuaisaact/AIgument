@@ -24,7 +24,7 @@ export default function DebateArena({ topic, debater1, debater2, onReset }: Deba
     error,
     resetDebate,
     handleResponseComplete
-  } = useDebateState({ topic, debater1, debater2, spiciness: 'medium' });
+  } = useDebateState();
 
   const {
     isLoading,
