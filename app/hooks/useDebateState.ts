@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 
 export class DebateError extends Error {
-  constructor(message: string, public code: 'MODEL_PROVIDER_ERROR' | 'STREAM_ERROR' | 'UNKNOWN_ERROR') {
+  constructor(message: string, public code: 'MODEL_PROVIDER_ERROR' | 'STREAM_ERROR' | 'UNKNOWN_ERROR' | 'API_KEY_MISSING') {
     super(message);
     this.name = 'DebateError';
   }

@@ -96,7 +96,9 @@ export function useDebateStreaming({
       onResponseComplete(accumulatedText);
     } catch (error) {
       console.error(`[useDebateStreaming] Error:`, error);
-      if (error instanceof DebateError) {
+      if (error instanceof Error && error.name === 'MissingApiKeyError') {
+        setError(new DebateError(error.message, 'API_KEY_MISSING'));
+      } else if (error instanceof DebateError) {
         setError(error);
       } else {
         setError(new DebateError(

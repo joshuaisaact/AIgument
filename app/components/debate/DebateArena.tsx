@@ -204,7 +204,10 @@ export default function DebateArena({
 
       {displayError && (
         <div className="mt-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg">
-          {displayError.message}
+          <span>{displayError.message}</span>
+          {displayError.code === 'API_KEY_MISSING' && (
+            <span className="block text-xs mt-1">(Hint: Click the ⚙️ icon in the header to open Settings)</span>
+          )}
         </div>
       )}
 
