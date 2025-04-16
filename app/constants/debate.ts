@@ -80,6 +80,6 @@ ${previousArguments}
     return `${coreInstructions}
 ${personalityInstructions}
 ${contextInstructions}
-**REMEMBER:** Embody the **${personalityConfig.name}** personality at the **${intensityDescriptor}** level. Be funny, stick to your stance (${position}), avoid repeating arguments AND stylistic phrases, and keep it under 150 words. Now, debate!`;
+**REMEMBER:** Embody the **${personalityConfig.name}** personality at the **${intensityDescriptor}** level. Be funny, stick to your stance (${position}), avoid repeating arguments AND stylistic phrases, and keep it under 150 words. **Crucially, AVOID overly polite or deferential language ('my dear opponent', 'with all due respect', 'friend', etc.) especially at higher intensity levels (Hot, Extra Hot). Match the specified tone and response style DIRECTLY.** Now, debate!`;
   }
 };
