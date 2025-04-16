@@ -1,7 +1,6 @@
 import { listDebates } from "@/app/lib/actions/debate";
 import Link from "next/link";
 import { ModelType } from "@/app/hooks/useModelProvider";
-import { MODEL_CONFIGS } from "../constants";
 
 interface ListedDebate {
   id: string;
@@ -44,28 +43,23 @@ export default async function DebatesListPage() {
         {!error && debates.length > 0 && (
           <ul className="space-y-4">
             {debates.map((debate) => {
-              const proModelConfig = MODEL_CONFIGS[debate.pro_model];
-              const conModelConfig = MODEL_CONFIGS[debate.con_model];
-              const dateString = new Date(debate.created_at).toLocaleDateString();
+              const dateString = new Date(debate.created_at).toLocaleDateString(undefined, {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
 
               return (
                 <li key={debate.id} className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <Link href={`/debate/${debate.id}`} className="block">
-                    <h2 className="text-lg font-semibold mb-2 text-blue-600 dark:text-blue-400 hover:underline">
-                      {debate.topic}
-                    </h2>
-                    <div className="flex flex-wrap items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                      <div className="flex items-center gap-2 mb-1 sm:mb-0">
-                        <span className="font-medium">For:</span>
-                        {proModelConfig && <img src={proModelConfig.logo} alt="" className="w-3 h-3 dark:invert dark:opacity-80" />}
-                        <span>{proModelConfig?.name || debate.pro_model}</span>
-                      </div>
-                      <div className="flex items-center gap-2 mb-1 sm:mb-0">
-                        <span className="font-medium">Against:</span>
-                         {conModelConfig && <img src={conModelConfig.logo} alt="" className="w-3 h-3 dark:invert dark:opacity-80" />}
-                         <span>{conModelConfig?.name || debate.con_model}</span>
-                      </div>
-                      <span className="flex-shrink-0">{dateString}</span>
+                    <div className="flex justify-between items-center mb-1">
+                      <h2 className="text-lg font-semibold text-blue-600 dark:text-blue-400 hover:underline truncate mr-4">
+                        {debate.topic}
+                      </h2>
+                      <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                        {dateString}
+                      </span>
                     </div>
                   </Link>
                 </li>
