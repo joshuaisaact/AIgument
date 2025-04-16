@@ -15,7 +15,20 @@ const geist = Geist({
 
 export const metadata: Metadata = {
   title: "AIgument - Watch AI Models Debate",
-  description: "Watch AI models debate and decide who wins!",
+  description: "Watch AI models debate and decide who wins! Pit different models with unique personalities against each other.",
+  openGraph: {
+    title: "AIgument - Watch AI Models Debate",
+    description: "Watch AI models debate and decide who wins! Pit different models with unique personalities against each other.",
+    url: "https://aigument.vercel.app/",
+    siteName: 'AIgument',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "AIgument - Watch AI Models Debate",
+    description: "Watch AI models debate and decide who wins! Pit different models with unique personalities against each other.",
+  },
 };
 
 export default function RootLayout({
