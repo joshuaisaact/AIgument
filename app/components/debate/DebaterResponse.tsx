@@ -1,7 +1,8 @@
+import React from 'react';
+import { MODEL_CONFIGS } from '../../constants/models';
 import { ModelType } from '../../hooks/useModelProvider';
 import { ReactNode } from 'react';
-import { MODEL_CONFIGS } from '../../constants/debate';
-import Image from 'next/image';
+import ModelLogo from '../ui/ModelLogo';
 
 interface DebaterResponseProps {
   position: 'For' | 'Against';
@@ -10,7 +11,6 @@ interface DebaterResponseProps {
 }
 
 export default function DebaterResponse({ position, model, children }: DebaterResponseProps) {
-  const modelConfig = MODEL_CONFIGS[model];
   const headerId = `response-header-${position}-${model}`;
 
   return (
@@ -24,21 +24,8 @@ export default function DebaterResponse({ position, model, children }: DebaterRe
             {position}
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <Image
-              src={modelConfig.logo}
-              alt={modelConfig.alt}
-              width={16}
-              height={16}
-              className="h-4 w-4 dark:hidden"
-            />
-            <Image
-              src={modelConfig.logo.replace('.svg', '-light.svg')}
-              alt={modelConfig.alt}
-              width={16}
-              height={16}
-              className="h-4 w-4 hidden dark:block"
-            />
-            <span>{modelConfig.name}</span>
+            <ModelLogo modelId={model} className="h-4 w-4" />
+            <span>{MODEL_CONFIGS[model].name}</span>
           </div>
         </div>
         <div className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">

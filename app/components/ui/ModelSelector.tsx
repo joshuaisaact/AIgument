@@ -1,6 +1,6 @@
 "use client";
 
-import { MODEL_CONFIGS } from '../../constants/debate';
+import { MODEL_CONFIGS } from '../../constants/models';
 import { ModelType } from '../../hooks/useModelProvider';
 import { useState } from 'react';
 import ModelLogo from './ModelLogo';

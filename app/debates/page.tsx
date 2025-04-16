@@ -1,25 +1,21 @@
 import { listDebates } from "@/app/lib/actions/debate";
 import Link from "next/link";
-import { MODEL_CONFIGS } from "@/app/constants/debate";
-// import { formatDistanceToNow } from 'date-fns'; // Removed for now
-import { ModelType } from "@/app/hooks/useModelProvider"; // Import ModelType
+import { ModelType } from "@/app/hooks/useModelProvider";
+import { MODEL_CONFIGS } from "../constants";
 
-// Define the expected shape of a listed debate
 interface ListedDebate {
   id: string;
   topic: string;
   pro_model: ModelType;
   con_model: ModelType;
-  created_at: string | Date; // Allow string or Date
+  created_at: string | Date;
 }
 
 export default async function DebatesListPage() {
-  // Explicitly type the debates array
   let debates: ListedDebate[] = [];
   let error: string | null = null;
 
   try {
-    // Cast the result to ensure type safety
     debates = await listDebates() as ListedDebate[];
   } catch (err) {
     console.error(err);
@@ -47,12 +43,9 @@ export default async function DebatesListPage() {
 
         {!error && debates.length > 0 && (
           <ul className="space-y-4">
-            {/* Explicitly type `debate` in the map function if needed, though inference should work now */}
             {debates.map((debate) => {
-              // Types should now be inferred correctly from ListedDebate[]
               const proModelConfig = MODEL_CONFIGS[debate.pro_model];
               const conModelConfig = MODEL_CONFIGS[debate.con_model];
-              // Display simple date string instead of relative time
               const dateString = new Date(debate.created_at).toLocaleDateString();
 
               return (
@@ -72,7 +65,6 @@ export default async function DebatesListPage() {
                          {conModelConfig && <img src={conModelConfig.logo} alt="" className="w-3 h-3 dark:invert dark:opacity-80" />}
                          <span>{conModelConfig?.name || debate.con_model}</span>
                       </div>
-                      {/* Use simple date string */}
                       <span className="flex-shrink-0">{dateString}</span>
                     </div>
                   </Link>

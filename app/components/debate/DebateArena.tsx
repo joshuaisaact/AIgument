@@ -8,7 +8,7 @@ import { useDebateState } from '../../hooks/useDebateState';
 import { useDebateStreaming } from '../../hooks/useDebateStreaming';
 import { Button } from '../ui/Button';
 import { saveDebate } from '../../lib/actions/debate';
-import { MODEL_CONFIGS } from '../../constants/debate';
+import { MODEL_CONFIGS } from '../../constants/models';
 import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { PERSONALITY_CONFIGS, PersonalityId, SPICINESS_CONFIGS } from "@/app/constants";

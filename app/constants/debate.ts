@@ -1,4 +1,3 @@
-import { ModelType } from '../hooks/useModelProvider';
 import { PERSONALITY_CONFIGS, PersonalityId } from './personalities';
 import { SPICINESS_CONFIGS, SpicinessLevel } from './spiciness';
 
@@ -82,62 +81,5 @@ ${previousArguments}
 ${personalityInstructions}
 ${contextInstructions}
 **REMEMBER:** Embody the **${personalityConfig.name}** personality at the **${intensityDescriptor}** level. Be funny, stick to your stance (${position}), avoid repeating arguments AND stylistic phrases, and keep it under 150 words. Now, debate!`;
-  }
-};
-
-export const MODEL_CONFIGS: Record<ModelType, { name: string; logo: string; alt: string; description: string; }> = {
-  gpt4o: {
-    name: 'ChatGPT-4 Omni',
-    logo: '/openai.svg',
-    alt: 'ChatGPT-4 Omni',
-    description: 'OpenAI\'s latest flagship model.'
-  },
-  gpt4: {
-    name: 'ChatGPT-4 Turbo',
-    logo: '/openai.svg',
-    alt: 'ChatGPT-4 Turbo (latest)',
-    description: 'OpenAI\'s most capable model.'
-  },
-  gpt35: {
-    name: 'ChatGPT-3.5 Turbo',
-    logo: '/openai.svg',
-    alt: 'ChatGPT-3.5 Turbo (latest)',
-    description: 'Fast and affordable model.'
-  },
-  'claude-sonnet': {
-    name: 'Claude 3.7 Sonnet',
-    logo: '/anthropic.svg',
-    alt: 'Claude 3.7 Sonnet (latest)',
-    description: 'Anthropic\'s latest powerful model.'
-  },
-  'claude-haiku': {
-    name: 'Claude 3.5 Haiku',
-    logo: '/anthropic.svg',
-    alt: 'Claude 3.5 Haiku (latest)',
-    description: 'Anthropic\'s fastest, compact model.'
-  },
-  'gemini-flash': {
-    name: 'Gemini 2.0 Flash',
-    logo: '/google.svg',
-    alt: 'Gemini 1.5 Flash',
-    description: 'Google\'s fast multimodal model.'
-  },
-  'gemini-pro': {
-    name: 'Gemini 2.5 Pro',
-    logo: '/google.svg',
-    alt: 'Gemini 1.5 Pro',
-    description: 'Google\'s latest capable model.'
-  },
-  'grok-3': {
-    name: 'Grok 3',
-    logo: '/xai.svg', // Assuming you have or will add an xai.svg logo
-    alt: 'Grok 3',
-    description: 'xAI\'s large conversational model.'
-  },
-  'grok-3-mini': {
-    name: 'Grok 3 Mini',
-    logo: '/xai.svg', // Assuming you have or will add an xai.svg logo
-    alt: 'Grok 3 Mini',
-    description: 'xAI\'s smaller, faster model.'
   }
 };
