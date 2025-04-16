@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { ApiKeySettings } from '../settings/ApiKeySettings';
 import { ThemeToggle } from './ThemeToggle';
 import { useState } from 'react';
+import Image from 'next/image';
+import { Library } from 'lucide-react';
 
 export function Header() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -16,9 +18,29 @@ export function Header() {
             <span className="text-blue-600 dark:text-blue-400">AI</span>gument
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/debates" className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-              Browse Debates
+            <Link
+              href="/debates"
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+              aria-label="View Saved Debates"
+              title="View Saved Debates"
+            >
+              <Library className="w-6 h-6 text-gray-800 dark:text-gray-200" />
             </Link>
+            <a
+              href="https://github.com/joshuaisaact/AIgument"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+              aria-label="GitHub Repository"
+            >
+              <Image
+                src="/github.svg"
+                alt="GitHub Logo"
+                width={24}
+                height={24}
+                className="w-6 h-6 text-gray-800 dark:text-gray-200 dark:invert"
+              />
+            </a>
             <ThemeToggle />
             <button
               onClick={() => setIsSettingsOpen(true)}

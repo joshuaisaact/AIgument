@@ -1,6 +1,7 @@
 import DebaterResponse from './DebaterResponse';
 import ModelLogo from '../ui/ModelLogo';
 import { ModelType } from '../../hooks/useModelProvider';
+import { MODEL_CONFIGS } from '../../constants/models';
 
 interface SharedDebateViewProps {
   debate: {
@@ -30,21 +31,27 @@ export default function SharedDebateView({ debate }: SharedDebateViewProps) {
       className="max-w-4xl mx-auto p-4 space-y-8"
       aria-labelledby={sectionLabelId}
     >
-      <header className="text-center">
+      <header className="mb-8">
         <h1
           id={sectionLabelId}
-          className="text-2xl font-bold text-gray-900 dark:text-white"
+          className="text-2xl font-bold text-gray-900 dark:text-white text-center"
         >
           {debate.debate.topic}
         </h1>
-        <div className="flex justify-center gap-4 mt-2">
-          <div className="flex items-center gap-2">
-            <ModelLogo modelId={debate.debate.pro_model} />
-            <span className="text-sm text-gray-600 dark:text-gray-400">For</span>
+        <div className="mt-3 flex justify-between items-start text-sm">
+          <div className="text-left">
+            <span className="font-semibold text-blue-700 dark:text-blue-400 block">For</span>
+            <div className="flex items-center gap-1.5 mt-1">
+              <ModelLogo modelId={debate.debate.pro_model} className="w-4 h-4" />
+              <span className="text-gray-800 dark:text-gray-200">{MODEL_CONFIGS[debate.debate.pro_model]?.name || debate.debate.pro_model}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <ModelLogo modelId={debate.debate.con_model} />
-            <span className="text-sm text-gray-600 dark:text-gray-400">Against</span>
+          <div className="text-right">
+            <span className="font-semibold text-red-700 dark:text-red-400 block">Against</span>
+            <div className="flex items-center justify-end gap-1.5 mt-1">
+              <span className="text-gray-800 dark:text-gray-200">{MODEL_CONFIGS[debate.debate.con_model]?.name || debate.debate.con_model}</span>
+              <ModelLogo modelId={debate.debate.con_model} className="w-4 h-4" />
+            </div>
           </div>
         </div>
       </header>

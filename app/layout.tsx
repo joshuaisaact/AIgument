@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "./components/layout/Header";
+import { Footer } from "./components/layout/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
@@ -33,10 +34,11 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${geist.variable} antialiased`}>
+      <body className={`${geist.variable} antialiased flex flex-col min-h-screen`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
-          {children}
+          <main className="flex-grow">{children}</main>
+          <Footer />
           <Analytics/>
           <Toaster richColors position="top-center" />
         </ThemeProvider>

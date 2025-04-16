@@ -6,6 +6,7 @@ import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { saveApiKeys } from '@/app/lib/actions/settings';
 import { X } from 'lucide-react';
+import Image from 'next/image';
 
 interface ApiKeySettingsProps {
   isOpen: boolean;
@@ -108,7 +109,7 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="openaiKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                <img src="/openai.svg" alt="OpenAI Logo" className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
+                <Image src="/openai.svg" alt="OpenAI Logo" width={20} height={20} className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
                 OpenAI API Key
               </label>
               <input
@@ -126,7 +127,7 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="anthropicKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                <img src="/anthropic.svg" alt="Anthropic Logo" className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
+                <Image src="/anthropic.svg" alt="Anthropic Logo" width={20} height={20} className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
                 Anthropic API Key
               </label>
               <input
@@ -144,7 +145,7 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="googleKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                <img src="/google.svg" alt="Google Logo" className="w-5 h-5 mr-2 inline-block align-middle" />
+                <Image src="/google.svg" alt="Google Logo" width={20} height={20} className="w-5 h-5 mr-2 inline-block align-middle" />
                 Google API Key
               </label>
               <input
@@ -162,7 +163,7 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="xaiKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                <img src="/xai.svg" alt="xAI Logo" className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
+                <Image src="/xai.svg" alt="xAI Logo" width={20} height={20} className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
                 xAI API Key
               </label>
               <input
