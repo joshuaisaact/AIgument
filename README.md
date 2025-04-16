@@ -2,6 +2,8 @@
 
 Watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out and decide who wins.
 
+![AIgument Preview](https://aigument.vercel.app/aigument-preview.png)
+
 ## Features
 
 - Watch different AI models debate each other
