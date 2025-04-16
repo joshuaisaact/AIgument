@@ -109,6 +109,8 @@ export default function DebateArena({
         topic,
         proModel: debater1Model,
         conModel: debater2Model,
+        proPersonality: debater1Personality,
+        conPersonality: debater2Personality,
         messages,
         spiciness
       });
@@ -123,7 +125,7 @@ export default function DebateArena({
     } finally {
       setIsSaving(false);
     }
-  }, [rounds, topic, debater1Model, debater2Model, spiciness]);
+  }, [rounds, topic, debater1Model, debater2Model, spiciness, debater1Personality, debater2Personality]);
 
   const handleOpenSaveModal = () => {
     setIsConfirmModalOpen(true);

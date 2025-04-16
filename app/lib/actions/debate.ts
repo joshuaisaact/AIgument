@@ -3,11 +3,14 @@
 import { db } from '../db/client';
 import { v4 as uuidv4 } from 'uuid';
 import { ModelType } from '@/app/hooks/useModelProvider';
+import { PersonalityId } from '@/app/constants';
 
 interface SaveDebateParams {
   topic: string;
   proModel: string;
   conModel: string;
+  proPersonality: PersonalityId;
+  conPersonality: PersonalityId;
   messages: Array<{
     role: 'pro' | 'con';
     content: string;
@@ -20,6 +23,8 @@ interface Debate {
   topic: string;
   pro_model: ModelType;
   con_model: ModelType;
+  pro_personality: PersonalityId;
+  con_personality: PersonalityId;
   created_at: string;
   updated_at: string;
 }
@@ -32,14 +37,22 @@ interface DebateMessage {
   created_at: string;
 }
 
-export async function saveDebate({ topic, proModel, conModel, messages, spiciness = 'medium' }: SaveDebateParams) {
+export async function saveDebate({
+  topic,
+  proModel,
+  conModel,
+  proPersonality,
+  conPersonality,
+  messages,
+  spiciness = 'medium'
+}: SaveDebateParams) {
   const debateId = uuidv4();
 
   try {
-    // Insert debate
+    // Insert debate with personalities
     await db`
-      INSERT INTO debates (id, topic, pro_model, con_model, spiciness)
-      VALUES (${debateId}, ${topic}, ${proModel}, ${conModel}, ${spiciness})
+      INSERT INTO debates (id, topic, pro_model, con_model, pro_personality, con_personality, spiciness)
+      VALUES (${debateId}, ${topic}, ${proModel}, ${conModel}, ${proPersonality}, ${conPersonality}, ${spiciness})
     `;
 
     // Insert messages
@@ -66,7 +79,8 @@ export async function saveDebate({ topic, proModel, conModel, messages, spicines
 export async function getDebate(id: string) {
   try {
     const debate = (await db`
-      SELECT * FROM debates WHERE id = ${id}
+      SELECT id, topic, pro_model, con_model, pro_personality, con_personality, created_at, updated_at
+      FROM debates WHERE id = ${id}
     `) as Debate[];
 
     if (!debate || debate.length === 0) {
