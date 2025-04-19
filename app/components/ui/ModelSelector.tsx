@@ -81,7 +81,10 @@ export default function ModelSelector({
               <ModelLogo modelId={id as ModelType} className="w-5 h-5 flex-shrink-0" />
               <div className="flex flex-col">
                 <span className="font-medium text-sm">{config.name}</span>
-                <span className={`text-xs ${id === value ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>{config.description}</span>
+                <span
+                  className={`text-xs ${id === value ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}
+                  dangerouslySetInnerHTML={{ __html: config.description }}
+                />
               </div>
             </button>
           ))}
