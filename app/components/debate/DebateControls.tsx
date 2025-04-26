@@ -1,13 +1,13 @@
 "use client";
 
-import ModelSelector from '../ui/ModelSelector';
-import PersonalitySelector from '../ui/PersonalitySelector';
-import TopicInput from '../ui/TopicInput';
-import { ModelType } from '../../hooks/useModelProvider';
-import { Button } from '../ui/Button';
-import { SpicinessSelector } from '../ui/SpicinessSelector';
-import { SpicinessLevel } from '../../constants/spiciness';
-import { PersonalityId } from '@/app/constants';
+import ModelSelector from "../ui/ModelSelector";
+import PersonalitySelector from "../ui/PersonalitySelector";
+import TopicInput from "../ui/TopicInput";
+import { ModelType } from "../../hooks/useModelProvider";
+import { Button } from "../ui/Button";
+import { SpicinessSelector } from "../ui/SpicinessSelector";
+import { SpicinessLevel } from "../../constants/spiciness";
+import { PersonalityId } from "@/app/constants";
 
 export interface DebaterConfig {
   model: ModelType;
@@ -25,6 +25,7 @@ interface DebateControlsProps {
   setSpiciness: (value: SpicinessLevel) => void;
   onStartDebate: () => void;
   isPending?: boolean;
+  disableModelSelection?: boolean;
 }
 
 export default function DebateControls({
@@ -38,6 +39,7 @@ export default function DebateControls({
   setSpiciness,
   onStartDebate,
   isPending = false,
+  disableModelSelection = false,
 }: DebateControlsProps) {
   const handleDebater1ModelChange = (model: ModelType) => {
     setDebater1Config({ ...debater1Config, model });
@@ -57,11 +59,14 @@ export default function DebateControls({
       <TopicInput value={topic} onChange={setTopic} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border p-4 rounded-lg bg-blue-50/30 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800/30">
-        <h3 className="md:col-span-2 text-lg font-semibold text-blue-800 dark:text-blue-300 border-b pb-2 mb-2 border-blue-200 dark:border-blue-800/50">Debater 1 (For)</h3>
+        <h3 className="md:col-span-2 text-lg font-semibold text-blue-800 dark:text-blue-300 border-b pb-2 mb-2 border-blue-200 dark:border-blue-800/50">
+          Debater 1 (For)
+        </h3>
         <ModelSelector
           label="Model"
           value={debater1Config.model}
           onChange={handleDebater1ModelChange}
+          disabled={disableModelSelection}
         />
         <PersonalitySelector
           label="For"
@@ -71,11 +76,14 @@ export default function DebateControls({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border p-4 rounded-lg bg-red-50/30 dark:bg-red-900/10 border-red-200 dark:border-red-800/30">
-        <h3 className="md:col-span-2 text-lg font-semibold text-red-800 dark:text-red-300 border-b pb-2 mb-2 border-red-200 dark:border-red-800/50">Debater 2 (Against)</h3>
+        <h3 className="md:col-span-2 text-lg font-semibold text-red-800 dark:text-red-300 border-b pb-2 mb-2 border-red-200 dark:border-red-800/50">
+          Debater 2 (Against)
+        </h3>
         <ModelSelector
           label="Model"
           value={debater2Config.model}
           onChange={handleDebater2ModelChange}
+          disabled={disableModelSelection}
         />
         <PersonalitySelector
           label="Against"
