@@ -1,12 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { getApiKey, clearApiKey, setApiKey } from '../../lib/storage/apiKeyStorage';
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
-import { saveApiKeys } from '@/app/lib/actions/settings';
-import { X } from 'lucide-react';
-import Image from 'next/image';
+import { useState, useEffect } from "react";
+import {
+  getApiKey,
+  clearApiKey,
+  setApiKey,
+} from "../../lib/storage/apiKeyStorage";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import { saveApiKeys } from "@/app/lib/actions/settings";
+import { X } from "lucide-react";
+import Image from "next/image";
 
 interface ApiKeySettingsProps {
   isOpen: boolean;
@@ -21,59 +25,61 @@ function SubmitButton() {
       disabled={pending}
       className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 cursor-pointer"
     >
-      {pending ? 'Saving...' : 'Save API Keys'}
+      {pending ? "Saving..." : "Save API Keys"}
     </button>
   );
 }
 
 export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
-  const [openaiKey, setOpenaiKey] = useState('');
-  const [anthropicKey, setAnthropicKey] = useState('');
-  const [googleKey, setGoogleKey] = useState('');
-  const [xaiKey, setXaiKey] = useState('');
-  const [state, formAction] = useActionState(saveApiKeys, { success: null, error: null });
+  const [openaiKey, setOpenaiKey] = useState("");
+  const [anthropicKey, setAnthropicKey] = useState("");
+  const [googleKey, setGoogleKey] = useState("");
+  const [xaiKey, setXaiKey] = useState("");
+  const [state, formAction] = useActionState(saveApiKeys, {
+    success: null,
+    error: null,
+  });
 
   useEffect(() => {
     if (isOpen) {
-      const storedOpenaiKey = getApiKey('openai');
-      const storedAnthropicKey = getApiKey('anthropic');
-      const storedGoogleKey = getApiKey('google');
-      const storedXaiKey = getApiKey('xai');
+      const storedOpenaiKey = getApiKey("openai");
+      const storedAnthropicKey = getApiKey("anthropic");
+      const storedGoogleKey = getApiKey("google");
+      const storedXaiKey = getApiKey("xai");
 
-      setOpenaiKey(storedOpenaiKey || '');
-      setAnthropicKey(storedAnthropicKey || '');
-      setGoogleKey(storedGoogleKey || '');
-      setXaiKey(storedXaiKey || '');
+      setOpenaiKey(storedOpenaiKey || "");
+      setAnthropicKey(storedAnthropicKey || "");
+      setGoogleKey(storedGoogleKey || "");
+      setXaiKey(storedXaiKey || "");
     }
   }, [isOpen]);
 
   useEffect(() => {
     if (state.validatedKeys) {
-      console.log("Validated keys received, saving:", state.validatedKeys);
       if (state.validatedKeys.openaiKey) {
-        setApiKey(state.validatedKeys.openaiKey, 'openai');
+        setApiKey(state.validatedKeys.openaiKey, "openai");
       }
       if (state.validatedKeys.anthropicKey) {
-        setApiKey(state.validatedKeys.anthropicKey, 'anthropic');
+        setApiKey(state.validatedKeys.anthropicKey, "anthropic");
       }
       if (state.validatedKeys.googleKey) {
-        setApiKey(state.validatedKeys.googleKey, 'google');
+        setApiKey(state.validatedKeys.googleKey, "google");
       }
       if (state.validatedKeys.xaiKey) {
-        setApiKey(state.validatedKeys.xaiKey, 'xai');
+        setApiKey(state.validatedKeys.xaiKey, "xai");
       }
     }
   }, [state.validatedKeys]);
 
   const handleClearKeys = () => {
-    clearApiKey('openai');
-    clearApiKey('anthropic');
-    clearApiKey('google');
-    clearApiKey('xai');
-    setOpenaiKey('');
-    setAnthropicKey('');
-    setGoogleKey('');
-    setXaiKey('');
+    clearApiKey("openai");
+    clearApiKey("anthropic");
+    clearApiKey("google");
+    clearApiKey("xai");
+    setOpenaiKey("");
+    setAnthropicKey("");
+    setGoogleKey("");
+    setXaiKey("");
   };
 
   if (!isOpen) return null;
@@ -100,7 +106,8 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
           API Key Settings
         </h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Your API keys are stored locally in your browser and never sent to our servers.
+          Your API keys are stored locally in your browser and never sent to our
+          servers.
         </p>
         <form action={formAction}>
           <div className="space-y-4">
@@ -109,7 +116,13 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="openaiKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                <Image src="/openai.svg" alt="OpenAI Logo" width={20} height={20} className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
+                <Image
+                  src="/openai.svg"
+                  alt="OpenAI Logo"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5 mr-2 inline-block align-middle dark:invert"
+                />
                 OpenAI API Key
               </label>
               <input
@@ -127,7 +140,13 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="anthropicKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                <Image src="/anthropic.svg" alt="Anthropic Logo" width={20} height={20} className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
+                <Image
+                  src="/anthropic.svg"
+                  alt="Anthropic Logo"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5 mr-2 inline-block align-middle dark:invert"
+                />
                 Anthropic API Key
               </label>
               <input
@@ -145,7 +164,13 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="googleKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                <Image src="/google.svg" alt="Google Logo" width={20} height={20} className="w-5 h-5 mr-2 inline-block align-middle" />
+                <Image
+                  src="/google.svg"
+                  alt="Google Logo"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5 mr-2 inline-block align-middle"
+                />
                 Google API Key
               </label>
               <input
@@ -163,7 +188,13 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 htmlFor="xaiKeyInput"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                <Image src="/xai.svg" alt="xAI Logo" width={20} height={20} className="w-5 h-5 mr-2 inline-block align-middle dark:invert" />
+                <Image
+                  src="/xai.svg"
+                  alt="xAI Logo"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5 mr-2 inline-block align-middle dark:invert"
+                />
                 xAI API Key
               </label>
               <input

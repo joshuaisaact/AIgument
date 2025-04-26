@@ -80,9 +80,9 @@ export const useModelProvider = () => {
             apiKey: getProviderApiKey("google"),
           })("gemini-2.5-pro-exp-03-25");
         case "gemini-2.5-flash":
-          return createGoogleGenerativeAI({
-            apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
-          })("gemini-2.5-flash-preview-04-17");
+          return createGoogleGenerativeAI({ apiKey: undefined })(
+            "gemini-2.5-flash-preview-04-17",
+          );
         case "grok-3":
           return createXai({
             apiKey: getProviderApiKey("xai"),
