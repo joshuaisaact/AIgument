@@ -37,30 +37,41 @@ export function DebateSetup() {
   };
 
   const handleNoApiKeyClick = () => {
-    setNoApiKeyMode(true);
-    setDebater1Config({
-      ...debater1Config,
-      model: "gemini-2.5-flash",
-    });
-    setDebater2Config({
-      ...debater2Config,
-      model: "gemini-2.5-flash",
-    });
+    const nextMode = !noApiKeyMode;
+    setNoApiKeyMode(nextMode);
+
+    if (nextMode) {
+      // Entering no API key mode: set models to flash
+      setDebater1Config({
+        ...debater1Config,
+        model: "gemini-2.5-flash",
+      });
+      setDebater2Config({
+        ...debater2Config,
+        model: "gemini-2.5-flash",
+      });
+    } else {
+      // Exiting no API key mode: models remain as they were (flash),
+      // but selectors become enabled, allowing user to change.
+    }
   };
 
   return (
     <div className="flex flex-col items-center space-y-4">
       <div className="w-full max-w-2xl p-4 rounded-lg bg-blue-50 dark:bg-gray-800/50 border border-blue-200 dark:border-gray-700/60 text-center">
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
-          Don't have API keys? Try a limited demo using Google's model:
+          {noApiKeyMode
+            ? "Demo mode active (Using Gemini 2.5 Flash)."
+            : "Don't have API keys? Try a limited demo using Google's model:"}
         </p>
         <Button
           variant="secondary"
           onClick={handleNoApiKeyClick}
-          disabled={noApiKeyMode}
-          className={noApiKeyMode ? "cursor-not-allowed opacity-70" : ""}
+          className={noApiKeyMode ? "opacity-80" : ""}
         >
-          Use Gemini 2.5 Flash for Both
+          {noApiKeyMode
+            ? "Allow Manual Model Selection"
+            : "Use Gemini 2.5 Flash for Both"}
         </Button>
       </div>
 
