@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     const { messages }: { messages: CoreMessage[] } = await req.json();
 
     const result = await streamText({
-      model: google("gemini-2.5-flash-preview-04-17"),
+      model: google("gemini-2.0-flash-001"),
       prompt: messages.find((m) => m.role === "system")?.content ?? "",
     });
 
