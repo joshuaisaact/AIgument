@@ -1,3 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Special+Elite&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
+@theme {
+    --font-sans: "Outfit", sans-serif;
+    --font-professional: "Playfair Display", serif;
+    --font-pirate: "IM Fell English", serif;
+    --font-noir: "Special Elite", cursive;
+    --font-kids: "Comic Neue", cursive;
+    --font-gaming: "Press Start 2P", cursive;
+    --font-shakespeare: "Crimson Text", serif;
+    --font-puns: "Indie Flower", cursive;
+    --font-emo: "Quicksand", sans-serif;
+    --font-royal: "Fredericka the Great", cursive;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
+

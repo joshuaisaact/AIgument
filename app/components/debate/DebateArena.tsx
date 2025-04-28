@@ -178,12 +178,12 @@ export default function DebateArena({
         {rounds.map((round, index) => (
           <div key={index} className="space-y-4">
             {round.debater1 && (
-              <DebaterResponse position="For" model={debater1Model}>
+              <DebaterResponse position="For" model={debater1Model} personality={debater1Personality}>
                 {round.debater1}
               </DebaterResponse>
             )}
             {round.debater2 && (
-              <DebaterResponse position="Against" model={debater2Model}>
+              <DebaterResponse position="Against" model={debater2Model} personality={debater2Personality}>
                 {round.debater2}
               </DebaterResponse>
             )}
@@ -194,6 +194,7 @@ export default function DebateArena({
           <DebaterResponse
             position={currentDebater === 'debater1' ? 'For' : 'Against'}
             model={currentModel}
+            personality={currentDebater === 'debater1' ? debater1Personality : debater2Personality}
           >
             {streamingText}
           </DebaterResponse>

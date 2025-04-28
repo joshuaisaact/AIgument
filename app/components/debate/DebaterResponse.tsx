@@ -3,15 +3,49 @@ import { MODEL_CONFIGS } from '../../constants/models';
 import { ModelType } from '../../hooks/useModelProvider';
 import { ReactNode } from 'react';
 import ModelLogo from '../ui/ModelLogo';
+import { PersonalityId } from '../../constants';
 
 interface DebaterResponseProps {
   position: 'For' | 'Against';
   model: ModelType;
+  personality: PersonalityId;
   children: ReactNode;
 }
 
-export default function DebaterResponse({ position, model, children }: DebaterResponseProps) {
+export default function DebaterResponse({ position, model, personality, children }: DebaterResponseProps) {
   const headerId = `response-header-${position}-${model}`;
+
+  // Convert asterisks to bold text
+  const formatText = (text: string) => {
+    return text.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+  };
+
+  // Get font class based on personality
+  const getFontClass = (personality: PersonalityId) => {
+    switch (personality) {
+      case 'alfred_butler':
+      case 'passive_aggressive':
+      case 'eccentric_aristocrat':
+      case 'royal_highness':
+        return 'font-professional';
+      case 'pirate':
+        return 'font-pirate';
+      case 'noir_detective':
+        return 'font-noir';
+      case 'shakespearean_actor':
+        return 'font-shakespeare';
+      case 'kids_tv_presenter':
+        return 'font-kids';
+      case 'punslinger':
+        return 'font-puns';
+      case 'gaming_enthusiast':
+        return 'font-gaming';
+      case 'emo_teen':
+        return 'font-emo';
+      default:
+        return 'font-sans';
+    }
+  };
 
   return (
     <article
@@ -28,9 +62,10 @@ export default function DebaterResponse({ position, model, children }: DebaterRe
             <span>{MODEL_CONFIGS[model].name}</span>
           </div>
         </div>
-        <div className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
-          {children}
-        </div>
+        <div
+          className={`text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap ${getFontClass(personality)}`}
+          dangerouslySetInnerHTML={{ __html: formatText(String(children)) }}
+        />
       </div>
     </article>
   );

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
@@ -7,11 +6,6 @@ import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist",
-});
 
 export const metadata: Metadata = {
   title: "AIgument - Watch AI Models Debate",
@@ -39,6 +33,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
         <Script id="dark-mode" strategy="beforeInteractive">
           {`
             if (localStorage.theme === 'dark') {
@@ -47,7 +45,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${geist.variable} antialiased flex flex-col min-h-screen`}>
+      <body className="font-sans antialiased flex flex-col min-h-screen">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
           <main className="flex-grow">{children}</main>

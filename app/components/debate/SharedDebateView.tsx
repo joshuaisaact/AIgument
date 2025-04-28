@@ -70,6 +70,7 @@ export default function SharedDebateView({ debate }: SharedDebateViewProps) {
             key={message.id}
             position={message.role === 'pro' ? 'For' : 'Against'}
             model={message.role === 'pro' ? debate.debate.pro_model : debate.debate.con_model}
+            personality={message.role === 'pro' ? debate.debate.pro_personality : debate.debate.con_personality}
           >
             {message.content}
           </DebaterResponse>
