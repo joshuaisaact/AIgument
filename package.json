@@ -25,9 +25,7 @@
     "build": "pnpm next build",
     "start": "pnpm next start",
     "lint": "pnpm next lint",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:run": "vitest run"
+    "test": "vitest"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.9",
