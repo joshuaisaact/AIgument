@@ -19,7 +19,7 @@ Watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out a
 1. Clone the repository
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 3. Create a `.env.local` file with your API keys:
    ```
@@ -30,7 +30,7 @@ Watch AI models debate! Instead of dry benchmarks, watch two LLMs argue it out a
    ```
 4. Run the development server:
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 ## How to Use
