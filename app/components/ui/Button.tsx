@@ -7,11 +7,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Button({ children, variant = 'primary', isLoading = false, className = '', disabled, ...props }: ButtonProps) {
-  const baseClasses = 'px-4 py-2 rounded-lg transition-colors duration-200';
+  const baseClasses = 'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors';
   const variantClasses = variant === 'primary'
-    ? 'bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-700'
-    : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600';
-  const stateClasses = (isLoading || disabled) ? 'opacity-50 cursor-not-allowed' : '';
+    ? 'bg-ink text-surface hover:opacity-90'
+    : 'border border-rule-strong text-ink hover:bg-surface-sunken';
+  const stateClasses = (isLoading || disabled) ? 'cursor-not-allowed opacity-40' : 'cursor-pointer';
 
   return (
     <button

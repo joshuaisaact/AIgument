@@ -24,30 +24,30 @@ export default function TopicInput({ value, onChange }: TopicInputProps) {
 
   return (
     <div className="w-full">
-      <label htmlFor="topic" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-        Debate Topic
+      <label htmlFor="topic" className="mb-1.5 block text-sm font-medium text-ink-muted">
+        The motion
       </label>
-      <div className="relative group">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg blur-sm group-hover:blur transition-all duration-300" />
+      <div className="relative">
         <input
           type="text"
           id="topic"
           value={value}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
-          placeholder="Enter a topic for debate..."
-          className="relative w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 pr-12 transition-all duration-300 group-hover:bg-white/90 dark:group-hover:bg-gray-800/90"
+          placeholder="This house believes..."
+          className="w-full rounded-md border border-rule bg-surface py-2.5 pr-11 pl-3 text-lg text-ink transition-colors placeholder:text-ink-muted/70 hover:border-rule-strong focus:border-ink focus:outline-none"
         />
         <button
           onClick={handleRandomArgument}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all duration-300 hover:scale-110 active:scale-95 group"
-          title="Get a random debate topic"
+          className="absolute top-1/2 right-1 -translate-y-1/2 rounded-md p-2 text-ink-muted transition-colors hover:text-ink"
+          title="Pick a topic at random"
           type="button"
         >
-          <Shuffle className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" />
+          <Shuffle className="h-4 w-4" />
         </button>
       </div>
-      <p className="text-sm text-gray-500 pt-2">
-        Tip: Make it specific and debatable, e.g., &quot;Should social media companies be responsible for misinformation?&quot;
+      <p className="mt-2 text-sm text-ink-muted">
+        Specific and arguable beats broad. &ldquo;Should social media companies
+        be liable for misinformation?&rdquo;
       </p>
     </div>
   );

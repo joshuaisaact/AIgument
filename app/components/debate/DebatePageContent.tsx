@@ -19,8 +19,8 @@ export function DebatePageContent() {
 
   if (!topic) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]">
-        <p className="text-xl text-gray-600 dark:text-gray-300">No debate topic provided</p>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center">
+        <p className="text-xl text-ink-muted">No debate topic provided.</p>
       </div>
     );
   }

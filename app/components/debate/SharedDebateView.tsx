@@ -34,37 +34,34 @@ export default function SharedDebateView({ debate }: SharedDebateViewProps) {
 
   return (
     <section
-      className="max-w-4xl mx-auto p-4 space-y-8"
+      className="mx-auto w-full max-w-2xl px-4 py-12"
       aria-labelledby={sectionLabelId}
     >
-      <header className="mb-8">
-        <h1
-          id={sectionLabelId}
-          className="text-2xl font-bold text-gray-900 dark:text-white text-center"
-        >
+      <header className="mb-10">
+        <h1 id={sectionLabelId} className="text-2xl font-semibold tracking-tight">
           {debate.debate.topic}
         </h1>
-        <div className="mt-3 flex justify-between items-start text-sm">
-          <div className="text-left">
-            <span className="font-semibold text-blue-700 dark:text-blue-400 block">For</span>
-            <div className="flex items-center gap-1.5 mt-1">
-              <ModelLogo modelId={debate.debate.pro_model} className="w-4 h-4" />
-              <span className="text-gray-800 dark:text-gray-200">{MODEL_CONFIGS[debate.debate.pro_model]?.name || debate.debate.pro_model}</span>
+        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <span className="text-sm font-semibold text-pro">For</span>
+            <div className="mt-1.5 flex items-center gap-1.5 text-sm text-ink">
+              <ModelLogo modelId={debate.debate.pro_model} className="h-4 w-4" />
+              <span>{MODEL_CONFIGS[debate.debate.pro_model]?.name || debate.debate.pro_model}</span>
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">{proPersonalityName}</span>
+            <span className="mt-0.5 block text-xs text-ink-muted">{proPersonalityName}</span>
           </div>
-          <div className="text-right">
-            <span className="font-semibold text-red-700 dark:text-red-400 block">Against</span>
-            <div className="flex items-center justify-end gap-1.5 mt-1">
-              <span className="text-gray-800 dark:text-gray-200">{MODEL_CONFIGS[debate.debate.con_model]?.name || debate.debate.con_model}</span>
-              <ModelLogo modelId={debate.debate.con_model} className="w-4 h-4" />
+          <div className="sm:text-right">
+            <span className="text-sm font-semibold text-con">Against</span>
+            <div className="mt-1.5 flex items-center gap-1.5 text-sm text-ink sm:justify-end">
+              <ModelLogo modelId={debate.debate.con_model} className="h-4 w-4" />
+              <span>{MODEL_CONFIGS[debate.debate.con_model]?.name || debate.debate.con_model}</span>
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">{conPersonalityName}</span>
+            <span className="mt-0.5 block text-xs text-ink-muted">{conPersonalityName}</span>
           </div>
         </div>
       </header>
 
-      <div className="space-y-4">
+      <div className="space-y-8">
         {debate.messages.map((message) => (
           <DebaterResponse
             key={message.id}

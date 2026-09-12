@@ -22,29 +22,23 @@ export default function PersonalitySelector({
   const selectedPersonality = PERSONALITY_CONFIGS[value];
 
   return (
-    <div className="relative group">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg blur-sm group-hover:blur transition-all duration-300 -z-10" />
-      <label
-        id={labelId}
-        className="relative block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
-      >
+    <div className="relative">
+      <label id={labelId} className="mb-1.5 block text-sm font-medium text-ink-muted">
         Personality
       </label>
       <button
         id={buttonId}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-full px-4 py-2 text-left bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm hover:bg-white/90 dark:hover:bg-gray-800/90 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 flex items-center justify-between transition-all duration-300"
+        className="flex w-full items-center justify-between rounded-md border border-rule bg-surface px-3 py-2 text-left transition-colors hover:border-rule-strong focus:border-ink focus:outline-none"
         title={selectedPersonality.description}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-labelledby={`${labelId} ${buttonId}`}
       >
-        <span className="text-gray-700 dark:text-gray-300">
-          {selectedPersonality.name}
-        </span>
+        <span className="text-ink">{selectedPersonality.name}</span>
         <svg
-          className={`w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+          className={`h-4 w-4 text-ink-muted transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -58,7 +52,7 @@ export default function PersonalitySelector({
           id={listboxId}
           role="listbox"
           aria-labelledby={labelId}
-          className="absolute z-50 w-full mt-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-90 overflow-y-auto"
+          className="absolute z-50 mt-1 max-h-90 w-full divide-y divide-rule overflow-y-auto border border-rule-strong bg-surface"
         >
           {Object.entries(PERSONALITY_CONFIGS).map(([id, config]) => (
             <button
@@ -70,13 +64,12 @@ export default function PersonalitySelector({
                 onChange(id as PersonalityId);
                 setIsOpen(false);
               }}
-              className={`w-full px-4 py-2 text-left text-sm hover:bg-blue-50/50 dark:hover:bg-blue-900/20 focus:outline-none focus:bg-blue-50/50 dark:focus:bg-blue-900/20 flex flex-col transition-colors duration-200
-                ${id === value ? 'bg-blue-50 dark:bg-blue-900/30' : ''}
-                ${id === value ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-100'}`}
+              className={`flex w-full flex-col px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-sunken focus:bg-surface-sunken focus:outline-none
+                ${id === value ? 'bg-surface-sunken' : ''}`}
               title={config.description}
             >
               <span className="font-medium">{config.name}</span>
-              <span className={`text-xs ${id === value ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>{config.description}</span>
+              <span className="text-xs text-ink-muted">{config.description}</span>
             </button>
           ))}
         </div>
