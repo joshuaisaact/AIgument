@@ -23,9 +23,9 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 cursor-pointer"
+      className="cursor-pointer rounded-md bg-ink px-4 py-2 text-sm font-medium text-surface transition-colors hover:opacity-90 disabled:opacity-40"
     >
-      {pending ? "Saving..." : "Save API Keys"}
+      {pending ? "Saving..." : "Save keys"}
     </button>
   );
 }
@@ -86,44 +86,43 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="apiKeySettingsHeading"
     >
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full relative">
+      <div className="relative w-full max-w-md rounded-md border border-rule bg-surface p-6">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
+          className="absolute top-4 right-4 cursor-pointer rounded-md p-1 text-ink-muted transition-colors hover:text-ink"
           aria-label="Close"
         >
-          <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+          <X className="h-4 w-4" />
         </button>
         <h2
           id="apiKeySettingsHeading"
-          className="text-xl font-bold mb-4 text-gray-900 dark:text-white"
+          className="mb-2 text-lg font-semibold"
         >
-          API Key Settings
+          API keys
         </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Your API keys are stored locally in your browser and never sent to our
-          servers.
+        <p className="mb-5 text-sm text-ink-muted">
+          Keys are stored locally in your browser and never sent to our servers.
         </p>
         <form action={formAction}>
           <div className="space-y-4">
             <div>
               <label
                 htmlFor="openaiKeyInput"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                className="mb-1.5 block text-sm font-medium text-ink-muted"
               >
                 <Image
                   src="/openai.svg"
                   alt="OpenAI Logo"
                   width={20}
                   height={20}
-                  className="w-5 h-5 mr-2 inline-block align-middle dark:invert"
+                  className="mr-1.5 inline-block h-4 w-4 align-middle dark:invert"
                 />
-                OpenAI API Key
+                OpenAI
               </label>
               <input
                 id="openaiKeyInput"
@@ -132,22 +131,22 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 value={openaiKey}
                 onChange={(e) => setOpenaiKey(e.target.value)}
                 placeholder="sk-... (starts with sk-)"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full rounded-md border border-rule bg-surface px-3 py-2 font-mono text-sm text-ink transition-colors placeholder:text-ink-muted/70 hover:border-rule-strong focus:border-ink focus:outline-none"
               />
             </div>
             <div>
               <label
                 htmlFor="anthropicKeyInput"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                className="mb-1.5 block text-sm font-medium text-ink-muted"
               >
                 <Image
                   src="/anthropic.svg"
                   alt="Anthropic Logo"
                   width={20}
                   height={20}
-                  className="w-5 h-5 mr-2 inline-block align-middle dark:invert"
+                  className="mr-1.5 inline-block h-4 w-4 align-middle dark:invert"
                 />
-                Anthropic API Key
+                Anthropic
               </label>
               <input
                 id="anthropicKeyInput"
@@ -156,22 +155,22 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 value={anthropicKey}
                 onChange={(e) => setAnthropicKey(e.target.value)}
                 placeholder="sk-ant-... (starts with sk-ant-)"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full rounded-md border border-rule bg-surface px-3 py-2 font-mono text-sm text-ink transition-colors placeholder:text-ink-muted/70 hover:border-rule-strong focus:border-ink focus:outline-none"
               />
             </div>
             <div>
               <label
                 htmlFor="googleKeyInput"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                className="mb-1.5 block text-sm font-medium text-ink-muted"
               >
                 <Image
                   src="/google.svg"
                   alt="Google Logo"
                   width={20}
                   height={20}
-                  className="w-5 h-5 mr-2 inline-block align-middle"
+                  className="mr-1.5 inline-block h-4 w-4 align-middle"
                 />
-                Google API Key
+                Google
               </label>
               <input
                 id="googleKeyInput"
@@ -180,22 +179,22 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 value={googleKey}
                 onChange={(e) => setGoogleKey(e.target.value)}
                 placeholder="AIza... (starts with AIza)"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full rounded-md border border-rule bg-surface px-3 py-2 font-mono text-sm text-ink transition-colors placeholder:text-ink-muted/70 hover:border-rule-strong focus:border-ink focus:outline-none"
               />
             </div>
             <div>
               <label
                 htmlFor="xaiKeyInput"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                className="mb-1.5 block text-sm font-medium text-ink-muted"
               >
                 <Image
                   src="/xai.svg"
                   alt="xAI Logo"
                   width={20}
                   height={20}
-                  className="w-5 h-5 mr-2 inline-block align-middle dark:invert"
+                  className="mr-1.5 inline-block h-4 w-4 align-middle dark:invert"
                 />
-                xAI API Key
+                xAI
               </label>
               <input
                 id="xaiKeyInput"
@@ -204,25 +203,25 @@ export function ApiKeySettings({ isOpen, onClose }: ApiKeySettingsProps) {
                 value={xaiKey}
                 onChange={(e) => setXaiKey(e.target.value)}
                 placeholder="gsk-... (starts with gsk_)"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full rounded-md border border-rule bg-surface px-3 py-2 font-mono text-sm text-ink transition-colors placeholder:text-ink-muted/70 hover:border-rule-strong focus:border-ink focus:outline-none"
               />
             </div>
           </div>
-          <div className="mt-6 flex justify-end gap-3">
+          <div className="mt-6 flex justify-end gap-3 border-t border-rule pt-5">
             <button
               type="button"
               onClick={handleClearKeys}
-              className="px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/30 cursor-pointer"
+              className="cursor-pointer rounded-md px-4 py-2 text-sm font-medium text-con transition-colors hover:bg-surface-sunken"
             >
-              Clear Keys
+              Clear keys
             </button>
             <SubmitButton />
           </div>
           {state.error && (
-            <p className="mt-4 text-red-500 text-sm">{state.error}</p>
+            <p className="mt-4 text-sm text-con">{state.error}</p>
           )}
           {state.success && (
-            <p className="mt-4 text-green-500 text-sm">{state.success}</p>
+            <p className="mt-4 text-sm text-ink-muted">{state.success}</p>
           )}
         </form>
       </div>

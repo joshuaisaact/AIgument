@@ -55,41 +55,43 @@ export default function DebateControls({
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
+    <div className="space-y-8">
       <TopicInput value={topic} onChange={setTopic} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border p-4 rounded-lg bg-blue-50/30 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800/30">
-        <h3 className="md:col-span-2 text-lg font-semibold text-blue-800 dark:text-blue-300 border-b pb-2 mb-2 border-blue-200 dark:border-blue-800/50">
-          Debater 1 (For)
-        </h3>
-        <ModelSelector
-          label="Model"
-          value={debater1Config.model}
-          onChange={handleDebater1ModelChange}
-          disabled={disableModelSelection}
-        />
-        <PersonalitySelector
-          label="For"
-          value={debater1Config.personality}
-          onChange={handleDebater1PersonalityChange}
-        />
-      </div>
+      <div className="space-y-6">
+        <section className="rounded-md border border-rule p-4">
+          <h3 className="mb-4 text-sm font-semibold text-pro">For the motion</h3>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <ModelSelector
+              label="Model"
+              value={debater1Config.model}
+              onChange={handleDebater1ModelChange}
+              disabled={disableModelSelection}
+            />
+            <PersonalitySelector
+              label="For"
+              value={debater1Config.personality}
+              onChange={handleDebater1PersonalityChange}
+            />
+          </div>
+        </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border p-4 rounded-lg bg-red-50/30 dark:bg-red-900/10 border-red-200 dark:border-red-800/30">
-        <h3 className="md:col-span-2 text-lg font-semibold text-red-800 dark:text-red-300 border-b pb-2 mb-2 border-red-200 dark:border-red-800/50">
-          Debater 2 (Against)
-        </h3>
-        <ModelSelector
-          label="Model"
-          value={debater2Config.model}
-          onChange={handleDebater2ModelChange}
-          disabled={disableModelSelection}
-        />
-        <PersonalitySelector
-          label="Against"
-          value={debater2Config.personality}
-          onChange={handleDebater2PersonalityChange}
-        />
+        <section className="rounded-md border border-rule p-4">
+          <h3 className="mb-4 text-sm font-semibold text-con">Against the motion</h3>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <ModelSelector
+              label="Model"
+              value={debater2Config.model}
+              onChange={handleDebater2ModelChange}
+              disabled={disableModelSelection}
+            />
+            <PersonalitySelector
+              label="Against"
+              value={debater2Config.personality}
+              onChange={handleDebater2PersonalityChange}
+            />
+          </div>
+        </section>
       </div>
 
       <SpicinessSelector value={spiciness} onChange={setSpiciness} />
@@ -98,9 +100,9 @@ export default function DebateControls({
         onClick={onStartDebate}
         disabled={!topic.trim() || isPending}
         isLoading={isPending}
-        className="w-full"
+        className="w-full py-3"
       >
-        Start Debate
+        Begin the debate
       </Button>
     </div>
   );

@@ -57,21 +57,15 @@ export function DebateSetup() {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
-      <div className="w-full max-w-2xl p-4 rounded-lg bg-blue-50 dark:bg-gray-800/50 border border-blue-200 dark:border-gray-700/60 text-center">
-        <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+    <div className="space-y-10">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-rule p-4">
+        <p className="text-sm text-ink-muted">
           {noApiKeyMode
-            ? "Demo mode active (Using Gemini 2.5 Flash)."
-            : "Don't have API keys? Try a limited demo using Google's model:"}
+            ? "Demo mode: both sides are Gemini 2.5 Flash."
+            : "No API keys? Run a limited demo on Google's model."}
         </p>
-        <Button
-          variant="secondary"
-          onClick={handleNoApiKeyClick}
-          className={noApiKeyMode ? "opacity-80" : ""}
-        >
-          {noApiKeyMode
-            ? "Allow Manual Model Selection"
-            : "Use Gemini 2.5 Flash for Both"}
+        <Button variant="secondary" onClick={handleNoApiKeyClick}>
+          {noApiKeyMode ? "Pick models manually" : "Use the demo model"}
         </Button>
       </div>
 

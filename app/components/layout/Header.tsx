@@ -12,25 +12,25 @@ export function Header() {
 
   return (
     <>
-      <header className="w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-            <span className="text-blue-600 dark:text-blue-400">AI</span>gument
+      <header className="w-full border-b border-rule bg-surface">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
+          <Link href="/" className="text-xl font-semibold text-ink transition-colors hover:text-ink">
+            <span className="text-ink">AI</span>gument
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1">
             <Link
               href="/debates"
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+              className="rounded-md p-2 text-ink-muted transition-colors hover:bg-surface-sunken hover:text-ink"
               aria-label="View Saved Debates"
               title="View Saved Debates"
             >
-              <Library className="w-6 h-6 text-gray-800 dark:text-gray-200" />
+              <Library className="h-5 w-5" />
             </Link>
             <a
               href="https://github.com/joshuaisaact/AIgument"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+              className="rounded-md p-2 transition-colors hover:bg-surface-sunken"
               aria-label="GitHub Repository"
             >
               <Image
@@ -38,18 +38,18 @@ export function Header() {
                 alt="GitHub Logo"
                 width={24}
                 height={24}
-                className="w-6 h-6 text-gray-800 dark:text-gray-200 dark:invert"
+                className="h-5 w-5 opacity-70 dark:invert"
               />
             </a>
             <ThemeToggle />
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer"
+              className="cursor-pointer rounded-md p-2 text-ink-muted transition-colors hover:bg-surface-sunken hover:text-ink"
               aria-label="Settings"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 text-gray-800 dark:text-gray-200"
+                className="h-5 w-5"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >

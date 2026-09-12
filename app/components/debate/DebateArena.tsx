@@ -146,37 +146,37 @@ export default function DebateArena({
   const spicinessConfig = SPICINESS_CONFIGS[spiciness];
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center">{topic}</h1>
-        <div className="mt-3 flex justify-between items-start text-sm">
-          <div className="text-left">
-            <span className="font-semibold text-blue-700 dark:text-blue-400 block">For</span>
-            <div className="flex items-center gap-1.5 mt-1">
-              <ModelLogo modelId={debater1Model} className="w-4 h-4" />
-              <span className="text-gray-800 dark:text-gray-200">{MODEL_CONFIGS[debater1Model].name}</span>
+    <div className="mx-auto w-full max-w-2xl px-4 py-12">
+      <header className="mb-10">
+        <h1 className="text-2xl font-semibold tracking-tight">{topic}</h1>
+        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <span className="text-sm font-semibold text-pro">For</span>
+            <div className="mt-1.5 flex items-center gap-1.5 text-sm text-ink">
+              <ModelLogo modelId={debater1Model} className="h-4 w-4" />
+              <span>{MODEL_CONFIGS[debater1Model].name}</span>
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">{PERSONALITY_CONFIGS[debater1Personality].name}</span>
+            <span className="mt-0.5 block text-xs text-ink-muted">{PERSONALITY_CONFIGS[debater1Personality].name}</span>
           </div>
 
-          <div className="text-right">
-            <span className="font-semibold text-red-700 dark:text-red-400 block">Against</span>
-            <div className="flex items-center justify-end gap-1.5 mt-1">
-              <span className="text-gray-800 dark:text-gray-200">{MODEL_CONFIGS[debater2Model].name}</span>
-              <ModelLogo modelId={debater2Model} className="w-4 h-4" />
+          <div className="sm:text-right">
+            <span className="text-sm font-semibold text-con">Against</span>
+            <div className="mt-1.5 flex items-center gap-1.5 text-sm text-ink sm:justify-end">
+              <ModelLogo modelId={debater2Model} className="h-4 w-4" />
+              <span>{MODEL_CONFIGS[debater2Model].name}</span>
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 block">{PERSONALITY_CONFIGS[debater2Personality].name}</span>
+            <span className="mt-0.5 block text-xs text-ink-muted">{PERSONALITY_CONFIGS[debater2Personality].name}</span>
           </div>
         </div>
-        <div className="flex justify-center items-center gap-1.5 text-xs text-gray-500 mt-2">
-          <spicinessConfig.Icon className="w-3.5 h-3.5" />
+        <div className="mt-4 flex items-center gap-1.5 text-sm text-ink-muted">
+          <spicinessConfig.Icon className="h-3.5 w-3.5" />
           <span>{spicinessConfig.name}</span>
         </div>
-      </div>
+      </header>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {rounds.map((round, index) => (
-          <div key={index} className="space-y-4">
+          <div key={index} className="space-y-8">
             {round.debater1 && (
               <DebaterResponse position="For" model={debater1Model} personality={debater1Personality}>
                 {round.debater1}
@@ -204,23 +204,23 @@ export default function DebateArena({
       </div>
 
       {displayError && (
-        <div className="mt-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg">
+        <div className="mt-8 border-l-2 border-con bg-surface-sunken px-4 py-3 text-sm text-ink">
           <span>{displayError.message}</span>
           {displayError.code === 'API_KEY_MISSING' && (
-            <span className="block text-xs mt-1">(Hint: Click the ⚙️ icon in the header to open Settings)</span>
+            <span className="mt-1 block text-xs text-ink-muted">Add a key from the settings icon in the header.</span>
           )}
         </div>
       )}
 
       {saveError && (
-        <div className="mt-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg">
+        <div className="mt-8 border-l-2 border-con bg-surface-sunken px-4 py-3 text-sm text-ink">
           {saveError}
         </div>
       )}
 
       {saveSuccess && (
-        <div className="mt-4 p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg">
-          <div className="flex items-center justify-between">
+        <div className="mt-8 border-l-2 border-rule-strong bg-surface-sunken px-4 py-3 text-sm text-ink">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <span>{saveSuccess}</span>
             <Button
               variant="secondary"
@@ -230,23 +230,23 @@ export default function DebateArena({
                 navigator.clipboard.writeText(url);
                 toast.success('Link copied to clipboard!');
               }}
-              className="ml-2 px-2 py-1 text-sm"
+              className="gap-1.5 px-2 py-1"
               aria-label="Copy debate link"
             >
-              <Copy className="w-4 h-4 mr-1" />
+              <Copy className="h-3.5 w-3.5" />
               Copy Link
             </Button>
           </div>
         </div>
       )}
 
-      <div className="mt-8 flex justify-center gap-4">
+      <div className="mt-10 flex flex-wrap gap-3 border-t border-rule pt-6">
         <Button
           onClick={handleNextRound}
           disabled={isLoading || streamingText !== null}
           isLoading={isStreamingLoading}
         >
-          {isStreamingLoading ? 'Debating...' : 'Next Response'}
+          {isStreamingLoading ? 'Arguing...' : 'Next response'}
         </Button>
         <Button
           onClick={handleReset}
@@ -260,7 +260,7 @@ export default function DebateArena({
           variant="secondary"
           disabled={isLoading || rounds.length === 0}
         >
-          Save Debate
+          Save debate
         </Button>
       </div>
 

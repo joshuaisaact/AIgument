@@ -1,27 +1,69 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Special+Elite&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap");
+/* One request instead of ten serialised @imports. These are the per-personality
+   faces used by DebaterResponse; the UI itself loads no webfont. */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Crimson+Text:wght@400;600&family=IM+Fell+English&family=Special+Elite&family=Comic+Neue:wght@400;700&family=Press+Start+2P&family=Indie+Flower&family=Quicksand:wght@400;500;600&display=swap");
 @import "tailwindcss";
-
-@theme {
-    --font-sans: "Outfit", sans-serif;
-    --font-professional: "Playfair Display", serif;
-    --font-pirate: "IM Fell English", serif;
-    --font-noir: "Special Elite", cursive;
-    --font-kids: "Comic Neue", cursive;
-    --font-gaming: "Press Start 2P", cursive;
-    --font-shakespeare: "Crimson Text", serif;
-    --font-puns: "Indie Flower", cursive;
-    --font-emo: "Quicksand", sans-serif;
-    --font-royal: "Fredericka the Great", cursive;
-}
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+
+  /* Personality faces, picked in DebaterResponse. */
+  --font-professional: "Playfair Display", Georgia, serif;
+  --font-pirate: "IM Fell English", Georgia, serif;
+  --font-noir: "Special Elite", ui-monospace, monospace;
+  --font-kids: "Comic Neue", "Comic Sans MS", cursive;
+  --font-gaming: "Press Start 2P", ui-monospace, monospace;
+  --font-shakespeare: "Crimson Text", Georgia, serif;
+  --font-puns: "Indie Flower", cursive;
+  --font-emo: "Quicksand", ui-sans-serif, sans-serif;
+}
+
+/* Plain neutrals. Kept as custom properties so .dark swaps the whole set in one
+   place and the components need no dark: variant for colour. */
+:root {
+  --surface: #ffffff;
+  --surface-sunken: #f5f5f5;
+  --rule: #e5e5e5;
+  --rule-strong: #d4d4d4;
+  --ink: #171717;
+  --ink-muted: #737373;
+  --pro: #1d4ed8;
+  --con: #b91c1c;
+}
+
+.dark {
+  --surface: #0a0a0a;
+  --surface-sunken: #171717;
+  --rule: #262626;
+  --rule-strong: #404040;
+  --ink: #fafafa;
+  --ink-muted: #a3a3a3;
+  --pro: #60a5fa;
+  --con: #f87171;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-pro: var(--pro);
+  --color-con: var(--con);
+}
+
+@layer base {
+  body {
+    background-color: var(--surface);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+}
