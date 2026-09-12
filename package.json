@@ -2,22 +2,23 @@
   "name": "argument-room",
   "version": "0.1.0",
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@eslint/eslintrc": "^3.3.6",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
-    "@types/node": "^20",
+    "@types/node": "^20.19.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^5.1.0",
-    "@vitest/ui": "^4.0.6",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.0",
-    "happy-dom": "^20.0.10",
+    "@vitejs/plugin-react": "^5.2.0",
+    "@vitest/ui": "^4.1.11",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "15.5.25",
+    "happy-dom": "^20.14.5",
     "prettier": "3.5.3",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "4.0.6"
+    "vite": "^7.3.5",
+    "vitest": "4.1.11"
   },
   "private": true,
   "scripts": {
@@ -25,26 +26,45 @@
     "build": "pnpm next build",
     "start": "pnpm next start",
     "lint": "pnpm next lint",
-    "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.2.9",
-    "@ai-sdk/google": "^1.2.10",
-    "@ai-sdk/openai": "^1.3.10",
-    "@ai-sdk/react": "^1.2.8",
-    "@ai-sdk/xai": "^1.2.13",
+    "@ai-sdk/anthropic": "^2.0.102",
+    "@ai-sdk/google": "^2.0.97",
+    "@ai-sdk/openai": "^2.0.127",
+    "@ai-sdk/xai": "^2.0.94",
     "@neondatabase/serverless": "^1.0.0",
-    "@next/env": "^15.3.0",
+    "@next/env": "^15.5.25",
     "@types/uuid": "^10.0.0",
     "@vercel/analytics": "^1.5.0",
-    "ai": "^4.3.5",
+    "ai": "^5.0.257",
     "lucide-react": "^0.488.0",
-    "next": "15.3.0",
+    "next": "15.5.25",
     "next-themes": "^0.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sonner": "^2.0.3",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.1",
+    "zod": "^3.25.76"
   },
-  "packageManager": "pnpm@10.6.3+sha512.bb45e34d50a9a76e858a95837301bfb6bd6d35aea2c5d52094fa497a467c43f5c440103ce2511e9e0a2f89c3d6071baac3358fc68ac6fb75e2ceb3d2736065e6"
+  "packageManager": "pnpm@10.6.3+sha512.bb45e34d50a9a76e858a95837301bfb6bd6d35aea2c5d52094fa497a467c43f5c440103ce2511e9e0a2f89c3d6071baac3358fc68ac6fb75e2ceb3d2736065e6",
+  "pnpm": {
+    "overrides": {
+      "@humanfs/node": "^0.16.8",
+      "baseline-browser-mapping": "^2.11.0",
+      "brace-expansion@1": "^1.1.18",
+      "brace-expansion@2": "^2.1.4",
+      "browserslist": "^4.28.7",
+      "fflate": "^0.8.3",
+      "minimatch@3": "^3.1.4",
+      "minimatch@9": "^9.0.7",
+      "nanoid@3": "^3.3.18",
+      "picomatch@2": "^2.3.2",
+      "picomatch@4": "^4.0.4",
+      "postcss": "^8.5.23",
+      "rollup": "^4.59.0",
+      "undici": "^6.28.0"
+    }
+  }
 }
