@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { streamText, LanguageModelV1, smoothStream, CoreMessage } from "ai";
+import { streamText, LanguageModel, smoothStream, ModelMessage } from "ai";
 import { ModelType } from "./useModelProvider";
 import { DEBATE_PROMPTS } from "../constants/debate";
 import { DebateError } from "./useDebateState";
@@ -61,7 +61,7 @@ export function useDebateStreaming({
   const [error, setError] = useState<DebateError | null>(null);
 
   const startStreaming = useCallback(
-    async (getModelProvider: (model: ModelType) => LanguageModelV1) => {
+    async (getModelProvider: (model: ModelType) => LanguageModel) => {
       if (isLoading) {
         return;
       }
@@ -105,7 +105,7 @@ export function useDebateStreaming({
 
       try {
         if (modelId === "gemini-2.5-flash") {
-          const messages: CoreMessage[] = [
+          const messages: ModelMessage[] = [
             { role: "system", content: systemPrompt },
           ];
 

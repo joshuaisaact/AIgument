@@ -59,17 +59,14 @@ export const useModelProvider = () => {
         case "gpt4o":
           return createOpenAI({
             apiKey: getProviderApiKey("openai"),
-            compatibility: "strict",
           })("gpt-4o");
         case "gpt4":
           return createOpenAI({
             apiKey: getProviderApiKey("openai"),
-            compatibility: "strict",
           })("gpt-4-turbo");
         case "gpt35":
           return createOpenAI({
             apiKey: getProviderApiKey("openai"),
-            compatibility: "strict",
           })("gpt-3.5-turbo");
         case "gemini-flash":
           return createGoogleGenerativeAI({
