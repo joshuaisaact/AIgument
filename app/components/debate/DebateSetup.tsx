@@ -10,11 +10,11 @@ export function DebateSetup() {
   const router = useRouter();
   const [topic, setTopic] = useState("");
   const [debater1Config, setDebater1Config] = useState<DebaterConfig>({
-    model: "gpt4",
+    model: "gpt-6-astra",
     personality: "standard",
   });
   const [debater2Config, setDebater2Config] = useState<DebaterConfig>({
-    model: "claude-sonnet",
+    model: "claude-opus-5",
     personality: "standard",
   });
   const [spiciness, setSpiciness] = useState<SpicinessLevel>("medium");
@@ -44,11 +44,11 @@ export function DebateSetup() {
       // Entering no API key mode: set models to flash
       setDebater1Config({
         ...debater1Config,
-        model: "gemini-2.5-flash",
+        model: "gemini-demo",
       });
       setDebater2Config({
         ...debater2Config,
-        model: "gemini-2.5-flash",
+        model: "gemini-demo",
       });
     } else {
       // Exiting no API key mode: models remain as they were (flash),
@@ -61,7 +61,7 @@ export function DebateSetup() {
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-rule p-4">
         <p className="text-sm text-ink-muted">
           {noApiKeyMode
-            ? "Demo mode: both sides are Gemini 2.5 Flash."
+            ? "Demo mode: both sides are Gemini 3.8 Flash."
             : "No API keys? Run a limited demo on Google's model."}
         </p>
         <Button variant="secondary" onClick={handleNoApiKeyClick}>

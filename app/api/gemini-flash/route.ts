@@ -1,5 +1,6 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { ModelMessage, streamText } from "ai";
+import { DEMO_MODEL_ID } from "@/app/hooks/useModelProvider";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
     const { messages }: { messages: ModelMessage[] } = await req.json();
 
     const result = await streamText({
-      model: google("gemini-2.0-flash-001"),
+      model: google(DEMO_MODEL_ID),
       prompt: messages.find((m) => m.role === "system")?.content ?? "",
     });
 

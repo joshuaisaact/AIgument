@@ -15,7 +15,7 @@ export default function ModelLogo({ modelId, className = "h-4 w-4" }: ModelLogoP
   }
 
   const modelConfig = MODEL_CONFIGS[modelId];
-  const isGrokModel = modelId === 'grok-3' || modelId === 'grok-3-mini';
+  const isGrokModel = modelId.startsWith('grok-');
 
   if (isGrokModel) {
     return (

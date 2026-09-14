@@ -11,9 +11,9 @@ export function DebatePageContent() {
   const searchParams = useSearchParams();
 
   const topic = searchParams.get('topic') || '';
-  const model1 = (searchParams.get('model1') as ModelType) || 'gpt4';
+  const model1 = (searchParams.get('model1') as ModelType) || 'gpt-6-astra';
   const personality1 = (searchParams.get('personality1') as PersonalityId) || 'standard';
-  const model2 = (searchParams.get('model2') as ModelType) || 'claude-sonnet';
+  const model2 = (searchParams.get('model2') as ModelType) || 'claude-opus-5';
   const personality2 = (searchParams.get('personality2') as PersonalityId) || 'standard';
   const spiciness = (searchParams.get('spiciness') as SpicinessLevel) || 'medium';
 
