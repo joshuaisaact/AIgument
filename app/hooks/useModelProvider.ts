@@ -4,6 +4,9 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createXai } from "@ai-sdk/xai";
 import { getApiKey } from "../lib/storage/apiKeyStorage";
 
+/** The model behind demo mode. Shared with /api/gemini-flash. */
+export const DEMO_MODEL_ID = "gemini-3.8-flash";
+
 export class MissingApiKeyError extends Error {
   constructor(provider: string) {
     super(
@@ -32,62 +35,54 @@ const getProviderApiKey = (
   return userKey || envKey || "";
 };
 
+/**
+ * Model ids are the providers' own, and deliberately the floating names rather
+ * than dated snapshots (`claude-opus-5`, not `claude-opus-5-20260114`), so the
+ * app follows each provider's current release without a code change.
+ */
 export type ModelType =
-  | "gpt4o"
-  | "gpt4"
-  | "gpt35"
-  | "claude-sonnet"
-  | "claude-haiku"
-  | "gemini-flash"
-  | "gemini-pro"
-  | "gemini-2.5-flash"
-  | "grok-3"
-  | "grok-3-mini";
+  | "gpt-6-astra"
+  | "gpt-5.4-mini"
+  | "claude-opus-5"
+  | "claude-sonnet-5"
+  | "claude-haiku-4-5"
+  | "gemini-3.8-flash"
+  | "gemini-2.5-pro"
+  | "grok-4.6"
+  | "grok-4-1-fast-reasoning"
+  | "gemini-demo";
 
 export const useModelProvider = () => {
   const getModelProvider = (model: ModelType) => {
     try {
       switch (model) {
-        case "claude-sonnet":
+        case "claude-opus-5":
+        case "claude-sonnet-5":
+        case "claude-haiku-4-5":
           return createAnthropic({
             apiKey: getProviderApiKey("anthropic"),
-          })("claude-3-7-sonnet-20250219");
-        case "claude-haiku":
-          return createAnthropic({
-            apiKey: getProviderApiKey("anthropic"),
-          })("claude-3-5-haiku-latest");
-        case "gpt4o":
+          })(model);
+        case "gpt-6-astra":
+        case "gpt-5.4-mini":
           return createOpenAI({
             apiKey: getProviderApiKey("openai"),
-          })("gpt-4o");
-        case "gpt4":
-          return createOpenAI({
-            apiKey: getProviderApiKey("openai"),
-          })("gpt-4-turbo");
-        case "gpt35":
-          return createOpenAI({
-            apiKey: getProviderApiKey("openai"),
-          })("gpt-3.5-turbo");
-        case "gemini-flash":
+          })(model);
+        case "gemini-3.8-flash":
+        case "gemini-2.5-pro":
           return createGoogleGenerativeAI({
             apiKey: getProviderApiKey("google"),
-          })("gemini-2.0-flash-001");
-        case "gemini-pro":
-          return createGoogleGenerativeAI({
-            apiKey: getProviderApiKey("google"),
-          })("gemini-2.5-pro-exp-03-25");
-        case "gemini-2.5-flash":
+          })(model);
+        case "grok-4.6":
+        case "grok-4-1-fast-reasoning":
+          return createXai({
+            apiKey: getProviderApiKey("xai"),
+          })(model);
+        case "gemini-demo":
+          // Answered server-side by /api/gemini-flash on our own key, so this
+          // instance is never used to call out from the browser.
           return createGoogleGenerativeAI({ apiKey: undefined })(
-            "gemini-2.0-flash-001",
+            DEMO_MODEL_ID,
           );
-        case "grok-3":
-          return createXai({
-            apiKey: getProviderApiKey("xai"),
-          })("grok-3");
-        case "grok-3-mini":
-          return createXai({
-            apiKey: getProviderApiKey("xai"),
-          })("grok-3-mini");
         default:
           const _exhaustiveCheck: never = model;
           throw new Error(`Unknown model: ${_exhaustiveCheck}`);

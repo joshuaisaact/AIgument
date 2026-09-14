@@ -104,7 +104,7 @@ export function useDebateStreaming({
       let accumulatedText = "";
 
       try {
-        if (modelId === "gemini-2.5-flash") {
+        if (modelId === "gemini-demo") {
           const messages: ModelMessage[] = [
             { role: "system", content: systemPrompt },
           ];

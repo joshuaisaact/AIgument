@@ -66,11 +66,11 @@ describe("useModelProvider", () => {
       const { result } = renderHook(() => useModelProvider());
 
       expect(() => {
-        result.current.getModelProvider("gpt4o");
+        result.current.getModelProvider("gpt-6-astra");
       }).toThrow(MissingApiKeyError);
 
       expect(() => {
-        result.current.getModelProvider("gpt4o");
+        result.current.getModelProvider("gpt-6-astra");
       }).toThrow("No API key found for openai");
     });
 
@@ -78,11 +78,11 @@ describe("useModelProvider", () => {
       const { result } = renderHook(() => useModelProvider());
 
       expect(() => {
-        result.current.getModelProvider("claude-sonnet");
+        result.current.getModelProvider("claude-opus-5");
       }).toThrow(MissingApiKeyError);
 
       expect(() => {
-        result.current.getModelProvider("claude-sonnet");
+        result.current.getModelProvider("claude-opus-5");
       }).toThrow("No API key found for anthropic");
     });
 
@@ -90,11 +90,11 @@ describe("useModelProvider", () => {
       const { result } = renderHook(() => useModelProvider());
 
       expect(() => {
-        result.current.getModelProvider("gemini-flash");
+        result.current.getModelProvider("gemini-3.8-flash");
       }).toThrow(MissingApiKeyError);
 
       expect(() => {
-        result.current.getModelProvider("gemini-flash");
+        result.current.getModelProvider("gemini-3.8-flash");
       }).toThrow("No API key found for google");
     });
 
@@ -102,11 +102,11 @@ describe("useModelProvider", () => {
       const { result } = renderHook(() => useModelProvider());
 
       expect(() => {
-        result.current.getModelProvider("grok-3");
+        result.current.getModelProvider("grok-4.6");
       }).toThrow(MissingApiKeyError);
 
       expect(() => {
-        result.current.getModelProvider("grok-3");
+        result.current.getModelProvider("grok-4.6");
       }).toThrow("No API key found for xai");
     });
   });
@@ -116,7 +116,7 @@ describe("useModelProvider", () => {
       process.env.NEXT_PUBLIC_OPENAI_API_KEY = "sk-test123";
       const { result } = renderHook(() => useModelProvider());
 
-      const provider = result.current.getModelProvider("gpt4o");
+      const provider = result.current.getModelProvider("gpt-6-astra");
       expect(provider).toBeDefined();
     });
 
@@ -124,7 +124,7 @@ describe("useModelProvider", () => {
       process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY = "sk-ant-test123";
       const { result } = renderHook(() => useModelProvider());
 
-      const provider = result.current.getModelProvider("claude-sonnet");
+      const provider = result.current.getModelProvider("claude-opus-5");
       expect(provider).toBeDefined();
     });
 
@@ -132,7 +132,7 @@ describe("useModelProvider", () => {
       process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY = "AIza-test123";
       const { result } = renderHook(() => useModelProvider());
 
-      const provider = result.current.getModelProvider("gemini-flash");
+      const provider = result.current.getModelProvider("gemini-3.8-flash");
       expect(provider).toBeDefined();
     });
 
@@ -140,7 +140,7 @@ describe("useModelProvider", () => {
       process.env.NEXT_PUBLIC_XAI_API_KEY = "gsk_test123";
       const { result } = renderHook(() => useModelProvider());
 
-      const provider = result.current.getModelProvider("grok-3");
+      const provider = result.current.getModelProvider("grok-4.6");
       expect(provider).toBeDefined();
     });
   });
@@ -153,32 +153,31 @@ describe("useModelProvider", () => {
       process.env.NEXT_PUBLIC_XAI_API_KEY = "gsk_test123";
     });
 
-    it("should handle all GPT model variants", () => {
+    it("should handle the OpenAI models", () => {
       const { result } = renderHook(() => useModelProvider());
 
-      expect(() => result.current.getModelProvider("gpt4o")).not.toThrow();
-      expect(() => result.current.getModelProvider("gpt4")).not.toThrow();
-      expect(() => result.current.getModelProvider("gpt35")).not.toThrow();
+      expect(() => result.current.getModelProvider("gpt-6-astra")).not.toThrow();
+      expect(() => result.current.getModelProvider("gpt-5.4-mini")).not.toThrow();
     });
 
-    it("should handle all Claude model variants", () => {
+    it("should handle the Anthropic models", () => {
       const { result } = renderHook(() => useModelProvider());
 
       expect(() =>
-        result.current.getModelProvider("claude-sonnet"),
+        result.current.getModelProvider("claude-opus-5"),
       ).not.toThrow();
       expect(() =>
-        result.current.getModelProvider("claude-haiku"),
+        result.current.getModelProvider("claude-haiku-4-5"),
       ).not.toThrow();
     });
 
-    it("should handle all Gemini model variants", () => {
+    it("should handle the Google models", () => {
       const { result } = renderHook(() => useModelProvider());
 
       expect(() =>
-        result.current.getModelProvider("gemini-flash"),
+        result.current.getModelProvider("gemini-3.8-flash"),
       ).not.toThrow();
-      expect(() => result.current.getModelProvider("gemini-pro")).not.toThrow();
+      expect(() => result.current.getModelProvider("gemini-2.5-pro")).not.toThrow();
     });
 
     it("should handle gemini-2.5-flash without API key (demo mode)", () => {
@@ -187,16 +186,16 @@ describe("useModelProvider", () => {
 
       // This should NOT throw because gemini-2.5-flash uses apiKey: undefined
       expect(() =>
-        result.current.getModelProvider("gemini-2.5-flash"),
+        result.current.getModelProvider("gemini-demo"),
       ).not.toThrow();
     });
 
-    it("should handle all Grok model variants", () => {
+    it("should handle the xAI models", () => {
       const { result } = renderHook(() => useModelProvider());
 
-      expect(() => result.current.getModelProvider("grok-3")).not.toThrow();
+      expect(() => result.current.getModelProvider("grok-4.6")).not.toThrow();
       expect(() =>
-        result.current.getModelProvider("grok-3-mini"),
+        result.current.getModelProvider("grok-4-1-fast-reasoning"),
       ).not.toThrow();
     });
   });

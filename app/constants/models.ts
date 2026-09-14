@@ -4,64 +4,64 @@ export const MODEL_CONFIGS: Record<
   ModelType,
   { name: string; logo: string; alt: string; description: string }
 > = {
-  gpt4o: {
-    name: "ChatGPT-4 Omni",
+  "gpt-6-astra": {
+    name: "GPT-6 Astra",
     logo: "/openai.svg",
-    alt: "ChatGPT-4 Omni",
-    description: "OpenAI&apos;s latest flagship model.",
+    alt: "GPT-6 Astra",
+    description: "OpenAI&apos;s flagship.",
   },
-  gpt4: {
-    name: "ChatGPT-4 Turbo",
+  "gpt-5.4-mini": {
+    name: "GPT-5.4 Mini",
     logo: "/openai.svg",
-    alt: "ChatGPT-4 Turbo (latest)",
-    description: "OpenAI&apos;s most capable model.",
+    alt: "GPT-5.4 Mini",
+    description: "Cheaper and quicker than the flagship.",
   },
-  gpt35: {
-    name: "ChatGPT-3.5 Turbo",
-    logo: "/openai.svg",
-    alt: "ChatGPT-3.5 Turbo (latest)",
-    description: "Fast and affordable model.",
-  },
-  "claude-sonnet": {
-    name: "Claude 3.7 Sonnet",
+  "claude-opus-5": {
+    name: "Claude Opus 5",
     logo: "/anthropic.svg",
-    alt: "Claude 3.7 Sonnet (latest)",
-    description: "Anthropic&apos;s latest powerful model.",
+    alt: "Claude Opus 5",
+    description: "Anthropic&apos;s most capable model.",
   },
-  "claude-haiku": {
-    name: "Claude 3.5 Haiku",
+  "claude-sonnet-5": {
+    name: "Claude Sonnet 5",
     logo: "/anthropic.svg",
-    alt: "Claude 3.5 Haiku (latest)",
+    alt: "Claude Sonnet 5",
+    description: "Balanced for everyday argument.",
+  },
+  "claude-haiku-4-5": {
+    name: "Claude Haiku 4.5",
+    logo: "/anthropic.svg",
+    alt: "Claude Haiku 4.5",
     description: "Anthropic&apos;s fastest, compact model.",
   },
-  "gemini-flash": {
-    name: "Gemini 2.0 Flash",
+  "gemini-3.8-flash": {
+    name: "Gemini 3.8 Flash",
     logo: "/google.svg",
-    alt: "Gemini 1.5 Flash",
+    alt: "Gemini 3.8 Flash",
     description: "Google&apos;s fast multimodal model.",
   },
-  "gemini-pro": {
+  "gemini-2.5-pro": {
     name: "Gemini 2.5 Pro",
     logo: "/google.svg",
-    alt: "Gemini 1.5 Pro",
-    description: "Google&apos;s latest capable model.",
+    alt: "Gemini 2.5 Pro",
+    description: "Google&apos;s reasoning model.",
   },
-  "gemini-2.5-flash": {
-    name: "Gemini 2.5 Flash",
+  "grok-4.6": {
+    name: "Grok 4.6",
+    logo: "/xai.svg",
+    alt: "Grok 4.6",
+    description: "xAI&apos;s flagship.",
+  },
+  "grok-4-1-fast-reasoning": {
+    name: "Grok 4.1 Fast",
+    logo: "/xai.svg",
+    alt: "Grok 4.1 Fast",
+    description: "xAI&apos;s quick reasoning model.",
+  },
+  "gemini-demo": {
+    name: "Gemini 3.8 Flash (demo)",
     logo: "/google.svg",
-    alt: "Gemini 2.5 Flash Preview",
-    description: "Google&apos;s fast and efficient model.",
-  },
-  "grok-3": {
-    name: "Grok 3",
-    logo: "/xai.svg",
-    alt: "Grok 3",
-    description: "xAI&apos;s large conversational model.",
-  },
-  "grok-3-mini": {
-    name: "Grok 3 Mini",
-    logo: "/xai.svg",
-    alt: "Grok 3 Mini",
-    description: "xAI&apos;s smaller, faster model.",
+    alt: "Gemini 3.8 Flash",
+    description: "Runs on our key. No API key needed.",
   },
 };
